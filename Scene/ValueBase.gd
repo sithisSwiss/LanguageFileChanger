@@ -1,8 +1,8 @@
 class_name ValueChangerDialog extends ColorRect
 
 @onready var title_value := %TitleValue
-@onready var attributes_grid = %AttributesGrid
-@onready var values_grid = %ValuesGrid
+@onready var attributes_grid := %AttributesGrid
+@onready var values_grid := %ValuesGrid
 
 @onready var key_label := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyLabel
 @onready var key_edit := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer/KeyEdit
@@ -58,6 +58,7 @@ func init(title: String, is_new: bool, is_software: bool, files: Array, change_k
 		for file in _files:
 			var language = Array((file as String).split("/")).back()
 			add_value_field(language, xml_class.GetValue(change_key, file), file, true)
+	_set_disable_create_button()
 	show()
 
 func add_value_field(label: String, edit: String, file: String, is_editable:bool):
@@ -71,6 +72,12 @@ func add_value_field(label: String, edit: String, file: String, is_editable:bool
 	edit_node.text_changed.connect(func(new_text:String): xml_class.SaveValue(key_edit.text, file, new_text))
 	values_grid.add_child(edit_node)
 	
+func _set_disable_create_button():
+	var keys = xml_class.GetKeys(_files.front())
+	create_key.disabled = key_edit.text.length() < 5 or key_edit.text in keys
+	if !_is_software:
+		create_key.disabled = create_key.disabled or !key_edit.text.is_valid_int()
+	
 func _on_close_button_pressed():
 	added_new_key.emit()
 	hide()
@@ -79,7 +86,6 @@ func _on_close_button_pressed():
 	_ready()
 
 func _on_create_key_pressed():
-	
 	for file in _files:
 		if _is_software:
 			xml_class.AddKeySoftware(key_edit.text, file, info_edit.text)
@@ -88,7 +94,10 @@ func _on_create_key_pressed():
 	for child in values_grid.get_children().filter(func(c): return c is LineEdit):
 		child.editable = true
 	create_key.hide()
+	key_edit.editable = false
+	info_edit.editable = false
+	field_edit.editable = false
+	layout_edit.disabled = true
 
-func _on_key_edit_text_changed(new_text:String):
-	var keys = xml_class.GetKeys(_files.front())
-	create_key.disabled = new_text.length() < 5 or new_text in keys
+func _on_key_edit_text_changed(_new_text:String):
+	_set_disable_create_button()

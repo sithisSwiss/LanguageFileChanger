@@ -1,0 +1,97 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvfi27d444gb6"]
+
+[ext_resource type="Script" path="res://Scene/ValueBase.gd" id="1_naik1"]
+
+[node name="ValueChangerDialog" type="ColorRect"]
+visible = false
+color = Color(0.270588, 0.270588, 0.270588, 1)
+script = ExtResource("1_naik1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TitleValue" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Title"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "(x) Close"
+
+[node name="AttributesGrid" type="GridContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="KeyLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Key:"
+
+[node name="KeyContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KeyEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreateKey" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Create Key"
+
+[node name="InfoLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+text = "Info:"
+
+[node name="InfoEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+
+[node name="FieldLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+text = "Field:"
+
+[node name="FieldEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+
+[node name="LayoutLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+text = "Layout:"
+
+[node name="LayoutEdit" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ValuesGrid" type="GridContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="text_changed" from="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer/KeyEdit" to="." method="_on_key_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer/CreateKey" to="." method="_on_create_key_pressed"]

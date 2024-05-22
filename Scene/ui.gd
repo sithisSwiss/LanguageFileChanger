@@ -74,6 +74,7 @@ var files: Array = []
 
 func _ready():
 	base_path.text = persistent.base_path
+	category_switch.button_pressed = persistent.is_software
 	specific_path.text = get_dir_path()
 	search_input.text = ""
 	for type in Globals.LAYOUT_TYPES:
@@ -87,12 +88,6 @@ func _reload_language_file():
 	files = files.filter(func(x: String): return x.ends_with(".xml"))
 	language_file_found.text = str(files.size())
 
-func _on_category_switch_pressed():
-	specific_path.text = get_dir_path()
-	search_input.text = ""
-	_reload_language_file()
-	category_switch.text = "Software" if get_category() == CATEGORY_ENUM.SOFTWARE else "Firmware"
-	_reset_xml_specifics()
 
 func _reset_xml_specifics():
 	selected_key = ""
@@ -118,6 +113,15 @@ func _save_inputs():
 			xml_class.SaveAttributeSoftware(selected_key, file, info_edit.text)
 		else:
 			xml_class.SaveAttributeFirmware(selected_key, file, info_edit.text, field_edit.text, layout_edit.text)
+
+func _on_category_switch_pressed():
+	persistent.is_software = get_category() == CATEGORY_ENUM.SOFTWARE
+	persistent.save_data()
+	specific_path.text = get_dir_path()
+	search_input.text = ""
+	_reload_language_file()
+	category_switch.text = "Software" if get_category() == CATEGORY_ENUM.SOFTWARE else "Firmware"
+	_reset_xml_specifics()
 
 func _on_revert_button_pressed():
 	_reload_input_fields()
