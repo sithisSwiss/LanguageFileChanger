@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0wmyaoq8o88r"]
+
+[ext_resource type="Texture2D" uid="uid://d3s0rtbtly582" path="res://clipboard_icon.svg" id="1_cs38s"]
+[ext_resource type="Script" path="res://Scene/clipboard_button.gd" id="2_6vhsj"]
+
+[node name="ClipboardButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+icon = ExtResource("1_cs38s")
+script = ExtResource("2_6vhsj")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

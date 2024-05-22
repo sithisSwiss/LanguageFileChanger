@@ -1,24 +1,25 @@
-class_name ValueChangerDialog extends ColorRect
+class_name ValueChangerDialog extends Control
+
+@export var clipboard_icon: Texture2D
 
 @onready var title_value := %TitleValue
 @onready var attributes_grid := %AttributesGrid
 @onready var values_grid := %ValuesGrid
 
-@onready var key_label := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyLabel
-@onready var key_edit := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer/KeyEdit
-@onready var create_key := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer/CreateKey
-@onready var info_label := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/InfoLabel
-@onready var info_edit := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/InfoEdit
-@onready var field_label := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/FieldLabel
-@onready var field_edit := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/FieldEdit
-@onready var layout_label := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/LayoutLabel
-@onready var layout_edit := $MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/LayoutEdit
-
 @onready var xml_class = preload("res://Script/XmlScript.cs")
-@onready var xml_object = xml_class.new()
+@export var clipboard_btn_scene := preload("res://Scene/clipboard_button.tscn")
 
+@onready var key_label := %KeyLabel
+@onready var key_edit := %KeyEdit
+@onready var create_key := %CreateKey
+@onready var info_label := %InfoLabel
+@onready var info_edit := %InfoEdit
+@onready var field_label := %FieldLabel
+@onready var field_edit := %FieldEdit
+@onready var layout_label := %LayoutLabel
+@onready var layout_edit := %LayoutEdit
 
-signal added_new_key
+signal closed
 
 var _is_new: bool
 var _is_software: bool
@@ -42,6 +43,10 @@ func init(title: String, is_new: bool, is_software: bool, files: Array, change_k
 	_is_software = is_software
 	_files = files
 	key_edit.text = change_key
+	info_edit.text = "" if _is_new else xml_class.GetInfo(change_key, files.front())
+	if not _is_software:
+		field_edit.text = "" if _is_new else xml_class.GetField(change_key, files.front())
+		layout_edit.text = "" if _is_new else xml_class.GetLayout(change_key, files.front())
 	if is_new:
 		create_key.show()
 		info_edit.editable = true
@@ -52,25 +57,36 @@ func init(title: String, is_new: bool, is_software: bool, files: Array, change_k
 			layout_label.show()
 			layout_edit.show()
 		for file in _files:
-			add_value_field(file, "", file, false)
+			add_value_fields(file, "", file, false)
 	else:
 		create_key.hide()
 		for file in _files:
 			var language = Array((file as String).split("/")).back()
-			add_value_field(language, xml_class.GetValue(change_key, file), file, true)
+			add_value_fields(language, xml_class.GetValue(change_key, file), file, true)
 	_set_disable_create_button()
 	show()
 
-func add_value_field(label: String, edit: String, file: String, is_editable:bool):
-	var label_node = Label.new()
+func add_value_fields(label: String, edit: String, file: String, is_editable:bool):
+	var label_node := Label.new()
 	label_node.text = label
 	values_grid.add_child(label_node)
-	var edit_node = LineEdit.new()
+	
+	var h_container := HBoxContainer.new()
+	h_container.size_flags_horizontal = SIZE_EXPAND_FILL
+	h_container.add_theme_constant_override("separation", 2)
+	values_grid.add_child(h_container)
+	
+	var edit_node := LineEdit.new()
+	var clipboard_btn := (clipboard_btn_scene.instantiate() as ClipboardButton).init(edit_node)
+	h_container.add_child(clipboard_btn)
+
 	edit_node.editable = is_editable
 	edit_node.text = edit
 	edit_node.size_flags_horizontal = SIZE_EXPAND_FILL
 	edit_node.text_changed.connect(func(new_text:String): xml_class.SaveValue(key_edit.text, file, new_text))
-	values_grid.add_child(edit_node)
+	h_container.add_child(edit_node)
+	
+	
 	
 func _set_disable_create_button():
 	var keys = xml_class.GetKeys(_files.front())
@@ -79,7 +95,7 @@ func _set_disable_create_button():
 		create_key.disabled = create_key.disabled or !key_edit.text.is_valid_int()
 	
 func _on_close_button_pressed():
-	added_new_key.emit()
+	closed.emit()
 	hide()
 	for child in values_grid.get_children():
 		values_grid.remove_child(child)

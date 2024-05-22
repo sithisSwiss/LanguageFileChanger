@@ -1,0 +1,204 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj0eyhixk6gf6"]
+
+[ext_resource type="Script" path="res://Scene/KeySelectionUi.gd" id="1_6hvy4"]
+[ext_resource type="PackedScene" uid="uid://c0wmyaoq8o88r" path="res://Scene/clipboard_button.tscn" id="2_3wm2e"]
+
+[node name="KeySelectionUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6hvy4")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.270222, 0.270222, 0.270222, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "EPC01 - Language File Changer"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Absolute path to dir (default: .../cfn-code/):"
+
+[node name="BasePath" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="SpecificPath" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533037, 1)
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="CategorySwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 10
+button_pressed = true
+text = "Software"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="LanguageFileFoundLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "Found languages file:"
+
+[node name="LanguageFileFound" type="Label" parent="MarginContainer/VBoxContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SearchLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Search"
+
+[node name="SearchHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="SearchClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer" instance=ExtResource("2_3wm2e")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SearchInput" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Empty" type="Control" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="KeyList" type="ItemList" parent="MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_default_cursor_shape = 2
+
+[node name="ValueLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Value (English):"
+
+[node name="ValueLabelValue" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text_overrun_behavior = 4
+
+[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Info:"
+
+[node name="InfoHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="InfoClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer" instance=ExtResource("2_3wm2e")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InfoEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LayoutLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Layout:"
+
+[node name="LayoutEdit" type="OptionButton" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="FieldLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Field:"
+
+[node name="FieldEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="ButtonHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Add"
+
+[node name="ChangeButton" type="Button" parent="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Change"
+
+[node name="RemoveButton" type="Button" parent="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Remove"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer/SearchInput" to="." method="_on_search_input_text_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/GridContainer/KeyList" to="." method="_on_key_list_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer/InfoEdit" to="." method="_on_input_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/GridContainer/LayoutEdit" to="." method="_on_layout_edit_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/FieldEdit" to="." method="_on_input_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

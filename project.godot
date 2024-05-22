@@ -13,6 +13,7 @@ config_version=5
 config/name="cfn-languageFileChanger"
 run/main_scene="res://Scene/ui.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+boot_splash/bg_color=Color(0.270588, 0.270588, 0.270588, 1)
 config/icon="res://icon.svg"
 
 [display]

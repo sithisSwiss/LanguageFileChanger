@@ -1,15 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvfi27d444gb6"]
+[gd_scene load_steps=4 format=3 uid="uid://bvfi27d444gb6"]
 
-[ext_resource type="Script" path="res://Scene/ValueBase.gd" id="1_naik1"]
+[ext_resource type="Script" path="res://Scene/ValueChangerDialog.gd" id="1_nx17t"]
+[ext_resource type="Texture2D" uid="uid://d3s0rtbtly582" path="res://clipboard_icon.svg" id="2_n1s6n"]
+[ext_resource type="Texture2D" uid="uid://7n1h0rittmlo" path="res://close_icon.svg" id="3_vg4ch"]
 
-[node name="ValueChangerDialog" type="ColorRect"]
-visible = false
+[node name="ValueChangerDialog" type="Control"]
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_nx17t")
+clipboard_icon = ExtResource("2_n1s6n")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.270588, 0.270588, 0.270588, 1)
-script = ExtResource("1_naik1")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -38,7 +55,9 @@ text = "Title"
 [node name="CloseButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "(x) Close"
+mouse_default_cursor_shape = 2
+text = "Close"
+icon = ExtResource("3_vg4ch")
 
 [node name="AttributesGrid" type="GridContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -46,6 +65,7 @@ layout_mode = 2
 columns = 2
 
 [node name="KeyLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Key:"
@@ -55,33 +75,42 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="KeyEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CreateKey" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid/KeyContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Create Key"
 
 [node name="InfoLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Info:"
 
 [node name="InfoEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="FieldLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Field:"
 
 [node name="FieldEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="LayoutLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Layout:"
 
 [node name="LayoutEdit" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/AttributesGrid"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 
