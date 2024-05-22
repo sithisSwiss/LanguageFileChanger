@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dj0eyhixk6gf6"]
+[gd_scene load_steps=4 format=3 uid="uid://dj0eyhixk6gf6"]
 
 [ext_resource type="Script" path="res://Scene/KeySelectionUi.gd" id="1_6hvy4"]
 [ext_resource type="PackedScene" uid="uid://c0wmyaoq8o88r" path="res://Scene/clipboard_button.tscn" id="2_3wm2e"]
+[ext_resource type="Theme" uid="uid://4vnnn3rdujyi" path="res://h_box_clipboard_edit.tres" id="2_xojj5"]
 
 [node name="KeySelectionUi" type="Control"]
 layout_mode = 3
@@ -91,7 +92,7 @@ text = "Search"
 
 [node name="SearchHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme = ExtResource("2_xojj5")
 
 [node name="SearchClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer" instance=ExtResource("2_3wm2e")]
 unique_name_in_owner = true
@@ -131,7 +132,7 @@ text = "Info:"
 
 [node name="InfoHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme = ExtResource("2_xojj5")
 
 [node name="InfoClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer" instance=ExtResource("2_3wm2e")]
 unique_name_in_owner = true

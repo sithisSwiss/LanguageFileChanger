@@ -10,9 +10,11 @@ class_name ValueChangerDialog extends Control
 @export var clipboard_btn_scene := preload("res://Scene/clipboard_button.tscn")
 
 @onready var key_label := %KeyLabel
+@onready var key_clipboard_button := %KeyClipboardButton
 @onready var key_edit := %KeyEdit
 @onready var create_key := %CreateKey
 @onready var info_label := %InfoLabel
+@onready var info_clipboard_button := %InfoClipboardButton
 @onready var info_edit := %InfoEdit
 @onready var field_label := %FieldLabel
 @onready var field_edit := %FieldEdit
@@ -25,6 +27,8 @@ var _is_new: bool
 var _is_software: bool
 var _files: Array
 
+const edit_node_group: String = "value_changer_dialog_edit_node"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hide()
@@ -36,6 +40,8 @@ func _ready():
 	layout_edit.hide()
 	for type in Globals.LAYOUT_TYPES:
 		layout_edit.add_item(type)
+	key_clipboard_button.init(key_edit)
+	info_clipboard_button.init(info_edit)
 
 func init(title: String, is_new: bool, is_software: bool, files: Array, change_key: String):
 	title_value.text = title
@@ -73,7 +79,7 @@ func add_value_fields(label: String, edit: String, file: String, is_editable:boo
 	
 	var h_container := HBoxContainer.new()
 	h_container.size_flags_horizontal = SIZE_EXPAND_FILL
-	h_container.add_theme_constant_override("separation", 2)
+	h_container.theme = preload("res://h_box_clipboard_edit.tres")
 	values_grid.add_child(h_container)
 	
 	var edit_node := LineEdit.new()
@@ -83,6 +89,7 @@ func add_value_fields(label: String, edit: String, file: String, is_editable:boo
 	edit_node.editable = is_editable
 	edit_node.text = edit
 	edit_node.size_flags_horizontal = SIZE_EXPAND_FILL
+	edit_node.add_to_group(edit_node_group)
 	edit_node.text_changed.connect(func(new_text:String): xml_class.SaveValue(key_edit.text, file, new_text))
 	h_container.add_child(edit_node)
 	
@@ -107,7 +114,7 @@ func _on_create_key_pressed():
 			xml_class.AddKeySoftware(key_edit.text, file, info_edit.text)
 		else:
 			xml_class.AddKeyFirmware(key_edit.text, file, info_edit.text, layout_edit.get_item_text(layout_edit.get_selected_id()), field_edit.text)
-	for child in values_grid.get_children().filter(func(c): return c is LineEdit):
+	for child in values_grid.get_tree().get_nodes_in_group(edit_node_group):
 		child.editable = true
 	create_key.hide()
 	key_edit.editable = false
