@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj0eyhixk6gf6"]
+[gd_scene load_steps=3 format=3 uid="uid://dj0eyhixk6gf6"]
 
 [ext_resource type="Script" path="res://Scene/KeySelectionUi.gd" id="1_6hvy4"]
-[ext_resource type="PackedScene" uid="uid://c0wmyaoq8o88r" path="res://Scene/clipboard_button.tscn" id="2_3wm2e"]
-[ext_resource type="Theme" uid="uid://4vnnn3rdujyi" path="res://h_box_clipboard_edit.tres" id="2_xojj5"]
+[ext_resource type="PackedScene" uid="uid://bfqwnwkj2tn3" path="res://Scene/clipboard_line_edit.tscn" id="2_f4pit"]
 
 [node name="KeySelectionUi" type="Control"]
 layout_mode = 3
@@ -88,20 +87,11 @@ layout_mode = 2
 
 [node name="SearchLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Search"
+text = "Search:"
 
-[node name="SearchHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-theme = ExtResource("2_xojj5")
-
-[node name="SearchClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer" instance=ExtResource("2_3wm2e")]
+[node name="SearchClipboardLineEdit" parent="MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("2_f4pit")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="SearchInput" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="Empty" type="Control" parent="MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -130,24 +120,17 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Info:"
 
-[node name="InfoHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-theme = ExtResource("2_xojj5")
-
-[node name="InfoClipboardButton" parent="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer" instance=ExtResource("2_3wm2e")]
+[node name="InfoClipboardLineEdit" parent="MarginContainer/VBoxContainer/GridContainer" instance=ExtResource("2_f4pit")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="InfoEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="LayoutLabel" type="Label" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_vertical = 1
 text = "Layout:"
+vertical_alignment = 1
 
 [node name="LayoutEdit" type="OptionButton" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
 unique_name_in_owner = true
@@ -159,14 +142,16 @@ mouse_default_cursor_shape = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_vertical = 1
 text = "Field:"
+vertical_alignment = 1
 
 [node name="FieldEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/GridContainer" groups=["firmware"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/GridContainer"]
+[node name="Empty2" type="Control" parent="MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 
 [node name="ButtonHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/GridContainer"]
@@ -195,9 +180,9 @@ text = "Remove"
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/SearchHBoxContainer/SearchInput" to="." method="_on_search_input_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/SearchClipboardLineEdit" to="." method="_on_search_input_text_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/GridContainer/KeyList" to="." method="_on_key_list_item_selected"]
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/InfoHBoxContainer/InfoEdit" to="." method="_on_input_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/InfoClipboardLineEdit" to="." method="_on_input_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/GridContainer/LayoutEdit" to="." method="_on_layout_edit_item_selected"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/FieldEdit" to="." method="_on_input_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/GridContainer/ButtonHBoxContainer/AddButton" to="." method="_on_add_button_pressed"]

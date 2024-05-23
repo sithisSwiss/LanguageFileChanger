@@ -3,6 +3,6 @@
 [resource]
 default_font_size = 15
 GridContainer/constants/h_separation = 15
-GridContainer/constants/v_separation = 2
+GridContainer/constants/v_separation = 10
 HBoxContainer/constants/separation = 15
 VBoxContainer/constants/separation = 2

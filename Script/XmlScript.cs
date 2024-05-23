@@ -18,7 +18,7 @@ public partial class XmlScript : GodotObject
         }
     }
 
-    public static void AddKeySoftware(string key, string path, string info)
+    public static void AddItemSoftware(string key, string path, string info)
     {
         try
         {
@@ -38,7 +38,7 @@ public partial class XmlScript : GodotObject
         }
     }
 
-    public static void AddKeyFirmware(string key, string path, string info, string layout, string field)
+    public static void AddItemFirmware(string key, string path, string info, string layout, string field)
     {
         try
         {
