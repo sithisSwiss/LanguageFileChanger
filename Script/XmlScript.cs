@@ -123,6 +123,21 @@ public partial class XmlScript : GodotObject
             // ignored
         }
     }
+    public static void ChangeKey(string oldKey, string newKey, string path)
+    {
+        try
+        {
+            var root = XDocument.Load(path).Root!;
+            var element = root.Elements().First(x => x.Attribute("key")!.Value == oldKey);
+            element.SetAttributeValue("key", newKey);
+            root.Save(path);
+            RemoveEmptyNamespace(path);
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+    }
 
     public static void SaveAttributeSoftware(string key, string path, string info)
     {

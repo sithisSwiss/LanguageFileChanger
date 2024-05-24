@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3a7n8undfoen"]
+
+[ext_resource type="Script" path="res://Scene/attribute_grid_container.gd" id="1_qjska"]
+[ext_resource type="PackedScene" uid="uid://bfqwnwkj2tn3" path="res://Scene/clipboard_line_edit.tscn" id="3_h8utd"]
+
+[node name="AttributeGridContainer" type="GridContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 122.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 2
+columns = 2
+script = ExtResource("1_qjska")
+
+[node name="KeyLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Key:"
+
+[node name="KeyClipboardLineEdit" parent="." groups=["edit"] instance=ExtResource("3_h8utd")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InfoLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Info:"
+
+[node name="InfoClipboardLineEdit" parent="." groups=["edit"] instance=ExtResource("3_h8utd")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FieldLabel" type="Label" parent="." groups=["firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Field:"
+
+[node name="FieldEdit" type="LineEdit" parent="." groups=["edit", "firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LayoutLabel" type="Label" parent="." groups=["firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Layout:"
+
+[node name="LayoutEdit" type="OptionButton" parent="." groups=["edit", "firmware"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[connection signal="text_changed" from="KeyClipboardLineEdit" to="." method="_on_attribute_changed"]
+[connection signal="text_changed" from="InfoClipboardLineEdit" to="." method="_on_attribute_changed"]
+[connection signal="text_changed" from="FieldEdit" to="." method="_on_attribute_changed"]
+[connection signal="item_selected" from="LayoutEdit" to="." method="_on_layout_edit_selected"]
