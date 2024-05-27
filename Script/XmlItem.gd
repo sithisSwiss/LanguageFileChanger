@@ -9,32 +9,22 @@ var key: String:
 	set(value):
 		key = value
 		item_changed.emit(self)
-	get:
-		return key
 var info: String:
 	set(value):
 		info = value
 		item_changed.emit(self)
-	get:
-		return info
 var field: String:
 	set(value):
 		field = value
 		item_changed.emit(self)
-	get:
-		return field
 var layout: LAYOUT_TYPES:
 	set(value):
 		layout = value
 		item_changed.emit(self)
-	get:
-		return layout
 var value: String:
 	set(value_):
 		value = value_
 		item_changed.emit(self)
-	get:
-		return value
 
 static func create_item(key_: String, info_: String, field_: String, layout_: LAYOUT_TYPES, value_: String) -> XmlItem:
 	var item = XmlItem.new()
@@ -62,5 +52,5 @@ func validate(is_software: bool, keys: Array) -> bool:
 		key_is_valid = key_is_valid and key.is_valid_int()
 	var info_is_valid: bool = info.length() > 0
 	var field_is_valid: bool = true if is_software else field.length() > 0
-	var layout_is_valid: bool = true if is_software else layout in LAYOUT_TYPES
+	var layout_is_valid: bool = true if is_software else layout < LAYOUT_TYPES.size()
 	return key_is_valid and info_is_valid and field_is_valid and layout_is_valid

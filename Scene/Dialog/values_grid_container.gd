@@ -23,6 +23,6 @@ func _add_value_field(key: String, label: String, edit_value: String, file: Stri
 	edit_node.size_flags_horizontal = SIZE_EXPAND_FILL
 	edit_node.text_changed.connect(func(new_text:String): Globals.xml_class.SaveValue(key, file, new_text))
 
-func remove_children():
+func clear():
 	for child in get_children():
 		remove_child(child)

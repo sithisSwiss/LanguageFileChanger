@@ -55,7 +55,7 @@ func _on_input_chagned():
 	_item.key = key_clipboard_line_edit.text
 	_item.info = info_clipboard_line_edit.text
 	_item.field = field_edit.text
-	_item.layout = layout_edit.get_index()
+	_item.layout = layout_edit.selected
 	attribute_item_changed.emit(_item)
 	
 func _on_item_attribute_changed():
@@ -63,3 +63,4 @@ func _on_item_attribute_changed():
 	info_clipboard_line_edit.text = _item.info
 	field_edit.text = _item.field
 	layout_edit.select(_item.layout)
+	pass

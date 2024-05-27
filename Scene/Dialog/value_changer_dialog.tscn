@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvfi27d444gb6"]
+[gd_scene load_steps=5 format=3 uid="uid://bvfi27d444gb6"]
 
 [ext_resource type="Script" path="res://Scene/Dialog/value_changer_dialog.gd" id="1_nx17t"]
-[ext_resource type="Texture2D" uid="uid://d3s0rtbtly582" path="res://Asset/clipboard_icon.svg" id="2_n1s6n"]
 [ext_resource type="Texture2D" uid="uid://7n1h0rittmlo" path="res://Asset/close_icon.svg" id="3_vg4ch"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="4_ns67g"]
 [ext_resource type="Script" path="res://Scene/Dialog/values_grid_container.gd" id="6_yoy0o"]
@@ -17,7 +16,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_nx17t")
-clipboard_icon = ExtResource("2_n1s6n")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 2
