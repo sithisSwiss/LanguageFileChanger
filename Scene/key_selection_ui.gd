@@ -5,8 +5,6 @@ class_name KeySelectionUi extends Control
 @onready var specific_path = %SpecificPath
 @onready var language_file_found := %LanguageFileFound
 
-@onready var search_label = %SearchLabel
-@onready var search_clipboard_line_edit := %SearchClipboardLineEdit
 @onready var key_list := %KeyList
 
 @onready var value_label_value := %ValueLabelValue
@@ -33,14 +31,13 @@ func get_dir_path() -> String:
 	var path = sw_path if _is_software else fw_path
 	return persistent.base_path + path
 
+func get_selected_key() -> String:
+	return key_list.selected_key
+
 var _file_paths: Array = []
 var _english_file_path: String:
 	get:
 		return _file_paths.filter(func(file: String): return file.contains("en")).front()
-
-func get_selected_key() -> String:
-	var selected_items = key_list.get_selected_items()
-	return key_list.get_item_text(selected_items[0]) if selected_items.size()>0 else ""
 
 func _ready():
 	base_path.text = persistent.base_path
@@ -72,16 +69,10 @@ func _reload_language_file():
 	language_file_found.text = str(_file_paths.size())
 	_reload_items()
 
-func _reload_keys():
-	var keys = []
-	if _file_paths.size() > 0:
-		keys = Array(Globals.xml_class.GetKeys(_file_paths.front()))
-		keys = keys.filter(func(key:String): return search_clipboard_line_edit.text == "" or search_clipboard_line_edit.text in key)
-		keys.sort_custom(func(a,b): return a < b if _is_software else int(a)<int(b))
-	key_list.deselect_all()
-	key_list.clear()
-	for key in keys:
-		key_list.add_item(key)
+func _reload_keys(select_key:String = ""):
+	key_list.init(_file_paths.front() if _file_paths.size()>0 else null, _is_software)
+	if select_key != "":
+		key_list.try_to_select(select_key)
 
 func _reload_items():
 	_items.clear()
@@ -92,8 +83,7 @@ func _save_item(item: XmlItem):
 	if item.key != get_selected_key():
 		for file_path in _file_paths:
 			Globals.xml_class.ChangeKey(get_selected_key(), item.key, file_path)
-		_reload_keys()
-		_reload_attribute_container()
+		_reload_keys(item.key)
 	else:
 		for file_path in _file_paths:
 			Globals.xml_class.SaveAttribute(item, file_path, _is_software)
@@ -105,23 +95,16 @@ func on_value_changer_dialog_closed():
 func _on_category_switch_pressed():
 	persistent.is_software = _is_software
 	specific_path.text = get_dir_path()
-	search_clipboard_line_edit.text = ""
 	_reload_language_file()
 	category_switch.text = "Software" if _is_software else "Firmware"
 	_reload_keys()
 	_reload_attribute_container()
 
-func _on_key_list_item_selected(_index):
-	value_label_value.text = ""
-	if key_list.get_selected_items().size() > 0:
-		value_label_value.text = Globals.xml_class.GetValue(get_selected_key(), _english_file_path)
-		_reload_items()
+func _on_key_list_item_selection_changed():
+	value_label_value.text = get_selected_key()
+	_reload_items()
 	_reload_attribute_container()
 	_refresh_buttons()
-
-func _on_search_input_text_changed(_new_text: String):
-	_reload_keys()
-	_reload_attribute_container()
 
 func _on_add_button_pressed():
 	open_value_changer_dialog.emit(true, _is_software, XmlItem.create_emtpy_item(), _file_paths)
