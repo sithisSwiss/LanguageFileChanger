@@ -27,7 +27,7 @@ func init_change(is_software: bool, attribute_item: XmlItem, file_paths: Array):
 	values_grid_container.add_value_fields(file_paths, attribute_item.key, edit_node_group)
 	create_item_container.hide()
 	init(is_software, file_paths)
-	
+
 func init_add(is_software: bool, file_paths: Array):
 	title_value.text = "Add Item"
 	attribute_grid_container.init(is_software, XmlItem.create_emtpy_item())
@@ -36,7 +36,7 @@ func init_add(is_software: bool, file_paths: Array):
 	create_item_container.show()
 	create_item_button.disabled = true
 	init(is_software, file_paths)
-	
+
 func init(is_software: bool, file_paths: Array):
 	_is_software = is_software
 	_file_paths = file_paths

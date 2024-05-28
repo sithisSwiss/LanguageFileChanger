@@ -15,7 +15,7 @@ func _add_value_field(key: String, label: String, edit_value: String, file: Stri
 	label_node.text = label
 	label_node.set_custom_minimum_size(Vector2(Globals.Label_Width, 0))
 	add_child(label_node)
-	
+
 	var edit_node := clipboard_line_edit_scene.instantiate() as ClipboardLineEdit
 	add_child(edit_node)
 	edit_node.add_to_group(edit_node_group)

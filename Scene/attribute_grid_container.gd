@@ -57,7 +57,7 @@ func _on_input_chagned():
 	_item.field = field_edit.text
 	_item.layout = layout_edit.selected
 	attribute_item_changed.emit(_item)
-	
+
 func _on_item_attribute_changed():
 	key_clipboard_line_edit.text = _item.key
 	info_clipboard_line_edit.text = _item.info

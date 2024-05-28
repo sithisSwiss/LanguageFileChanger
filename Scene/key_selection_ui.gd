@@ -55,7 +55,7 @@ func _ready():
 func _refresh_buttons():
 	change_button.disabled = get_selected_key() == ""
 	remove_button.disabled = get_selected_key() == ""
-	
+
 func _reload_attribute_container():
 	if get_selected_key() != "":
 		value_label_value.text = (_items[_english_file_path] as XmlItem).value
@@ -71,7 +71,7 @@ func _reload_language_file():
 	_file_paths = _file_paths.filter(func(x: String): return x.ends_with(".xml"))
 	language_file_found.text = str(_file_paths.size())
 	_reload_items()
-	
+
 func _reload_keys():
 	var keys = []
 	if _file_paths.size() > 0:
@@ -122,13 +122,13 @@ func _on_key_list_item_selected(_index):
 func _on_search_input_text_changed(_new_text: String):
 	_reload_keys()
 	_reload_attribute_container()
-	
+
 func _on_add_button_pressed():
 	open_value_changer_dialog.emit(true, _is_software, XmlItem.create_emtpy_item(), _file_paths)
-	
+
 func _on_change_button_pressed():
 	open_value_changer_dialog.emit(false, _is_software, _items[_english_file_path], _file_paths)
-	
+
 func _on_remove_button_pressed():
 	for file_path in _file_paths:
 		Globals.xml_class.RemoveItem(get_selected_key(), file_path)
