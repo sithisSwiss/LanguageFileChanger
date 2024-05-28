@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxatb4gog61ss"]
+[gd_scene load_steps=6 format=3 uid="uid://cxatb4gog61ss"]
 
 [ext_resource type="Theme" uid="uid://dl01gxgiis5ea" path="res://Asset/ui_theme.tres" id="1_3g4om"]
 [ext_resource type="Script" path="res://Scene/ui.gd" id="1_ygtv4"]
 [ext_resource type="PackedScene" uid="uid://bvfi27d444gb6" path="res://Scene/Dialog/value_changer_dialog.tscn" id="2_bb25v"]
 [ext_resource type="PackedScene" uid="uid://dj0eyhixk6gf6" path="res://Scene/key_selection_ui.tscn" id="2_tix1x"]
+[ext_resource type="PackedScene" uid="uid://bqu3o8436ta6n" path="res://Scene/sithis_splash_screen.tscn" id="3_yxaf2"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -22,6 +23,10 @@ layout_mode = 1
 [node name="KeySelectionUi" parent="." instance=ExtResource("2_tix1x")]
 unique_name_in_owner = true
 layout_mode = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SithisSplashScreen" parent="CanvasLayer" instance=ExtResource("3_yxaf2")]
 
 [connection signal="closed" from="ValueChangerDialog" to="." method="_on_value_changer_dialog_closed"]
 [connection signal="open_value_changer_dialog" from="KeySelectionUi" to="." method="_on_key_selection_ui_open_value_changer_dialog"]
