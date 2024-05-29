@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://dj0eyhixk6gf6"]
 
 [ext_resource type="Script" path="res://Scene/key_selection_ui.gd" id="1_6hvy4"]
+[ext_resource type="Theme" uid="uid://dl01gxgiis5ea" path="res://Asset/ui_theme.tres" id="1_acoei"]
 [ext_resource type="PackedScene" uid="uid://brrue2l3hnsuk" path="res://Scene/key_list.tscn" id="2_tddgt"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="3_w6dn5"]
-[ext_resource type="PackedScene" uid="uid://bvfi27d444gb6" path="res://Scene/Dialog/value_changer_dialog.tscn" id="4_044fl"]
 
 [node name="KeySelectionUi" type="Control"]
 layout_mode = 3
@@ -12,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_acoei")
 script = ExtResource("1_6hvy4")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -23,49 +24,42 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.270222, 0.270222, 0.270222, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "EPC01 - Language File Changer"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Absolute path to dir (default: .../cfn-code/):"
 
-[node name="BasePath" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="BasePath" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
-[node name="SpecificPath" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="SpecificPath" type="Label" parent="VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533037, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="CategorySwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CategorySwitch" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -74,76 +68,74 @@ theme_override_constants/h_separation = 10
 button_pressed = true
 text = "Software"
 
-[node name="LanguageFileFoundLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LanguageFileFoundLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Found languages file:"
 
-[node name="LanguageFileFound" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LanguageFileFound" type="Label" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="KeyList" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_tddgt")]
+[node name="KeyList" parent="VBoxContainer" instance=ExtResource("2_tddgt")]
 unique_name_in_owner = true
 layout_mode = 2
 label_width = 100
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="ValueLabel" type="Label" parent="VBoxContainer/HBoxContainer3"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Value (en):"
 
-[node name="ValueLabelValue" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="ValueLabelValue" type="Label" parent="VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text_overrun_behavior = 4
 
-[node name="AttributeGridContainer" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_w6dn5")]
+[node name="AttributeGridContainer" parent="VBoxContainer" instance=ExtResource("3_w6dn5")]
 unique_name_in_owner = true
 layout_mode = 2
 label_width = 100
 
-[node name="ButtonHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonHBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBoxContainer"]
+[node name="Spacer" type="Control" parent="VBoxContainer/ButtonHBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBoxContainer"]
+[node name="AddButton" type="Button" parent="VBoxContainer/ButtonHBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Add"
 
-[node name="ChangeButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBoxContainer"]
+[node name="ChangeButton" type="Button" parent="VBoxContainer/ButtonHBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Change"
 
-[node name="RemoveButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBoxContainer"]
+[node name="RemoveButton" type="Button" parent="VBoxContainer/ButtonHBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Remove"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="ValueChangerDialog" parent="CanvasLayer" instance=ExtResource("4_044fl")]
-unique_name_in_owner = true
-
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
-[connection signal="key_selection_changed" from="MarginContainer/VBoxContainer/KeyList" to="." method="_on_key_list_item_selection_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonHBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonHBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonHBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
+[connection signal="key_selection_changed" from="VBoxContainer/KeyList" to="." method="_on_key_list_item_selection_changed"]
+[connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

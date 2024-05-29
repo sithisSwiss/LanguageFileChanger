@@ -14,7 +14,7 @@ class_name KeySelectionUi extends Control
 @onready var change_button := %ChangeButton
 @onready var remove_button := %RemoveButton
 
-@onready var value_changer_dialog = %ValueChangerDialog
+@onready var _value_changer_dialog_scene: PackedScene = preload("res://Scene/Dialog/value_dialog.tscn")
 
 const sw_path := "cfn-code/150_Software/10_SW/i18n/"
 const fw_path := "cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/"
@@ -104,13 +104,12 @@ func _on_key_list_item_selection_changed():
 	_refresh_buttons()
 
 func _on_add_button_pressed():
-	value_changer_dialog.init_add(_is_software, _file_paths)
-	await value_changer_dialog.closed
+	await Ui.instance.add_window(_value_changer_dialog_scene).init_add(_is_software, _file_paths).closed
 	_on_value_changer_dialog_closed()
 
 func _on_change_button_pressed():
-	value_changer_dialog.init_change(_is_software, _english_item, _file_paths)
-	await value_changer_dialog.closed
+	var dialog := Ui.instance.add_window(_value_changer_dialog_scene).init_change(_is_software, _english_item, _file_paths) as ValueDialog
+	await dialog.closed
 	_on_value_changer_dialog_closed()
 
 func _on_remove_button_pressed():

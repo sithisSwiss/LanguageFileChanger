@@ -1,4 +1,4 @@
-class_name ValueChangerDialog extends Control
+class_name ValueDialog extends Control
 
 @onready var title_label: Label = %TitleLabel
 @onready var attribute_grid_container: AttributesGridContainer = %AttributeGridContainer
@@ -13,7 +13,7 @@ var _keys: Array
 var _file_paths: Array
 var _attribute_item: XmlItem
 
-const edit_node_group: String = "value_changer_dialog_value_edit"
+const edit_node_group: String = "value_dialog_value_edit"
 
 func _ready():
 	hide()
@@ -25,6 +25,7 @@ func init_change(is_software: bool, attribute_item: XmlItem, file_paths: Array):
 	values_grid_container.add_value_fields(file_paths, attribute_item.key, edit_node_group)
 	create_item_container.hide()
 	init(is_software, file_paths)
+	return self
 
 func init_add(is_software: bool, file_paths: Array):
 	title_label.text = "Add Item"
@@ -34,6 +35,7 @@ func init_add(is_software: bool, file_paths: Array):
 	create_item_container.show()
 	create_item_button.disabled = true
 	init(is_software, file_paths)
+	return self
 
 func init(is_software: bool, file_paths: Array):
 	_is_software = is_software
@@ -41,15 +43,12 @@ func init(is_software: bool, file_paths: Array):
 	_keys = Globals.xml_class.GetKeys(file_paths.front())
 	show()
 
+func close():
+	closed.emit()
+
 func _add_item_to_files(item: XmlItem):
 	for file_path in _file_paths:
 		Globals.xml_class.AddItem(item, file_path, _is_software)
-
-func _on_close_button_pressed():
-	closed.emit()
-	hide()
-	values_grid_container.clear()
-	attribute_grid_container.attribute_item_changed.disconnect(_on_attribute_changed)
 
 func _on_attribute_changed(item: XmlItem):
 	_attribute_item = item
