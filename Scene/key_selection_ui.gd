@@ -14,15 +14,13 @@ class_name KeySelectionUi extends Control
 @onready var change_button := %ChangeButton
 @onready var remove_button := %RemoveButton
 
-
-signal open_value_changer_dialog(is_new: bool, is_software: bool, files: Array, change_key: String)
+@onready var value_changer_dialog = %ValueChangerDialog
 
 const sw_path := "cfn-code/150_Software/10_SW/i18n/"
 const fw_path := "cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/"
 
 @onready var persistent: Persistent = Persistent.get_persistent()
 
-var _items: Dictionary
 var _is_software: bool:
 	get:
 		return category_switch.button_pressed
@@ -35,6 +33,7 @@ func get_selected_key() -> String:
 	return key_list.selected_key
 
 var _file_paths: Array = []
+var _english_item: XmlItem
 var _english_file_path: String:
 	get:
 		return _file_paths.filter(func(file: String): return file.contains("en")).front()
@@ -55,8 +54,8 @@ func _refresh_buttons():
 
 func _reload_attribute_container():
 	if get_selected_key() != "":
-		value_label_value.text = (_items[_english_file_path] as XmlItem).value
-		attribute_grid_container.init(_is_software, _items[_english_file_path])
+		value_label_value.text = (_english_item).value
+		attribute_grid_container.init(_is_software, _english_item)
 	else:
 		value_label_value.text = ""
 		attribute_grid_container.init(_is_software, XmlItem.create_emtpy_item())
@@ -67,17 +66,15 @@ func _reload_language_file():
 	_file_paths = Array(DirAccess.get_files_at(path)).map(func(file_path): return get_dir_path()+file_path)
 	_file_paths = _file_paths.filter(func(x: String): return x.ends_with(".xml"))
 	language_file_found.text = str(_file_paths.size())
-	_reload_items()
+	_reload_english_item()
 
 func _reload_keys(select_key:String = ""):
 	key_list.init(_file_paths.front() if _file_paths.size()>0 else null, _is_software)
 	if select_key != "":
 		key_list.try_to_select(select_key)
 
-func _reload_items():
-	_items.clear()
-	for file_path in _file_paths:
-		_items[file_path] = XmlItem.create_emtpy_item() if get_selected_key() == "" else XmlItem.create_item_from_file(get_selected_key(), file_path)
+func _reload_english_item():
+	_english_item =XmlItem.create_emtpy_item() if get_selected_key() == "" else XmlItem.create_item_from_file(get_selected_key(), _english_file_path)
 
 func _save_item(item: XmlItem):
 	if item.key != get_selected_key():
@@ -88,7 +85,7 @@ func _save_item(item: XmlItem):
 		for file_path in _file_paths:
 			Globals.xml_class.SaveAttribute(item, file_path, _is_software)
 
-func on_value_changer_dialog_closed():
+func _on_value_changer_dialog_closed():
 	_reload_keys()
 	_reload_attribute_container()
 
@@ -102,15 +99,19 @@ func _on_category_switch_pressed():
 
 func _on_key_list_item_selection_changed():
 	value_label_value.text = get_selected_key()
-	_reload_items()
+	_reload_english_item()
 	_reload_attribute_container()
 	_refresh_buttons()
 
 func _on_add_button_pressed():
-	open_value_changer_dialog.emit(true, _is_software, XmlItem.create_emtpy_item(), _file_paths)
+	value_changer_dialog.init_add(_is_software, _file_paths)
+	await value_changer_dialog.closed
+	_on_value_changer_dialog_closed()
 
 func _on_change_button_pressed():
-	open_value_changer_dialog.emit(false, _is_software, _items[_english_file_path], _file_paths)
+	value_changer_dialog.init_change(_is_software, _english_item, _file_paths)
+	await value_changer_dialog.closed
+	_on_value_changer_dialog_closed()
 
 func _on_remove_button_pressed():
 	for file_path in _file_paths:

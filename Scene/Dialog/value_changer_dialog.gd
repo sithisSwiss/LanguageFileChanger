@@ -1,12 +1,10 @@
 class_name ValueChangerDialog extends Control
 
-@export var clipboard_icon: Texture2D
-
-@onready var title_value := %TitleValue
-@onready var attribute_grid_container := %AttributeGridContainer
-@onready var values_grid_container := %ValuesGridContainer
-@onready var create_item_container := %CreateItemContainer
-@onready var create_item_button := %CreateItemButton
+@onready var title_label: Label = %TitleLabel
+@onready var attribute_grid_container: AttributesGridContainer = %AttributeGridContainer
+@onready var values_grid_container: ValuesGridContainer = %ValuesGridContainer
+@onready var create_item_container: CenterContainer = %CreateItemContainer
+@onready var create_item_button: Button = %CreateItemButton
 
 signal closed
 
@@ -21,7 +19,7 @@ func _ready():
 	hide()
 
 func init_change(is_software: bool, attribute_item: XmlItem, file_paths: Array):
-	title_value.text = "Change Item"
+	title_label.text = "Change Item"
 	attribute_grid_container.init(is_software, attribute_item)
 	attribute_grid_container.editable = false
 	values_grid_container.add_value_fields(file_paths, attribute_item.key, edit_node_group)
@@ -29,7 +27,7 @@ func init_change(is_software: bool, attribute_item: XmlItem, file_paths: Array):
 	init(is_software, file_paths)
 
 func init_add(is_software: bool, file_paths: Array):
-	title_value.text = "Add Item"
+	title_label.text = "Add Item"
 	attribute_grid_container.init(is_software, XmlItem.create_emtpy_item())
 	attribute_grid_container.attribute_item_changed.connect(_on_attribute_changed)
 	attribute_grid_container.editable = true

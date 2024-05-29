@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj0eyhixk6gf6"]
+[gd_scene load_steps=5 format=3 uid="uid://dj0eyhixk6gf6"]
 
 [ext_resource type="Script" path="res://Scene/key_selection_ui.gd" id="1_6hvy4"]
 [ext_resource type="PackedScene" uid="uid://brrue2l3hnsuk" path="res://Scene/key_list.tscn" id="2_tddgt"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="3_w6dn5"]
+[ext_resource type="PackedScene" uid="uid://bvfi27d444gb6" path="res://Scene/Dialog/value_changer_dialog.tscn" id="4_044fl"]
 
 [node name="KeySelectionUi" type="Control"]
 layout_mode = 3
@@ -134,6 +135,11 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Remove"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ValueChangerDialog" parent="CanvasLayer" instance=ExtResource("4_044fl")]
+unique_name_in_owner = true
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
