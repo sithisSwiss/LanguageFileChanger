@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://caeqhtjjmlwyn"]
+
+[ext_resource type="Script" path="res://Scene/titlebar.gd" id="1_65se8"]
+[ext_resource type="Texture2D" uid="uid://7n1h0rittmlo" path="res://Asset/close_icon.svg" id="2_a47jw"]
+
+[node name="Titlebar" type="ColorRect"]
+custom_minimum_size = Vector2(0, 30)
+size_flags_horizontal = 3
+color = Color(0.201527, 0.201527, 0.201527, 1)
+script = ExtResource("1_65se8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="CloseButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Close"
+icon = ExtResource("2_a47jw")
+flat = true
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="pressed" from="HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
