@@ -28,5 +28,4 @@ layout_mode = 1
 
 [node name="SithisSplashScreen" parent="CanvasLayer" instance=ExtResource("3_yxaf2")]
 
-[connection signal="closed" from="ValueChangerDialog" to="." method="_on_value_changer_dialog_closed"]
 [connection signal="open_value_changer_dialog" from="KeySelectionUi" to="." method="_on_key_selection_ui_open_value_changer_dialog"]

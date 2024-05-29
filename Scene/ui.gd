@@ -8,7 +8,5 @@ func _on_key_selection_ui_open_value_changer_dialog(is_new, is_software, item_fo
 		value_changer_dialog.init_add(is_software, files)
 	else:
 		value_changer_dialog.init_change(is_software, item_for_attribute, files)
-
-
-func _on_value_changer_dialog_closed():
+	await value_changer_dialog.closed
 	key_selection_ui.on_value_changer_dialog_closed()
