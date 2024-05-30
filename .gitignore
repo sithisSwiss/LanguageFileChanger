@@ -51,3 +51,7 @@ Desktop.ini
 
 # specific
 **/publish/**/*
+
+# cutom idea ignores
+**/.idea/**/*
+.idea/**/*

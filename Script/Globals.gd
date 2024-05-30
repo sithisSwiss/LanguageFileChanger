@@ -2,9 +2,7 @@ class_name Globals extends Object
 
 const Label_Width: int = 200
 
-const xml_class = preload("res://Script/XmlScript.cs")
-
-
+static var xml_class = XmlScript
 
 const Language_Dict: Dictionary = {
 	"bg": "Bulgarian",
