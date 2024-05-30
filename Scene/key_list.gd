@@ -33,6 +33,7 @@ func _load_keys(keys: Array):
 	keys.sort_custom(func(a,b): return a < b if _is_software else int(a)<int(b))
 	for key in keys:
 		item_list.add_item(key)
+	_select_key_if_only_one()
 
 func _on_item_list_item_selected(index):
 	if index != null:
@@ -42,5 +43,9 @@ func _on_item_list_item_selected(index):
 func _on_search_clipboard_line_edit_text_changed(new_text):
 	var filtered_keys = _init_keys.filter(func(key:String): return new_text == "" or new_text in key)
 	_load_keys(filtered_keys)
-	selected_key = ""
+
+func _select_key_if_only_one():
+	if item_list.item_count == 1:
+		item_list.select(0)
+	selected_key = item_list.get_item_text(0) if item_list.item_count == 1 else ""
 	key_selection_changed.emit()
