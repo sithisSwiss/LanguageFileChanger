@@ -63,13 +63,15 @@ func _reload_attribute_container():
 
 func _reload_language_file():
 	var path = get_dir_path()
-	_file_paths = Array(DirAccess.get_files_at(path)).map(func(file_path): return get_dir_path()+file_path)
-	_file_paths = _file_paths.filter(func(x: String): return x.ends_with(".xml"))
+	_file_paths = []
+	if DirAccess.dir_exists_absolute(path):
+		_file_paths = Array(DirAccess.get_files_at(path)).map(func(file_path): return get_dir_path()+file_path)
+		_file_paths = _file_paths.filter(func(x: String): return x.ends_with(".xml"))
 	language_file_found.text = str(_file_paths.size())
 	_reload_english_item()
 
 func _reload_keys(select_key:String = ""):
-	key_list.init(_file_paths.front() if _file_paths.size()>0 else null, _is_software)
+	key_list.init(_file_paths.front() if _file_paths.size()>0 else "", _is_software)
 	if select_key != "":
 		key_list.try_to_select(select_key)
 
@@ -96,6 +98,7 @@ func _on_category_switch_pressed():
 	category_switch.text = "Software" if _is_software else "Firmware"
 	_reload_keys()
 	_reload_attribute_container()
+	_refresh_buttons()
 
 func _on_key_list_item_selection_changed():
 	value_label_value.text = get_selected_key()
@@ -125,4 +128,5 @@ func _on_base_path_text_changed(new_text:String):
 	_reload_language_file()
 	_reload_keys()
 	_reload_attribute_container()
+	_refresh_buttons()
 	attribute_grid_container.init(_is_software, XmlItem.create_emtpy_item())

@@ -16,8 +16,7 @@ func _ready():
 
 func init(file_path: String, is_software: bool):
 	_is_software = is_software
-	if file_path != null:
-		_init_keys = Array(Globals.xml_class.GetKeys(file_path))
+	_init_keys = Array(Globals.xml_class.GetKeys(file_path)) if file_path != "" else []
 	_load_keys(_init_keys)
 	search_clipboard_line_edit.text = ""
 
