@@ -6,13 +6,15 @@ using Godot.Collections;
 public sealed partial class LanguageFileItem : GodotObject
 {
 	private Dictionary<string, string> _attributes = new();
-	public Dictionary<string, string> Attributes => Clone(_attributes);
-	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetConfiguration();
 
 	private string _value;
 
 	[Signal]
 	public delegate void ItemChangedEventHandler(LanguageFileItem item);
+
+	public Dictionary<string, string> Attributes => Clone(_attributes);
+
+	public string Key => GetAttributeValue(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
 
 	public string Value
 	{
@@ -23,17 +25,19 @@ public sealed partial class LanguageFileItem : GodotObject
 			EmitSignal(nameof(ItemChanged), this);
 		}
 	}
-	public string Key => _attributes[Configuration.Attributes[Configuration.KeyAttributeIndex].Name];
+
+	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
 
 	public static LanguageFileItem CreateItemFromFile(string key, string path)
 	{
 		var item = new LanguageFileItem();
-		foreach(var attributeConfiguration in Configuration.Attributes)
+		foreach (var attributeConfiguration in Configuration.Attributes)
 		{
 			var name = attributeConfiguration.Name;
 			var value = XmlScript.GetAttribute(key, name, path);
 			item._attributes[name] = value;
 		}
+
 		item._value = XmlScript.GetValue(key, path);
 		return item;
 	}
@@ -51,44 +55,46 @@ public sealed partial class LanguageFileItem : GodotObject
 		_attributes[key] = value;
 		EmitSignal(nameof(ItemChanged), this);
 	}
+
 	public string GetAttributeValue(string key)
 	{
-		return _attributes.TryGetValue(key, out var value) ? value : string.Empty;
+		var t = _attributes.TryGetValue(key, out var value)
+			? value ?? string.Empty
+			: string.Empty;
+		return t;
+	}
+
+	public bool ValidateAttribute(string attributeName)
+	{
+		var attributeConfiguration = Configuration.Attributes.FirstOrDefault(x => x.Name == attributeName);
+		if (attributeConfiguration is null)
+		{
+			return false;
+		}
+
+		return attributeConfiguration switch
+		{
+			{ IsInt: true } => int.TryParse(_attributes[attributeName], out var _),
+			{ IsFloat: true } => float.TryParse(_attributes[attributeName], out var _),
+			{ IsBool: true } => bool.TryParse(_attributes[attributeName], out var _),
+			{ IsString: true } => _attributes[attributeName].Length > 0,
+			var _ => attributeConfiguration.EnumValues.Contains(_attributes[attributeName])
+		};
 	}
 
 	public bool Validate(string[] existingKeys)
 	{
-		var isValid = true;
+		return !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
 
-		if (!_attributes.TryGetValue(Configuration.Attributes[Configuration.KeyAttributeIndex].Name, out var key))
-		{
-			return false;
-		}
+		bool KeyAreEmpty() => string.IsNullOrEmpty(Key);
+		bool KeyAlreadyExist() => existingKeys.Contains(Key);
 
-		if (!existingKeys.Contains(_attributes[key]))
-		{
-			return false;
-		}
+		bool ItemHasAllAttributes() => Configuration
+			.Attributes
+			.Select(attributeConfig => attributeConfig.Name)
+			.All(nameOfAttribute => _attributes.ContainsKey(nameOfAttribute));
 
-		foreach (var attributeConfiguration in Configuration.Attributes)
-		{
-			var name = attributeConfiguration.Name;
-			if (!_attributes.TryGetValue(name, out var value))
-			{
-				return false;
-			}
-
-			isValid &= attributeConfiguration switch
-			{
-				{ IsInt: true } => int.TryParse(value, out var _),
-				{ IsFloat: true } => float.TryParse(value, out var _),
-				{ IsBool: true } => bool.TryParse(value, out var _),
-				{ IsString: true } => value.Length > 0,
-				var _ => attributeConfiguration.EnumValues.Contains(value)
-			};
-		}
-
-		return isValid;
+		bool AllAttributesAreValid() => _attributes.All(x => ValidateAttribute(x.Key));
 	}
 
 	private static Dictionary<string, string> Clone(Dictionary<string, string> attributes)

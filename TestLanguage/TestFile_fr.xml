@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextPool>
+  <ItemText key2="Key1" info2="Info1" option="A" number="1" number2="0">Item1</ItemText>
+  <ItemText key2="Key2" info2="Info2" option="B" number="1" number2="2">Item2</ItemText>
+  <ItemText key2="Key3" info2="Info3" option="C" number="1" number2="0">ItemFrench</ItemText>
+  <ItemText key2="Key4" info2="Info4" option="D" number="1" number2="0">Item4</ItemText>
+  <ItemText key2="Key5" info2="Info5" option="A" number="1" number2="0">Item5</ItemText>
+</TextPool>

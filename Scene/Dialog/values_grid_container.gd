@@ -4,9 +4,7 @@ class_name ValuesGridContainer extends GridContainer
 
 func add_value_fields(files: Array, key: String, edit_node_group: String):
 	for file in files:
-		var language_tag := (file as String).get_file().replace("ApplicationText_", "").replace(".xml", "")
-		var language_name := Globals.Language_Dict.get(language_tag, "Not found") as String
-		var lanugage = language_name + " (" + language_tag + ")"
+		var lanugage = LanguageFileConfiguration.GetLanguage(file, Globals.language_file_configuration)
 		var value = XmlScript.GetValue(key, file)
 		_add_value_field(key, lanugage, value, file, edit_node_group)
 

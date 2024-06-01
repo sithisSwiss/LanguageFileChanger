@@ -1,7 +1,8 @@
 [
   {
     "Name": "EPC01 - Software",
-    "RootTagName": "TextPool",
+    "LanguageFilePath": "C:/Git/cfn/cfn-code/150_Software/10_SW/i18n/",
+    "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
     "ItemTagName": "Item",
     "KeyAttributeIndex": 0,
     "Attributes": [
@@ -19,7 +20,8 @@
   },
   {
     "Name": "EPC01 - Firmware",
-    "RootTagName": "TextPool",
+    "LanguageFilePath": "C:/Git/cfn/cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/",
+    "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
     "ItemTagName": "Item",
     "KeyAttributeIndex": 0,
     "Attributes": [
@@ -42,6 +44,40 @@
         "Name": "layout",
         "DisplayName": "Layout",
         "EnumValues": ["A", "A1", "B", "B1", "C", "C1", "D", "E", "F", "G", "UNKNOWN", "unknown"]
+      }
+    ]
+  },
+  {
+    "Name": "Test",
+    "LanguageFilePath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
+    "LanguageTagRegexPattern": "TestFile_(.*).xml",
+    "ItemTagName": "ItemText",
+    "KeyAttributeIndex": 0,
+    "Attributes": [
+      {
+        "Name": "key2",
+        "DisplayName": "Key",
+        "IsString": true
+      },
+      {
+        "Name": "info2",
+        "DisplayName": "Info",
+        "IsString": true
+      },
+      {
+        "Name": "option",
+        "DisplayName": "Option",
+        "EnumValues": ["A", "B", "C", "D", "E", "F"]
+      },
+      {
+        "Name": "number",
+        "DisplayName": "Number",
+        "IsInt": true
+      },
+      {
+        "Name": "number2",
+        "DisplayName": "Number2",
+        "IsFloat": true
       }
     ]
   }

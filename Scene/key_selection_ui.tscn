@@ -33,50 +33,52 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "EPC01 - Language File Changer"
+theme_override_font_sizes/font_size = 40
+text = "Language File Changer"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
+columns = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="TypeLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Absolute path to dir (default: .../cfn-code/):"
+text = "Selected Language Type:"
 
-[node name="BasePath" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-
-[node name="SpecificPath" type="Label" parent="VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533037, 1)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="CategorySwitch" type="CheckButton" parent="VBoxContainer/HBoxContainer"]
+[node name="TypeOptionButton" type="OptionButton" parent="VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 10
 button_pressed = true
-text = "Software"
 
-[node name="LanguageFileFoundLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="SpecificPathLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
-text = "Found languages file:"
+text = "Path to language files:"
 
-[node name="LanguageFileFound" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="SpecificPath" type="Label" parent="VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533037, 1)
+
+[node name="LanguageFileFoundLabel" type="Label" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Found files:"
+
+[node name="LanguageFileFound" type="Label" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
 
 [node name="KeyList" parent="VBoxContainer" instance=ExtResource("2_tddgt")]
 unique_name_in_owner = true
@@ -133,8 +135,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Remove"
 
-[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/BasePath" to="." method="_on_base_path_text_changed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/CategorySwitch" to="." method="_on_category_switch_pressed"]
+[connection signal="item_selected" from="VBoxContainer/GridContainer/TypeOptionButton" to="." method="_on_type_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/TypeOptionButton" to="." method="_on_category_switch_pressed"]
 [connection signal="key_selection_changed" from="VBoxContainer/KeyList" to="." method="_on_key_list_item_selection_changed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]

@@ -1,7 +1,6 @@
 class_name KeySelectionUi extends Control
 
-@onready var category_switch := %CategorySwitch
-@onready var base_path := %BasePath
+@onready var type_option_button := %TypeOptionButton
 @onready var specific_path = %SpecificPath
 @onready var language_file_found := %LanguageFileFound
 
@@ -16,18 +15,8 @@ class_name KeySelectionUi extends Control
 
 @onready var _value_changer_dialog_scene: PackedScene = preload("res://Scene/Dialog/value_dialog.tscn")
 
-const sw_path := "cfn-code/150_Software/10_SW/i18n/"
-const fw_path := "cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/"
-
-@onready var persistent: Persistent = Persistent.get_persistent()
-
-var _is_software: bool:
-	get:
-		return category_switch.button_pressed
-
 func get_dir_path() -> String:
-	var path = sw_path if _is_software else fw_path
-	return persistent.base_path + path
+	return Globals.language_file_configuration.LanguageFilePath
 
 func get_selected_key() -> String:
 	return key_list.selected_key
@@ -39,14 +28,18 @@ var _english_file_path: String:
 		return _file_paths.filter(func(file: String): return file.contains("en")).front()
 
 func _ready():
-	base_path.text = persistent.base_path
-	category_switch.button_pressed = persistent.is_software
+	$VBoxContainer/TitleLabel.text = Globals.Title
+	for config in LanguageFileConfiguration.GetConfigurations():
+		type_option_button.add_item(config.Name)
+	type_option_button.select(Globals.persistent.SelectedConfigIndex)
+	
 	specific_path.text = get_dir_path()
 	_reload_language_file()
 	_reload_keys()
 	_reload_attribute_container()
 	_refresh_buttons()
 	attribute_grid_container.attribute_item_changed.connect(func(item): _save_item(item))
+	
 
 func _refresh_buttons():
 	change_button.disabled = get_selected_key() == ""
@@ -79,10 +72,10 @@ func _reload_english_item():
 	_english_item = LanguageFileItem.new() if get_selected_key() == "" else LanguageFileItem.CreateItemFromFile(get_selected_key(), _english_file_path)
 
 func _save_item(item: LanguageFileItem):
-	if item.key != get_selected_key():
+	if item.Key != get_selected_key():
 		for file_path in _file_paths:
-			XmlScript.ChangeKey(get_selected_key(), item.key, file_path)
-		_reload_keys(item.key)
+			XmlScript.ChangeKey(get_selected_key(), item.Key, file_path)
+		_reload_keys(item.Key)
 	else:
 		for file_path in _file_paths:
 			XmlScript.SaveAttribute(item, file_path)
@@ -90,17 +83,7 @@ func _save_item(item: LanguageFileItem):
 func _on_value_changer_dialog_closed():
 	_reload_keys()
 	_reload_attribute_container()
-
-func _on_category_switch_pressed():
-	persistent.is_software = _is_software
-	Globals.language_file_configuration.CurrentLanguageFileConfigurationIndex = 0 if _is_software else 1
-	specific_path.text = get_dir_path()
-	_reload_language_file()
-	category_switch.text = "Software" if _is_software else "Firmware"
-	_reload_keys()
-	_reload_attribute_container()
-	_refresh_buttons()
-
+	
 func _on_key_list_item_selection_changed():
 	value_label_value.text = get_selected_key()
 	_reload_english_item()
@@ -108,11 +91,11 @@ func _on_key_list_item_selection_changed():
 	_refresh_buttons()
 
 func _on_add_button_pressed():
-	await Ui.instance.add_window(_value_changer_dialog_scene).init_add(_is_software, _file_paths).closed
+	await Ui.instance.add_window(_value_changer_dialog_scene).init_add(_file_paths).closed
 	_on_value_changer_dialog_closed()
 
 func _on_change_button_pressed():
-	var dialog := Ui.instance.add_window(_value_changer_dialog_scene).init_change(_is_software, _english_item, _file_paths) as ValueDialog
+	var dialog := Ui.instance.add_window(_value_changer_dialog_scene).init_change(_english_item, _file_paths) as ValueDialog
 	await dialog.closed
 	_on_value_changer_dialog_closed()
 
@@ -123,11 +106,12 @@ func _on_remove_button_pressed():
 	_reload_attribute_container()
 	_refresh_buttons()
 
-func _on_base_path_text_changed(new_text:String):
-	persistent.base_path = new_text
+
+func _on_type_option_button_item_selected(index: int) -> void:
+	Globals.persistent.SelectedConfigIndex = index
 	specific_path.text = get_dir_path()
 	_reload_language_file()
 	_reload_keys()
 	_reload_attribute_container()
 	_refresh_buttons()
-	attribute_grid_container.init(_is_software, LanguageFileItem.new())
+	

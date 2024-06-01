@@ -5,6 +5,9 @@ var dragging_start_position = Vector2()
 
 signal close_pressed()
 
+func _ready() -> void:
+	$MarginContainer/HBoxContainer/Name.text = Globals.Title
+
 func _process(_delta):
 	if following:
 		var win = get_window()

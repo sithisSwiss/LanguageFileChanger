@@ -21,7 +21,7 @@ func init_change(attribute_item: LanguageFileItem, file_paths: Array):
 	title_label.text = "Change Item (" + attribute_item.Key +")"
 	attribute_grid_container.init(attribute_item)
 	attribute_grid_container.editable = false
-	values_grid_container.add_value_fields(file_paths, attribute_item.key, edit_node_group)
+	values_grid_container.add_value_fields(file_paths, attribute_item.Key, edit_node_group)
 	create_item_container.hide()
 	init(file_paths)
 	return self
@@ -54,7 +54,4 @@ func _on_attribute_changed(item: LanguageFileItem):
 	create_item_button.disabled = !item.Validate(_keys)
 
 func _on_create_item_pressed():
-	create_item_container.hide()
-	attribute_grid_container.editable = false
-	_add_item_to_files(_attribute_item)
-	values_grid_container.add_value_fields(_file_paths, _attribute_item.key, edit_node_group)
+	init_change(_attribute_item, _file_paths)

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using cfnLanguageFileChanger.Script;
 using Godot;
-using Godot.Collections;
 using Array = System.Array;
-
 
 [GlobalClass]
 public sealed partial class XmlScript : GodotObject
 {
-	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetConfiguration();
+	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
+
 	// private static Func<XDocument, XElement> GetRootFromXDocument => doc => doc.Element(Configuration.RootTagName);
 	private static Func<XDocument, XElement> GetRootFromXDocument => doc => doc.Root!;
+
 	private static Func<XElement, IEnumerable<XElement>> GetItemsInRoot =>
 		root => root.Elements().Where(x => x.Name.LocalName == Configuration.ItemTagName);
+
 	private static string KeyName => Configuration.Attributes[Configuration.KeyAttributeIndex].Name;
 	private static string ItemTagName => Configuration.ItemTagName;
 
@@ -24,7 +26,7 @@ public sealed partial class XmlScript : GodotObject
 		try
 		{
 			var root = GetRootFromXDocument!(XDocument.Load(path));
-			var elements = GetItemsInRoot!(root);
+			IEnumerable<XElement> elements = GetItemsInRoot!(root);
 			return elements.Select(item => item.Attribute(KeyName)!.Value).ToArray();
 		}
 		catch (Exception)
@@ -59,11 +61,12 @@ public sealed partial class XmlScript : GodotObject
 			return string.Empty;
 		}
 	}
+
 	public static string GetValue(string key, string path)
 	{
 		try
 		{
-			var t= GetSpecificElement(key, XDocument.Load(path))!.Value;
+			var t = GetSpecificElement(key, XDocument.Load(path))!.Value;
 			return t;
 		}
 		catch (Exception)
@@ -71,6 +74,7 @@ public sealed partial class XmlScript : GodotObject
 			return string.Empty;
 		}
 	}
+
 	// public static string GetValue(string key, string path) => Get(key, FieldTypes.Value, path);
 	// public static string GetInfo(string key, string path) => Get(key, FieldTypes.Info, path);
 	// public static string GetField(string key, string path) => Get(key, FieldTypes.Field, path);
@@ -87,6 +91,7 @@ public sealed partial class XmlScript : GodotObject
 				element = new XElement(ItemTagName);
 				GetRootFromXDocument!(handler.Doc).Add(element);
 			}
+
 			element.Value = value;
 		}
 		catch (Exception)
@@ -106,6 +111,7 @@ public sealed partial class XmlScript : GodotObject
 				element = new XElement(ItemTagName);
 				GetRootFromXDocument!(handler.Doc).Add(element);
 			}
+
 			SetAttributes(ref element, item.Attributes);
 		}
 		catch (Exception)
@@ -175,13 +181,13 @@ public sealed partial class XmlScript : GodotObject
 	private static XElement? GetSpecificElement(string key, XDocument doc)
 	{
 		var root = GetRootFromXDocument!(doc);
-		var elements = GetItemsInRoot!(root);
+		IEnumerable<XElement> elements = GetItemsInRoot!(root);
 		return elements.FirstOrDefault(x => x.Attribute(KeyName)!.Value == key);
 	}
 
 	private static void SetAttributes(ref XElement element, Godot.Collections.Dictionary<string, string> attributes)
 	{
-		foreach (var attribute in attributes)
+		foreach (KeyValuePair<string, string> attribute in attributes)
 		{
 			element.SetAttributeValue(attribute.Key, attribute.Value);
 		}
