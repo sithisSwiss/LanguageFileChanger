@@ -23,6 +23,5 @@ func on_pressed():
 	line_edit.text = clipboard_text
 	text_changed.emit(clipboard_text)
 
-
 func _on_line_edit_text_changed(new_text):
 	text_changed.emit(new_text)

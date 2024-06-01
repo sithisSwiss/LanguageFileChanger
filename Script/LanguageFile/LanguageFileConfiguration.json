@@ -1,0 +1,48 @@
+[
+  {
+    "Name": "EPC01 - Software",
+    "RootTagName": "TextPool",
+    "ItemTagName": "Item",
+    "KeyAttributeIndex": 0,
+    "Attributes": [
+      {
+        "Name": "key",
+        "DisplayName": "Key",
+        "IsString": true
+      },
+      {
+        "Name": "info",
+        "DisplayName": "Info",
+        "IsString": true
+      }
+    ]
+  },
+  {
+    "Name": "EPC01 - Firmware",
+    "RootTagName": "TextPool",
+    "ItemTagName": "Item",
+    "KeyAttributeIndex": 0,
+    "Attributes": [
+      {
+        "Name": "key",
+        "DisplayName": "Key",
+        "IsInt": true
+      },
+      {
+        "Name": "info",
+        "DisplayName": "Info",
+        "IsString": true
+      },
+      {
+        "Name": "field",
+        "DisplayName": "Field",
+        "IsInt": true
+      },
+      {
+        "Name": "layout",
+        "DisplayName": "Layout",
+        "EnumValues": ["A", "A1", "B", "B1", "C", "C1", "D", "E", "F", "G", "UNKNOWN", "unknown"]
+      }
+    ]
+  }
+]

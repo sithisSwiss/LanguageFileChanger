@@ -8,15 +8,13 @@ class_name KeyList extends GridContainer
 signal key_selection_changed()
 var selected_key: String = ""
 
-var _is_software: bool
 var _init_keys: Array = []
 
 func _ready():
 	search_label.custom_minimum_size = Vector2(label_width, 0)
 
-func init(file_path: String, is_software: bool):
-	_is_software = is_software
-	_init_keys = Array(Globals.xml_class.GetKeys(file_path)) if file_path != "" else []
+func init(file_path: String):
+	_init_keys = Array(XmlScript.GetKeys(file_path)) if file_path != "" else []
 	_load_keys(_init_keys)
 	search_clipboard_line_edit.text = ""
 
@@ -30,7 +28,7 @@ func try_to_select(key:String):
 func _load_keys(keys: Array):
 	item_list.deselect_all()
 	item_list.clear()
-	keys.sort_custom(func(a,b): return a < b if _is_software else int(a)<int(b))
+	#keys.sort_custom(func(a,b): return a < b if _is_software else int(a)<int(b))
 	for key in keys:
 		item_list.add_item(key)
 	_select_key_if_only_one()

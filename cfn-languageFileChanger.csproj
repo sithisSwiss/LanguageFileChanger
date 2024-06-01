@@ -4,6 +4,12 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>cfnlanguageFileChanger</RootNamespace>
+    <RootNamespace>cfnLanguageFileChanger</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Script\LanguageFile\LanguageFileConfiguration.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>

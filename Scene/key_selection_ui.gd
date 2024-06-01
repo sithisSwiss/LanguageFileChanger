@@ -33,7 +33,7 @@ func get_selected_key() -> String:
 	return key_list.selected_key
 
 var _file_paths: Array = []
-var _english_item: XmlItem
+var _english_item: LanguageFileItem
 var _english_file_path: String:
 	get:
 		return _file_paths.filter(func(file: String): return file.contains("en")).front()
@@ -54,11 +54,11 @@ func _refresh_buttons():
 
 func _reload_attribute_container():
 	if get_selected_key() != "":
-		value_label_value.text = (_english_item).value
-		attribute_grid_container.init(_is_software, _english_item)
+		value_label_value.text = _english_item.Value
+		attribute_grid_container.init(_english_item)
 	else:
 		value_label_value.text = ""
-		attribute_grid_container.init(_is_software, XmlItem.create_emtpy_item())
+		attribute_grid_container.init(LanguageFileItem.new())
 	attribute_grid_container.editable = get_selected_key() != ""
 
 func _reload_language_file():
@@ -71,21 +71,21 @@ func _reload_language_file():
 	_reload_english_item()
 
 func _reload_keys(select_key:String = ""):
-	key_list.init(_file_paths.front() if _file_paths.size()>0 else "", _is_software)
+	key_list.init(_file_paths.front() if _file_paths.size()>0 else "")
 	if select_key != "":
 		key_list.try_to_select(select_key)
 
 func _reload_english_item():
-	_english_item =XmlItem.create_emtpy_item() if get_selected_key() == "" else XmlItem.create_item_from_file(get_selected_key(), _english_file_path)
+	_english_item = LanguageFileItem.new() if get_selected_key() == "" else LanguageFileItem.CreateItemFromFile(get_selected_key(), _english_file_path)
 
-func _save_item(item: XmlItem):
+func _save_item(item: LanguageFileItem):
 	if item.key != get_selected_key():
 		for file_path in _file_paths:
-			Globals.xml_class.ChangeKey(get_selected_key(), item.key, file_path)
+			XmlScript.ChangeKey(get_selected_key(), item.key, file_path)
 		_reload_keys(item.key)
 	else:
 		for file_path in _file_paths:
-			Globals.xml_class.SaveAttribute(item, file_path, _is_software)
+			XmlScript.SaveAttribute(item, file_path)
 
 func _on_value_changer_dialog_closed():
 	_reload_keys()
@@ -93,6 +93,7 @@ func _on_value_changer_dialog_closed():
 
 func _on_category_switch_pressed():
 	persistent.is_software = _is_software
+	Globals.language_file_configuration.CurrentLanguageFileConfigurationIndex = 0 if _is_software else 1
 	specific_path.text = get_dir_path()
 	_reload_language_file()
 	category_switch.text = "Software" if _is_software else "Firmware"
@@ -117,7 +118,7 @@ func _on_change_button_pressed():
 
 func _on_remove_button_pressed():
 	for file_path in _file_paths:
-		Globals.xml_class.RemoveItem(get_selected_key(), file_path)
+		XmlScript.RemoveItem(get_selected_key(), file_path)
 	_reload_keys()
 	_reload_attribute_container()
 	_refresh_buttons()
@@ -129,4 +130,4 @@ func _on_base_path_text_changed(new_text:String):
 	_reload_keys()
 	_reload_attribute_container()
 	_refresh_buttons()
-	attribute_grid_container.init(_is_software, XmlItem.create_emtpy_item())
+	attribute_grid_container.init(_is_software, LanguageFileItem.new())

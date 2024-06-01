@@ -7,7 +7,7 @@ func add_value_fields(files: Array, key: String, edit_node_group: String):
 		var language_tag := (file as String).get_file().replace("ApplicationText_", "").replace(".xml", "")
 		var language_name := Globals.Language_Dict.get(language_tag, "Not found") as String
 		var lanugage = language_name + " (" + language_tag + ")"
-		var value = Globals.xml_class.GetValue(key, file)
+		var value = XmlScript.GetValue(key, file)
 		_add_value_field(key, lanugage, value, file, edit_node_group)
 
 func _add_value_field(key: String, label: String, edit_value: String, file: String, edit_node_group: String):
@@ -21,7 +21,7 @@ func _add_value_field(key: String, label: String, edit_value: String, file: Stri
 	edit_node.add_to_group(edit_node_group)
 	edit_node.text = edit_value
 	edit_node.size_flags_horizontal = SIZE_EXPAND_FILL
-	edit_node.text_changed.connect(func(new_text:String): Globals.xml_class.SaveValue(key, file, new_text))
+	edit_node.text_changed.connect(func(new_text:String): XmlScript.SaveValue(key, new_text, file))
 
 func clear():
 	for child in get_children():

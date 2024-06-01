@@ -1,8 +1,12 @@
-class_name Globals extends Object
+class_name Globals extends Node
 
 const Label_Width: int = 200
 
-static var xml_class = XmlScript
+static var language_file_configuration_class = preload("res://Script/LanguageFile/LanguageFileConfiguration.cs")
+
+static var language_file_configuration: LanguageFileConfiguration:
+	get:
+		return language_file_configuration_class.GetConfiguration()
 
 const Language_Dict: Dictionary = {
 	"bg": "Bulgarian",
