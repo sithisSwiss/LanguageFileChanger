@@ -3,15 +3,13 @@ class_name KeyList extends GridContainer
 @onready var search_clipboard_line_edit = %SearchClipboardLineEdit
 @onready var item_list = %ItemList
 
-@export var label_width:int = Globals.Label_Width
-
 signal key_selection_changed()
 var selected_key: String = ""
 
 var _init_keys: Array = []
 
 func _ready():
-	search_label.custom_minimum_size = Vector2(label_width, 0)
+	search_label.custom_minimum_size = Vector2(Globals.Label_Width, 0)
 
 func init(file_path: String):
 	_init_keys = Array(XmlScript.GetKeys(file_path)) if file_path != "" else []

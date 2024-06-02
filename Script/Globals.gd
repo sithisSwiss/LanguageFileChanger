@@ -1,6 +1,7 @@
 class_name Globals extends Node
 
 const Label_Width: int = 200
+
 const Title: String = "Language File Changer"
 
 static var language_file_configuration: LanguageFileConfiguration:

@@ -1,7 +1,8 @@
-class_name ClipboardLineEdit extends Container
+class_name ClipboardLineEdit extends HBoxContainer
 
 @onready var clipboard_button := %ClipboardButton
 @onready var line_edit := %LineEdit
+@onready var valid_border_panel_container: ValidBorderPanelContainer = %ValidBorderPanelContainer
 
 signal text_changed(new_text: String)
 
@@ -17,6 +18,12 @@ var editable: bool = true:
 		clipboard_button.disabled = !value
 	get:
 		return line_edit.editable
+
+var valid: bool:
+	get:
+		return valid_border_panel_container.valid
+	set(value):
+		valid_border_panel_container.valid = value
 
 func on_pressed():
 	var clipboard_text = DisplayServer.clipboard_get()

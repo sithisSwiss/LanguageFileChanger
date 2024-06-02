@@ -28,7 +28,9 @@ var _english_file_path: String:
 		return _file_paths.filter(func(file: String): return file.contains("en")).front()
 
 func _ready():
-	$VBoxContainer/TitleLabel.text = Globals.Title
+	$VBoxContainer/PanelContainer/GridContainer/TypeLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
+	$VBoxContainer/PanelContainer3/HBoxContainer3/ValueLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
+	$VBoxContainer/ButtonHBoxContainer/Spacer.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	for config in LanguageFileConfiguration.GetConfigurations():
 		type_option_button.add_item(config.Name)
 	type_option_button.select(Globals.persistent.SelectedConfigIndex)

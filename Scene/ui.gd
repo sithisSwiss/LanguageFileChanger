@@ -8,6 +8,9 @@ func _ready():
 	instance = self
 
 func add_window(scene: PackedScene) -> Node:
+	for node in windows.get_children():
+		node.hide()
+	
 	var node = scene.instantiate()
 	windows.add_child(node)
 	return node
@@ -15,7 +18,6 @@ func add_window(scene: PackedScene) -> Node:
 func _on_close_button_pressed():
 	if  windows.get_child_count() == 1:
 		get_tree().quit()
-	var win = windows.get_children()[windows.get_child_count()-1]
-	if win.has_method("close"):
-		win.close()
-	win.queue_free()
+	
+	windows.get_children()[windows.get_child_count()-2].show()
+	windows.get_children()[windows.get_child_count()-1].queue_free()

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bc8gfoxno1cso"]
+
+[ext_resource type="Script" path="res://Scene/InputField/valid_border_panel_container.gd" id="1_a7c8u"]
+
+[node name="ValidBorderPanelContainer" type="PanelContainer"]
+script = ExtResource("1_a7c8u")

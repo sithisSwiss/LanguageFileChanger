@@ -1,7 +1,8 @@
-class_name ClipboardSpinBox extends Container
+class_name ClipboardSpinBox extends HBoxContainer
 
 @onready var clipboard_button := %ClipboardButton
 @onready var spin_box := %SpinBox
+@onready var valid_border_panel_container: ValidBorderPanelContainer = %ValidBorderPanelContainer
 
 signal value_changed(new_value: float)
 
@@ -24,6 +25,12 @@ var editable: bool = true:
 	get:
 		return spin_box.editable
 
+var valid: bool:
+	get:
+		return valid_border_panel_container.valid
+	set(value):
+		valid_border_panel_container.valid = value
+		
 func _ready() -> void:
 	spin_box.allow_greater = true
 	spin_box.allow_lesser = true

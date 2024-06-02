@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx2b4oh6or1r1"]
+
+[ext_resource type="Theme" uid="uid://4vnnn3rdujyi" path="res://Asset/h_box_clipboard_edit.tres" id="1_7deqg"]
+[ext_resource type="Script" path="res://Scene/InputField/clipboard_spin_box.gd" id="2_w8der"]
+[ext_resource type="Texture2D" uid="uid://d3s0rtbtly582" path="res://Asset/clipboard_icon.svg" id="3_ai37s"]
+[ext_resource type="PackedScene" uid="uid://bc8gfoxno1cso" path="res://Scene/InputField/valid_border_panel_container.tscn" id="4_m8xpk"]
+
+[node name="ClipboardSpinBox" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_7deqg")
+script = ExtResource("2_w8der")
+
+[node name="ClipboardButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("3_ai37s")
+
+[node name="ValidBorderPanelContainer" parent="." instance=ExtResource("4_m8xpk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpinBox" type="SpinBox" parent="ValidBorderPanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+allow_lesser = true
+
+[connection signal="pressed" from="ClipboardButton" to="." method="on_pressed"]
+[connection signal="value_changed" from="ValidBorderPanelContainer/SpinBox" to="." method="_on_spin_box_value_changed"]

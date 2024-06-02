@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="EPC01 - Language File Changer"
+config/name="Language File Changer"
 run/main_scene="res://Scene/ui.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 boot_splash/bg_color=Color(0.270588, 0.270588, 0.270588, 1)

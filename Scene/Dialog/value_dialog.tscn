@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://hea4lclfla2s"]
+[gd_scene load_steps=5 format=3 uid="uid://hea4lclfla2s"]
 
 [ext_resource type="Script" path="res://Scene/Dialog/value_dialog.gd" id="1_cr66g"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="1_mxvak"]
 [ext_resource type="Script" path="res://Scene/Dialog/values_grid_container.gd" id="2_djj2v"]
+[ext_resource type="StyleBox" uid="uid://cai2c2pixtda4" path="res://Asset/background_highlighter.tres" id="3_l1w8h"]
 
 [node name="ValueDialog" type="Control"]
 layout_mode = 3
@@ -29,6 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -53,7 +55,11 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 text = "Create Item"
 
-[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_l1w8h")
+
+[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

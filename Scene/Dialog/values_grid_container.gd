@@ -1,6 +1,6 @@
 class_name ValuesGridContainer extends GridContainer
 
-@onready var clipboard_line_edit_scene := preload("res://Scene/clipboard_line_edit.tscn")
+@onready var clipboard_line_edit_scene := preload("res://Scene/InputField/clipboard_line_edit.tscn")
 
 func add_value_fields(files: Array, key: String, edit_node_group: String):
 	for file in files:

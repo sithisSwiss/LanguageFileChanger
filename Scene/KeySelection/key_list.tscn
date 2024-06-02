@@ -1,9 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://brrue2l3hnsuk"]
 
-[ext_resource type="PackedScene" uid="uid://bfqwnwkj2tn3" path="res://Scene/clipboard_line_edit.tscn" id="1_ik1ui"]
-[ext_resource type="Script" path="res://Scene/key_list.gd" id="1_wbfgx"]
+[ext_resource type="PackedScene" uid="uid://bfqwnwkj2tn3" path="res://Scene/InputField/clipboard_line_edit.tscn" id="1_ik1ui"]
+[ext_resource type="Script" path="res://Scene/KeySelection/key_list.gd" id="1_wbfgx"]
 
 [node name="KeyList" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = 2
 columns = 2
@@ -11,7 +17,6 @@ script = ExtResource("1_wbfgx")
 
 [node name="SearchLabel" type="Label" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Search:"
 
@@ -24,11 +29,11 @@ layout_mode = 2
 
 [node name="ItemList" type="ItemList" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 10
 
 [connection signal="text_changed" from="SearchClipboardLineEdit" to="." method="_on_search_clipboard_line_edit_text_changed"]
 [connection signal="item_selected" from="ItemList" to="." method="_on_item_list_item_selected"]
