@@ -24,7 +24,6 @@ icon = ExtResource("3_ai37s")
 [node name="ValidBorderPanelContainer" parent="." instance=ExtResource("4_m8xpk")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="SpinBox" type="SpinBox" parent="ValidBorderPanelContainer"]
 unique_name_in_owner = true

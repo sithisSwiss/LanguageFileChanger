@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhmox24fn5ibq"]
+
+[ext_resource type="Script" path="res://Scene/Dialog/values_window.gd" id="1_rsa6b"]
+[ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="2_j504y"]
+[ext_resource type="StyleBox" uid="uid://cai2c2pixtda4" path="res://Asset/background_highlighter.tres" id="3_udp4q"]
+[ext_resource type="Script" path="res://Scene/Dialog/values_grid_container.gd" id="4_k8a7g"]
+
+[node name="ValuesWindow" type="Window"]
+initial_position = 2
+size = Vector2i(1000, 600)
+transient = true
+exclusive = true
+always_on_top = true
+content_scale_mode = 1
+content_scale_aspect = 4
+script = ExtResource("1_rsa6b")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.270588, 0.270588, 0.270588, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="AttributeGridContainer" parent="VBoxContainer" instance=ExtResource("2_j504y")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CreateItemContainer" type="CenterContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CreateItemButton" type="Button" parent="VBoxContainer/CreateItemContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Create Item"
+
+[node name="ValuesPanelContainer" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_udp4q")
+
+[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/ValuesPanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 2
+columns = 2
+script = ExtResource("4_k8a7g")
+
+[connection signal="pressed" from="VBoxContainer/CreateItemContainer/CreateItemButton" to="." method="_on_create_item_pressed"]

@@ -1,9 +1,72 @@
-[gd_scene load_steps=5 format=3 uid="uid://hea4lclfla2s"]
+[gd_scene load_steps=5 format=3 uid="uid://d3yn8aye5qanl"]
 
-[ext_resource type="Script" path="res://Scene/Dialog/value_dialog.gd" id="1_cr66g"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="1_mxvak"]
 [ext_resource type="Script" path="res://Scene/Dialog/values_grid_container.gd" id="2_djj2v"]
 [ext_resource type="StyleBox" uid="uid://cai2c2pixtda4" path="res://Asset/background_highlighter.tres" id="3_l1w8h"]
+
+[sub_resource type="GDScript" id="GDScript_oa8u3"]
+script/source = "class_name ValueDialog extends Control
+
+@onready var title_label: Label = %TitleLabel
+@onready var attribute_grid_container: AttributesGridContainer = %AttributeGridContainer
+@onready var values_grid_container: ValuesGridContainer = %ValuesGridContainer
+@onready var values_panel_container: PanelContainer = %ValuesPanelContainer
+@onready var create_item_container: CenterContainer = %CreateItemContainer
+@onready var create_item_button: Button = %CreateItemButton
+
+signal closed
+
+var _keys: Array
+var _file_paths: Array
+var _attribute_item: LanguageFileItem
+
+const edit_node_group: String = \"value_dialog_value_edit\"
+
+func _ready():
+	hide()
+	values_panel_container.hide()
+
+func init_change(attribute_item: LanguageFileItem, file_paths: Array):
+	title_label.text = \"Change Item (\" + attribute_item.Key +\")\"
+	attribute_grid_container.init(attribute_item)
+	attribute_grid_container.editable = false
+	values_grid_container.add_value_fields(file_paths, attribute_item.Key, edit_node_group)
+	values_panel_container.show()
+	create_item_container.hide()
+	init(file_paths)
+	return self
+
+func init_add(file_paths: Array):
+	title_label.text = \"Add Item\"
+	attribute_grid_container.init(LanguageFileItem.new())
+	attribute_grid_container.attribute_item_changed.connect(_on_attribute_changed)
+	attribute_grid_container.editable = true
+	create_item_container.show()
+	create_item_button.disabled = true
+	init(file_paths)
+	return self
+
+func init(file_paths: Array):
+	_file_paths = file_paths
+	_keys = XmlScript.GetKeys(file_paths.front())
+	show()
+
+func close():
+	closed.emit()
+
+func _add_item_to_files(item: LanguageFileItem):
+	for file_path in _file_paths:
+		XmlScript.SaveAttribute(item, file_path)
+		XmlScript.SaveValue(item.Key, item.Value, file_path)
+
+func _on_attribute_changed(item: LanguageFileItem):
+	_attribute_item = item
+	create_item_button.disabled = !item.Validate(_keys)
+
+func _on_create_item_pressed():
+	_add_item_to_files(_attribute_item)
+	init_change(_attribute_item, _file_paths)
+"
 
 [node name="ValueDialog" type="Control"]
 layout_mode = 3
@@ -12,7 +75,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_cr66g")
+script = SubResource("GDScript_oa8u3")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -55,11 +118,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 text = "Create Item"
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="ValuesPanelContainer" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_l1w8h")
 
-[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/PanelContainer"]
+[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/ValuesPanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

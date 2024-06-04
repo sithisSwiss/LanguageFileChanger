@@ -11,8 +11,6 @@ using Array = System.Array;
 public sealed partial class XmlScript : GodotObject
 {
 	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
-
-	// private static Func<XDocument, XElement> GetRootFromXDocument => doc => doc.Element(Configuration.RootTagName);
 	private static Func<XDocument, XElement> GetRootFromXDocument => doc => doc.Root!;
 
 	private static Func<XElement, IEnumerable<XElement>> GetItemsInRoot =>
@@ -34,21 +32,6 @@ public sealed partial class XmlScript : GodotObject
 			return Array.Empty<string>();
 		}
 	}
-
-	// public void AddItem(LanguageFileItem item, string path)
-	// {
-	// 	try
-	// 	{
-	// 		using var handler = new XDocumentHandler(path);
-	// 		var element = new XElement(_itemTagName);
-	// 		SetAttributes(ref element, item.Attributes);
-	// 		handler.Doc.Root!.Add(element);
-	// 	}
-	// 	catch (Exception)
-	// 	{
-	// 		// ignored
-	// 	}
-	// }
 
 	public static string GetAttribute(string key, string attributeName, string path)
 	{
@@ -74,11 +57,6 @@ public sealed partial class XmlScript : GodotObject
 			return string.Empty;
 		}
 	}
-
-	// public static string GetValue(string key, string path) => Get(key, FieldTypes.Value, path);
-	// public static string GetInfo(string key, string path) => Get(key, FieldTypes.Info, path);
-	// public static string GetField(string key, string path) => Get(key, FieldTypes.Field, path);
-	// public static string GetLayout(string key, string path) => Get(key, FieldTypes.Layout, path);
 
 	public static void SaveValue(string key, string value, string path)
 	{
@@ -134,20 +112,6 @@ public sealed partial class XmlScript : GodotObject
 		}
 	}
 
-	// public void SaveAttribute(Dictionary attributeValue, string key, string path)
-	// {
-	// 	try
-	// 	{
-	// 		using var handler = new XDocumentHandler(path);
-	// 		var element = GetSpecificElement(key, handler.Doc);
-	// 		SetAttributes(ref element, attributeValue);
-	// 	}
-	// 	catch (Exception)
-	// 	{
-	// 		// ignored
-	// 	}
-	// }
-
 	public static void RemoveItem(string key, string path)
 	{
 		try
@@ -160,23 +124,6 @@ public sealed partial class XmlScript : GodotObject
 			// ignored
 		}
 	}
-
-	// private static string Get(string key, string field, string path)
-	// {
-	// 	try
-	// 	{
-	// 		return field switch
-	// 		{
-	// 			FieldTypes.Value => GetSpecificElement(key, XDocument.Load(path)).Value,
-	// 			FieldTypes.Info or FieldTypes.Field or FieldTypes.Layout => GetSpecificElement(key, XDocument.Load(path)).Attribute(field)!.Value,
-	// 			_ => string.Empty
-	// 		};
-	// 	}
-	// 	catch (Exception)
-	// 	{
-	// 		return string.Empty;
-	// 	}
-	// }
 
 	private static XElement? GetSpecificElement(string key, XDocument doc)
 	{

@@ -5,4 +5,5 @@
   <ItemText key2="Key3" info2="Info3" option="C" number="1" number2="0">ItemGerman</ItemText>
   <ItemText key2="Key4" info2="Info4" option="D" number="1" number2="0">Item4</ItemText>
   <ItemText key2="Key5" info2="Info5" option="A" number="1" number2="0">Item5</ItemText>
+  <ItemText key2="Key6" info2="Info6" option="A" number="0" number2="0.0">TestGerman</ItemText>
 </TextPool>

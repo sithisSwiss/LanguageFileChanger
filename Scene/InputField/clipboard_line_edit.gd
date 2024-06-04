@@ -20,10 +20,10 @@ var editable: bool = true:
 		return line_edit.editable
 
 var valid: bool:
-	get:
-		return valid_border_panel_container.valid
 	set(value):
 		valid_border_panel_container.valid = value
+	get:
+		return valid_border_panel_container.valid
 
 func on_pressed():
 	var clipboard_text = DisplayServer.clipboard_get()

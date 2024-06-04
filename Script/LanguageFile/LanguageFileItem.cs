@@ -28,6 +28,21 @@ public sealed partial class LanguageFileItem : GodotObject
 
 	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
 
+	public LanguageFileItem()
+	{
+		foreach (var attributeConfiguration in Configuration.Attributes)
+		{
+			var name = attributeConfiguration.Name;
+			_attributes[name] = attributeConfiguration switch
+			{
+				{ IsInt: true } => "0",
+				{ IsFloat: true} => "0.0",
+				{ IsBool: true} => "false",
+				{ IsString: true } => string.Empty,
+				var _ => attributeConfiguration.EnumValues.First()
+			};
+		}
+	}
 	public static LanguageFileItem CreateItemFromFile(string key, string path)
 	{
 		var item = new LanguageFileItem();
@@ -41,7 +56,7 @@ public sealed partial class LanguageFileItem : GodotObject
 		item._value = XmlScript.GetValue(key, path);
 		return item;
 	}
-
+	
 	public static LanguageFileItem CreateItem(Dictionary<string, string> attributes, string value = "")
 	{
 		var item = new LanguageFileItem();
@@ -53,7 +68,7 @@ public sealed partial class LanguageFileItem : GodotObject
 	public void SetAttributeValue(string key, string value)
 	{
 		_attributes[key] = value;
-		EmitSignal(nameof(ItemChanged), this);
+		//EmitSignal(nameof(ItemChanged), this);
 	}
 
 	public string GetAttributeValue(string key)
@@ -62,6 +77,18 @@ public sealed partial class LanguageFileItem : GodotObject
 			? value ?? string.Empty
 			: string.Empty;
 		return t;
+	}
+	
+	public static bool ValidateAttribute(string value, LanguageFileConfigurationAttribute attributeConfiguration)
+	{
+		return attributeConfiguration switch
+		{
+			{ IsInt: true } => int.TryParse(value, out var _),
+			{ IsFloat: true } => float.TryParse(value, out var _),
+			{ IsBool: true } => bool.TryParse(value, out var _),
+			{ IsString: true } => value.Length > 0,
+			var _ => attributeConfiguration.EnumValues.Contains(value)
+		};
 	}
 
 	public bool ValidateAttribute(string attributeName)
@@ -72,20 +99,14 @@ public sealed partial class LanguageFileItem : GodotObject
 			return false;
 		}
 
-		return attributeConfiguration switch
-		{
-			{ IsInt: true } => int.TryParse(_attributes[attributeName], out var _),
-			{ IsFloat: true } => float.TryParse(_attributes[attributeName], out var _),
-			{ IsBool: true } => bool.TryParse(_attributes[attributeName], out var _),
-			{ IsString: true } => _attributes[attributeName].Length > 0,
-			var _ => attributeConfiguration.EnumValues.Contains(_attributes[attributeName])
-		};
+		var t = ValidateAttribute(_attributes[attributeName], attributeConfiguration);
+		return t;
 	}
 
 	public bool Validate(string[] existingKeys)
 	{
-		return !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
-
+		var t = !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
+		return t;
 		bool KeyAreEmpty() => string.IsNullOrEmpty(Key);
 		bool KeyAlreadyExist() => existingKeys.Contains(Key);
 

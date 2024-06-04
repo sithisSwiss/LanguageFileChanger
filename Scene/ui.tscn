@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxatb4gog61ss"]
+[gd_scene load_steps=5 format=3 uid="uid://cxatb4gog61ss"]
 
 [ext_resource type="Theme" uid="uid://dl01gxgiis5ea" path="res://Asset/ui_theme.tres" id="1_3g4om"]
 [ext_resource type="Script" path="res://Scene/ui.gd" id="2_2aijm"]
 [ext_resource type="PackedScene" uid="uid://dj0eyhixk6gf6" path="res://Scene/KeySelection/key_selection_ui.tscn" id="2_tix1x"]
-[ext_resource type="PackedScene" uid="uid://caeqhtjjmlwyn" path="res://Scene/titlebar.tscn" id="3_54nbt"]
 [ext_resource type="PackedScene" uid="uid://bqu3o8436ta6n" path="res://Scene/sithis_splash_screen.tscn" id="3_yxaf2"]
 
 [node name="UI" type="Control"]
@@ -33,9 +32,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Titlebar" parent="CanvasLayer/VBoxContainer" instance=ExtResource("3_54nbt")]
-layout_mode = 2
-
 [node name="Windows" type="MarginContainer" parent="CanvasLayer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -49,5 +45,3 @@ theme = null
 
 [node name="SithisSplashScreen" parent="CanvasLayer" instance=ExtResource("3_yxaf2")]
 visible = false
-
-[connection signal="close_pressed" from="CanvasLayer/VBoxContainer/Titlebar" to="." method="_on_close_button_pressed"]

@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bc8gfoxno1cso"]
+[gd_scene load_steps=4 format=3 uid="uid://bc8gfoxno1cso"]
 
 [ext_resource type="Script" path="res://Scene/InputField/valid_border_panel_container.gd" id="1_a7c8u"]
+[ext_resource type="StyleBox" uid="uid://sfo0whedc2wm" path="res://Asset/valid_flat_style_box.tres" id="1_lpfqn"]
+
+[sub_resource type="Theme" id="Theme_ah23s"]
+PanelContainer/styles/panel = ExtResource("1_lpfqn")
 
 [node name="ValidBorderPanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_ah23s")
 script = ExtResource("1_a7c8u")

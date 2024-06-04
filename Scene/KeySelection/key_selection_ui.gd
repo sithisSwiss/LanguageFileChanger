@@ -14,6 +14,7 @@ class_name KeySelectionUi extends Control
 @onready var remove_button := %RemoveButton
 
 @onready var _value_changer_dialog_scene: PackedScene = preload("res://Scene/Dialog/value_dialog.tscn")
+@onready var _value_window_scene: PackedScene = preload("res://Scene/Dialog/values_window.tscn")
 
 func get_dir_path() -> String:
 	return Globals.language_file_configuration.LanguageFilePath
@@ -60,15 +61,13 @@ func _reload_language_file():
 	var path = get_dir_path()
 	_file_paths = []
 	if DirAccess.dir_exists_absolute(path):
-		_file_paths = Array(DirAccess.get_files_at(path)).map(func(file_path): return get_dir_path()+file_path)
+		_file_paths = Array(DirAccess.get_files_at(path)).map(func(file_path): return path+file_path)
 		_file_paths = _file_paths.filter(func(x: String): return x.ends_with(".xml"))
 	language_file_found.text = str(_file_paths.size())
 	_reload_english_item()
 
-func _reload_keys(select_key:String = ""):
-	key_list.init(_file_paths.front() if _file_paths.size()>0 else "")
-	if select_key != "":
-		key_list.try_to_select(select_key)
+func _reload_keys(select_key: String = ""):
+	key_list.init(_file_paths.front() if _file_paths.size()>0 else "", select_key)
 
 func _reload_english_item():
 	_english_item = LanguageFileItem.new() if get_selected_key() == "" else LanguageFileItem.CreateItemFromFile(get_selected_key(), _english_file_path)
@@ -81,10 +80,6 @@ func _save_item(item: LanguageFileItem):
 	else:
 		for file_path in _file_paths:
 			XmlScript.SaveAttribute(item, file_path)
-
-func _on_value_changer_dialog_closed():
-	_reload_keys()
-	_reload_attribute_container()
 	
 func _on_key_list_item_selection_changed():
 	value_label_value.text = get_selected_key()
@@ -93,13 +88,25 @@ func _on_key_list_item_selection_changed():
 	_refresh_buttons()
 
 func _on_add_button_pressed():
-	await Ui.instance.add_window(_value_changer_dialog_scene).init_add(_file_paths).closed
-	_on_value_changer_dialog_closed()
+	var win := Ui.instance.open_window(_value_window_scene) as ValuesWindow
+	win.init_add(_file_paths)
+	win.item_created.connect(_on_values_window_item_created)
 
 func _on_change_button_pressed():
-	var dialog := Ui.instance.add_window(_value_changer_dialog_scene).init_change(_english_item, _file_paths) as ValueDialog
-	await dialog.closed
-	_on_value_changer_dialog_closed()
+	var win := Ui.instance.open_window(_value_window_scene) as ValuesWindow
+	win.init_change(_english_item, _file_paths)
+	
+func _on_values_window_item_created(item: LanguageFileItem):
+	print(item.GetAttributeValue("key2"))
+	_add_item_to_files(item)
+	_reload_keys(item.Key)
+	_reload_english_item()
+	_reload_attribute_container()
+
+func _add_item_to_files(item: LanguageFileItem):
+	for file_path in _file_paths:
+		XmlScript.SaveAttribute(item, file_path)
+		XmlScript.SaveValue(item.Key, item.Value, file_path)
 
 func _on_remove_button_pressed():
 	for file_path in _file_paths:
