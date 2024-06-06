@@ -1,8 +1,6 @@
 using System;
-using Godot;
 
-[GlobalClass]
-public partial class LanguageFileConfigurationAttribute : GodotObject
+public partial class LanguageFileConfigurationAttribute
 {
     public string Name { get; set; }
     public string DisplayName { get; set; }

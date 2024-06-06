@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using cfnLanguageFileChanger.Script;
+using cfnLanguageFileChanger.Script.LanguageFile;
 using Godot;
 using Array = System.Array;
 
 [GlobalClass]
 public sealed partial class XmlScript : GodotObject
 {
-	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
+	private static LanguageFileConfiguration Configuration => LangaugeFileHelper.GetCurrentConfiguration();
 	private static Func<XDocument, XElement> GetRootFromXDocument => doc => doc.Root!;
 
 	private static Func<XElement, IEnumerable<XElement>> GetItemsInRoot =>
@@ -58,39 +59,35 @@ public sealed partial class XmlScript : GodotObject
 		}
 	}
 
-	public static void SaveValue(string key, string value, string path)
+	public static void SaveValue(LanguageFileItem item, LanguageFileValue value)
 	{
 		try
 		{
-			using var handler = new XDocumentHandler(path);
-			var element = GetSpecificElement(key, handler.Doc);
-			if (element is null)
-			{
-				element = new XElement(ItemTagName);
-				GetRootFromXDocument!(handler.Doc).Add(element);
-			}
-
-			element.Value = value;
-		}
-		catch (Exception)
-		{
-			// ignored
-		}
-	}
-
-	public static void SaveAttribute(LanguageFileItem item, string path)
-	{
-		try
-		{
-			using var handler = new XDocumentHandler(path);
+			using var handler = new XDocumentHandler(value.FilePath);
 			var element = GetSpecificElement(item.Key, handler.Doc);
 			if (element is null)
 			{
-				element = new XElement(ItemTagName);
-				GetRootFromXDocument!(handler.Doc).Add(element);
+				return;
 			}
 
-			SetAttributes(ref element, item.Attributes);
+			element.Value = value.Value;
+		}
+		catch (Exception)
+		{
+			// ignored
+		}
+	}
+	
+	public static void SaveAttribute(LanguageFileItem item, LanguageFileAttribute attr)
+	{
+		try
+		{
+			foreach(var path in LangaugeFileHelper.GetLanguageFilePaths())
+			{
+				using var handler = new XDocumentHandler(path);
+				var element = GetSpecificElement(item.Key, handler.Doc);
+				element?.SetAttributeValue(attr.Name, attr.Value);
+			}
 		}
 		catch (Exception)
 		{
@@ -98,13 +95,16 @@ public sealed partial class XmlScript : GodotObject
 		}
 	}
 
-	public static void ChangeKey(string oldKey, string newKey, string path)
+	public static void ChangeKey(string oldKey, string newKey)
 	{
 		try
 		{
-			using var handler = new XDocumentHandler(path);
-			var element = GetSpecificElement(oldKey, handler.Doc);
-			element?.SetAttributeValue(KeyName, newKey);
+			foreach(var path in LangaugeFileHelper.GetLanguageFilePaths())
+			{
+				using var handler = new XDocumentHandler(path);
+				var element = GetSpecificElement(oldKey, handler.Doc);
+				element?.SetAttributeValue(KeyName, newKey);
+			}
 		}
 		catch (Exception)
 		{
@@ -112,12 +112,15 @@ public sealed partial class XmlScript : GodotObject
 		}
 	}
 
-	public static void RemoveItem(string key, string path)
+	public static void RemoveItem(string key)
 	{
 		try
 		{
-			using var handler = new XDocumentHandler(path);
-			GetSpecificElement(key, handler.Doc)?.Remove();
+			foreach(var path in LangaugeFileHelper.GetLanguageFilePaths())
+			{
+				using var handler = new XDocumentHandler(path);
+				GetSpecificElement(key, handler.Doc)?.Remove();
+			}
 		}
 		catch (Exception)
 		{

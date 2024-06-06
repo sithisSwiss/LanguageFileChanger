@@ -1,39 +1,32 @@
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Godot;
-using Godot.Collections;
+
+namespace cfnLanguageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
 public sealed partial class LanguageFileItem : GodotObject
 {
-	private Dictionary<string, string> _attributes = new();
+	private readonly Dictionary<string, LanguageFileAttribute> _attributes = new();
+	private readonly Dictionary<string, LanguageFileValue> _valuePerFile = new();
+	public string Key => KeyAttribute.Value;
+	public LanguageFileAttribute KeyAttribute => GetAttribute(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
+	public LanguageFileAttribute[] Attributes => _attributes.Values.ToArray();
+	public LanguageFileConfiguration Configuration { get; init; }
 
-	private string _value;
-
-	[Signal]
-	public delegate void ItemChangedEventHandler(LanguageFileItem item);
-
-	public Dictionary<string, string> Attributes => Clone(_attributes);
-
-	public string Key => GetAttributeValue(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
-
-	public string Value
+	public static LanguageFileItem CreateNewItem()
 	{
-		get => _value;
-		set
+		var configuration = LangaugeFileHelper.GetCurrentConfiguration();
+		var item = new LanguageFileItem()
 		{
-			_value = value;
-			EmitSignal(nameof(ItemChanged), this);
-		}
-	}
-
-	private static LanguageFileConfiguration Configuration => LanguageFileConfiguration.GetCurrentConfiguration();
-
-	public LanguageFileItem()
-	{
-		foreach (var attributeConfiguration in Configuration.Attributes)
+			Configuration = configuration
+		};
+		foreach (var attributeConfiguration in configuration.Attributes)
 		{
 			var name = attributeConfiguration.Name;
-			_attributes[name] = attributeConfiguration switch
+			var value = attributeConfiguration switch
 			{
 				{ IsInt: true } => "0",
 				{ IsFloat: true} => "0.0",
@@ -41,68 +34,97 @@ public sealed partial class LanguageFileItem : GodotObject
 				{ IsString: true } => string.Empty,
 				var _ => attributeConfiguration.EnumValues.First()
 			};
+			item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
 		}
+
+		foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
+		{
+			item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, "");
+		}
+
+		return item;
 	}
-	public static LanguageFileItem CreateItemFromFile(string key, string path)
+	public static LanguageFileItem CreateExistingItem(string key)
 	{
-		var item = new LanguageFileItem();
-		foreach (var attributeConfiguration in Configuration.Attributes)
+		var configuration = LangaugeFileHelper.GetCurrentConfiguration();
+		string pathFirstFile = LangaugeFileHelper.GetLanguageFilePaths().First();
+		var item = new LanguageFileItem()
+		{
+			Configuration = configuration
+		};
+		foreach (var attributeConfiguration in configuration.Attributes)
 		{
 			var name = attributeConfiguration.Name;
-			var value = XmlScript.GetAttribute(key, name, path);
-			item._attributes[name] = value;
+			var value = XmlScript.GetAttribute(key, name, pathFirstFile);
+			item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
 		}
 
-		item._value = XmlScript.GetValue(key, path);
-		return item;
-	}
-	
-	public static LanguageFileItem CreateItem(Dictionary<string, string> attributes, string value = "")
-	{
-		var item = new LanguageFileItem();
-		item._attributes = attributes;
-		item._value = value;
-		return item;
-	}
-
-	public void SetAttributeValue(string key, string value)
-	{
-		_attributes[key] = value;
-		//EmitSignal(nameof(ItemChanged), this);
-	}
-
-	public string GetAttributeValue(string key)
-	{
-		var t = _attributes.TryGetValue(key, out var value)
-			? value ?? string.Empty
-			: string.Empty;
-		return t;
-	}
-	
-	public static bool ValidateAttribute(string value, LanguageFileConfigurationAttribute attributeConfiguration)
-	{
-		return attributeConfiguration switch
+		foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
 		{
-			{ IsInt: true } => int.TryParse(value, out var _),
-			{ IsFloat: true } => float.TryParse(value, out var _),
-			{ IsBool: true } => bool.TryParse(value, out var _),
-			{ IsString: true } => value.Length > 0,
-			var _ => attributeConfiguration.EnumValues.Contains(value)
-		};
+			item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, XmlScript.GetValue(key, filePath));
+		}
+		
+		return item;
 	}
+	public void SetAttributeValue(string key, string value) => _attributes[key].Value = value;
 
-	public bool ValidateAttribute(string attributeName)
+	public LanguageFileAttribute GetAttribute(string key) => _attributes[key];
+
+	public void SetValueToFile(string filePath, string value) => _valuePerFile[filePath].Value = value;
+
+	public string[] GetFilePaths() => _valuePerFile.Keys.ToArray();
+
+	public string GetLanguage(string fileName)
 	{
-		var attributeConfiguration = Configuration.Attributes.FirstOrDefault(x => x.Name == attributeName);
-		if (attributeConfiguration is null)
+		var languageTag = Regex.Match(fileName, Configuration.LanguageTagRegexPattern).Groups[1].Value;
+
+		if (string.IsNullOrEmpty(languageTag))
+		{
+			return fileName;
+		}
+
+		try
+		{
+			return $"{new CultureInfo(languageTag).EnglishName} ({languageTag})";
+		}
+		catch (CultureNotFoundException ex)
+		{
+			return fileName;
+		}
+	}
+	public string GetValueFromFile(string filePath)
+	{
+		return _valuePerFile[filePath].Value;
+	}
+	
+	public bool HasTheSameAttributeConfiguration(LanguageFileConfiguration otherConfiguration)
+	{
+		if (Configuration.Attributes.Length != otherConfiguration.Attributes.Length)
 		{
 			return false;
 		}
 
-		var t = ValidateAttribute(_attributes[attributeName], attributeConfiguration);
-		return t;
+		for (var index = 0; index < Configuration.Attributes.Length; index++)
+		{
+			var attribute1 = Configuration.Attributes[index];
+			var attribute2 = otherConfiguration.Attributes[index];
+			if (attribute1.Name == attribute2.Name
+			    && attribute1.IsBool == attribute2.IsBool
+			    && attribute1.IsFloat == attribute2.IsFloat
+			    && attribute1.IsInt == attribute2.IsInt
+			    && attribute1.IsString == attribute2.IsString
+			    && attribute1.EnumValues.All(x => attribute2.EnumValues.Contains(x)))
+			{
+				continue;
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
+	
 	public bool Validate(string[] existingKeys)
 	{
 		var t = !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
@@ -115,17 +137,6 @@ public sealed partial class LanguageFileItem : GodotObject
 			.Select(attributeConfig => attributeConfig.Name)
 			.All(nameOfAttribute => _attributes.ContainsKey(nameOfAttribute));
 
-		bool AllAttributesAreValid() => _attributes.All(x => ValidateAttribute(x.Key));
-	}
-
-	private static Dictionary<string, string> Clone(Dictionary<string, string> attributes)
-	{
-		var clone = new Dictionary<string, string>();
-		foreach (var (key, value) in attributes)
-		{
-			clone[key] = value;
-		}
-
-		return clone;
+		bool AllAttributesAreValid() => _attributes.All(x => x.Value.IsValid);
 	}
 }

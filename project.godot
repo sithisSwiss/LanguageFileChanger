@@ -17,6 +17,10 @@ boot_splash/bg_color=Color(0.270588, 0.270588, 0.270588, 1)
 boot_splash/show_image=false
 config/icon="res://Asset/change_icon.png"
 
+[autoload]
+
+Globals="*res://Script/Globals.gd"
+
 [display]
 
 window/size/viewport_width=1600

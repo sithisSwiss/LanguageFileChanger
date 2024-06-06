@@ -7,16 +7,11 @@ class_name AttributeInputField extends Control
 
 @export var label_width: int = Globals.Label_Width
 
-signal value_changed(name:String, new_value: String, is_valid: bool)
-var _attribute_configuration: LanguageFileConfigurationAttribute
-
 var value: String:
 	get:
 		return _get_value_from_field()
-	set(value):
-		_set_value_to_field(value)
-		valid = LanguageFileItem.ValidateAttribute(value, _attribute_configuration)
-		value_changed.emit(attribute_name, value, valid)
+	set(value_):
+		_set_value_to_field(value_)
 
 var valid: bool:
 	set(value):
@@ -28,23 +23,25 @@ enum Input_Type_Enum {Int, Float, Str, List, Not_Set}
 
 var _input_type: Input_Type_Enum = Input_Type_Enum.Not_Set
 var attribute_name: String
+var _attribute: LanguageFileAttribute:
+	get:
+		return Globals.language_file_item.GetAttribute(attribute_name)
 
 func _ready() -> void:
 	enum_input_field.hide()
 	string_input_field.hide()
 	number_input_field.hide()
-	
 	label.custom_minimum_size = Vector2(label_width,0)
 	
-func init(attribute_configuration: LanguageFileConfigurationAttribute, init_value: String) -> void:
-	_attribute_configuration = attribute_configuration
-	_init_input_type(attribute_configuration)
-	_init_based_on_configuration(attribute_configuration)
-	label.text = attribute_configuration.DisplayName + ":"
-	attribute_name = attribute_configuration.Name
-	value = init_value
+func init(attribute_name_: String) -> void:
+	attribute_name = attribute_name_
+	_init_input_type()
+	_set_value_to_field(Globals.language_file_item.GetAttribute(attribute_name).Value)
+	_init_fields()
+	label.text = _attribute.DisplayName + ":"
 
-func _init_input_type(config: LanguageFileConfigurationAttribute):
+func _init_input_type():
+	var config = _attribute.Configuration
 	if config.IsInt:
 		_input_type = Input_Type_Enum.Int
 	elif config.IsFloat:
@@ -54,7 +51,8 @@ func _init_input_type(config: LanguageFileConfigurationAttribute):
 	elif config.EnumValues.size()>0:
 		_input_type = Input_Type_Enum.List
 		
-func _init_based_on_configuration(config: LanguageFileConfigurationAttribute):
+func _init_fields():
+	var config = _attribute.Configuration
 	match _input_type:
 		Input_Type_Enum.Int:
 			number_input_field.show()
@@ -74,8 +72,7 @@ func _init_based_on_configuration(config: LanguageFileConfigurationAttribute):
 			enum_input_field.item_selected.connect(func(index):  _on_field_value_changed(enum_input_field.get_item_text(index)))
 
 func _on_field_value_changed(new_value: String):
-	valid = LanguageFileItem.ValidateAttribute(value, _attribute_configuration)
-	value_changed.emit(attribute_name, value, valid)
+	Globals.language_file_item.SetAttributeValue(_attribute.Name, new_value)
 
 func _get_value_from_field() -> String:
 	match _input_type:

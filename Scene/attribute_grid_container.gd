@@ -1,11 +1,9 @@
 class_name AttributesGridContainer extends PanelContainer
 @onready var v_box_container: VBoxContainer = %VBoxContainer
 
-signal attribute_item_changed(item: LanguageFileItem)
+signal attribute_item_changed()
 
 const edit_group: String = "edit"
-
-var _item: LanguageFileItem = LanguageFileItem.new()
 
 var editable: bool:
 	set(value):
@@ -17,24 +15,27 @@ var editable: bool:
 func _ready() -> void:
 	_add_attribute_fields()
 	editable = false
+	Globals.language_file_item_changed.connect(_on_language_file_item_changed)
 
-func init(item: LanguageFileItem):
-	_item = item
-	_set_value(_item)
+func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem):
+	if caller == self or caller is AttributeInputField:
+		return
+	
+	if !old_item.HasTheSameAttributeConfiguration(new_item.Configuration):
+		for node in v_box_container.get_children():
+			v_box_container.remove_child(node)
+		_add_attribute_fields()
+	elif old_item.Key != new_item.Key:
+		_set_value(new_item)
+	editable = Globals.language_file_item.Key != ""
 
 func _add_attribute_fields():
-	for attribute_config_untyped in Globals.language_file_configuration.Attributes:
-		var attribute_config := attribute_config_untyped as LanguageFileConfigurationAttribute
+	for attribute in Globals.language_file_item.Attributes:
 		var input_field = preload("res://Scene/InputField/attribute_input_field.tscn").instantiate()
 		v_box_container.add_child(input_field)
-		input_field.value_changed.connect(_on_attribute_input_field_value_changed)
-		input_field.init(attribute_config, _item.GetAttributeValue(attribute_config.Name))
-		
-func _on_attribute_input_field_value_changed(name_: String, new_value: String, is_valid: bool):
-	_item.SetAttributeValue(name_, new_value)
-	attribute_item_changed.emit(_item)
+		input_field.init(attribute.Name)
 
 func _set_value(item: LanguageFileItem):
 	for field in v_box_container.get_children():
 		if field is AttributeInputField:
-			field.value = item.GetAttributeValue(field.attribute_name)
+			field.value = item.GetAttribute(field.attribute_name).Value

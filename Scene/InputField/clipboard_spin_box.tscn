@@ -19,6 +19,7 @@ script = ExtResource("2_w8der")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 icon = ExtResource("3_ai37s")
 
 [node name="ValidBorderPanelContainer" parent="." instance=ExtResource("4_m8xpk")]

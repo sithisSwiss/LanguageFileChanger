@@ -1,7 +1,7 @@
 [
   {
     "Name": "EPC01 - Software",
-    "LanguageFilePath": "C:/Git/cfn/cfn-code/150_Software/10_SW/i18n/",
+    "LanguageFileFolderPath": "C:/Git/cfn/cfn-code/150_Software/10_SW/i18n/",
     "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
     "ItemTagName": "Item",
     "KeyAttributeIndex": 0,
@@ -20,7 +20,7 @@
   },
   {
     "Name": "EPC01 - Firmware",
-    "LanguageFilePath": "C:/Git/cfn/cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/",
+    "LanguageFileFolderPath": "C:/Git/cfn/cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/",
     "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
     "ItemTagName": "Item",
     "KeyAttributeIndex": 0,
@@ -49,7 +49,7 @@
   },
   {
     "Name": "Test",
-    "LanguageFilePath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
+    "LanguageFileFolderPath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
     "LanguageTagRegexPattern": "TestFile_(.*).xml",
     "ItemTagName": "ItemText",
     "KeyAttributeIndex": 0,

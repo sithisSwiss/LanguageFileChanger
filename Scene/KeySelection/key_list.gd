@@ -10,13 +10,26 @@ var _init_keys: Array = []
 
 func _ready():
 	search_label.custom_minimum_size = Vector2(Globals.Label_Width, 0)
+	Globals.language_file_item_changed.connect(_on_language_file_item_changed)
+	init()
 
-func init(file_path: String, preSelectKey: String = ""):
-	_init_keys = Array(XmlScript.GetKeys(file_path)) if file_path != "" else []
+func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem):
+	if caller != self:
+		init()
+	else:
+		if !(Globals.language_file_item.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
+			Globals.language_file_item.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
+		
+func _on_key_attribute_changed(attribute, old_value, new_value) -> void:
+	init()
+
+func init():
+	if !(Globals.language_file_item.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
+		Globals.language_file_item.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
+	_init_keys = _get_keys()
 	_load_keys(_init_keys)
 	search_clipboard_line_edit.text = ""
-	if preSelectKey != "":
-		_try_to_select(preSelectKey)
+	_try_to_select(Globals.language_file_item.Key)
 
 func _try_to_select(key:String):
 	for index in range(item_list.item_count):
@@ -37,6 +50,7 @@ func _load_keys(keys: Array):
 func _on_item_list_item_selected(index):
 	if index != null:
 		selected_key = item_list.get_item_text(index)
+		Globals.set_existing_item(self, selected_key)
 		key_selection_changed.emit()
 
 func _on_search_clipboard_line_edit_text_changed(new_text):
@@ -50,3 +64,7 @@ func _select_key_if_only_one():
 	item_list.select(0)
 	selected_key = item_list.get_item_text(0)
 	key_selection_changed.emit()
+
+func _get_keys(item: LanguageFileItem = Globals.language_file_item) -> Array:
+	var first_file_path = Array(item.GetFilePaths()).front()
+	return Array(XmlScript.GetKeys(first_file_path)) if first_file_path != "" else []
