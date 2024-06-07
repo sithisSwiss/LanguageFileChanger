@@ -51,12 +51,19 @@ text = "Create Item"
 [node name="ValuesPanelContainer" type="PanelContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("3_udp4q")
 
-[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/ValuesPanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/ValuesPanelContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ValuesGridContainer" type="GridContainer" parent="VBoxContainer/ValuesPanelContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/v_separation = 2
 columns = 2
 script = ExtResource("4_k8a7g")

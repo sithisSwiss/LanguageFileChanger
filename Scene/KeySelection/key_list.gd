@@ -13,14 +13,14 @@ func _ready():
 	Globals.language_file_item_changed.connect(_on_language_file_item_changed)
 	init()
 
-func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem):
+func _on_language_file_item_changed(caller: Object, _old_item: LanguageFileItem, _new_item: LanguageFileItem):
 	if caller != self:
 		init()
 	else:
 		if !(Globals.language_file_item.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
 			Globals.language_file_item.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
-		
-func _on_key_attribute_changed(attribute, old_value, new_value) -> void:
+
+func _on_key_attribute_changed(_attribute, _old_value, _new_value) -> void:
 	init()
 
 func init():

@@ -22,17 +22,17 @@ size_flags_vertical = 1
 text = "Label:"
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="." groups=["edit"]]
+[node name="OptionButton" type="OptionButton" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ClipboardLineEdit" parent="." groups=["edit"] instance=ExtResource("1_mpnxk")]
+[node name="ClipboardLineEdit" parent="." instance=ExtResource("1_mpnxk")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ClipboardSpinBox" parent="." groups=["edit"] instance=ExtResource("2_0gn7a")]
+[node name="ClipboardSpinBox" parent="." instance=ExtResource("2_0gn7a")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

@@ -9,134 +9,138 @@ namespace cfnLanguageFileChanger.Script.LanguageFile;
 [GlobalClass]
 public sealed partial class LanguageFileItem : GodotObject
 {
-	private readonly Dictionary<string, LanguageFileAttribute> _attributes = new();
-	private readonly Dictionary<string, LanguageFileValue> _valuePerFile = new();
-	public string Key => KeyAttribute.Value;
-	public LanguageFileAttribute KeyAttribute => GetAttribute(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
-	public LanguageFileAttribute[] Attributes => _attributes.Values.ToArray();
-	public LanguageFileConfiguration Configuration { get; init; }
+    private readonly Dictionary<string, LanguageFileAttribute> _attributes = new();
+    private readonly Dictionary<string, LanguageFileValue> _valuePerFile = new();
+    public string Key => KeyAttribute.Value;
+    public LanguageFileAttribute KeyAttribute => GetAttribute(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
+    public LanguageFileAttribute[] Attributes => _attributes.Values.ToArray();
 
-	public static LanguageFileItem CreateNewItem()
-	{
-		var configuration = LangaugeFileHelper.GetCurrentConfiguration();
-		var item = new LanguageFileItem()
-		{
-			Configuration = configuration
-		};
-		foreach (var attributeConfiguration in configuration.Attributes)
-		{
-			var name = attributeConfiguration.Name;
-			var value = attributeConfiguration switch
-			{
-				{ IsInt: true } => "0",
-				{ IsFloat: true} => "0.0",
-				{ IsBool: true} => "false",
-				{ IsString: true } => string.Empty,
-				var _ => attributeConfiguration.EnumValues.First()
-			};
-			item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
-		}
+    public LanguageFileConfiguration Configuration { get; init; }
 
-		foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
-		{
-			item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, "");
-		}
+    public static LanguageFileItem CreateNewItem()
+    {
+        var configuration = LangaugeFileHelper.GetCurrentConfiguration();
+        var item = new LanguageFileItem { Configuration = configuration };
+        foreach (var attributeConfiguration in configuration.Attributes)
+        {
+            var name = attributeConfiguration.Name;
+            var keyName = configuration.Attributes[configuration.KeyAttributeIndex].Name;
+            var value = string.Empty;
+            if (name != keyName)
+            {
+                value = attributeConfiguration switch
+                {
+                    { IsInt: true } => "0",
+                    { IsFloat: true } => "0.0",
+                    { IsBool: true } => "false",
+                    { IsString: true } => string.Empty,
+                    var _ => attributeConfiguration.EnumValues.First()
+                };
+            }
 
-		return item;
-	}
-	public static LanguageFileItem CreateExistingItem(string key)
-	{
-		var configuration = LangaugeFileHelper.GetCurrentConfiguration();
-		string pathFirstFile = LangaugeFileHelper.GetLanguageFilePaths().First();
-		var item = new LanguageFileItem()
-		{
-			Configuration = configuration
-		};
-		foreach (var attributeConfiguration in configuration.Attributes)
-		{
-			var name = attributeConfiguration.Name;
-			var value = XmlScript.GetAttribute(key, name, pathFirstFile);
-			item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
-		}
+            item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
+        }
 
-		foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
-		{
-			item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, XmlScript.GetValue(key, filePath));
-		}
-		
-		return item;
-	}
-	public void SetAttributeValue(string key, string value) => _attributes[key].Value = value;
+        foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
+        {
+            item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, "");
+        }
 
-	public LanguageFileAttribute GetAttribute(string key) => _attributes[key];
+        return item;
+    }
 
-	public void SetValueToFile(string filePath, string value) => _valuePerFile[filePath].Value = value;
+    public static LanguageFileItem CreateExistingItem(string key)
+    {
+        var configuration = LangaugeFileHelper.GetCurrentConfiguration();
+        var pathFirstFile = LangaugeFileHelper.GetLanguageFilePaths().First();
+        var item = new LanguageFileItem { Configuration = configuration };
+        foreach (var attributeConfiguration in configuration.Attributes)
+        {
+            var name = attributeConfiguration.Name;
+            var value = XmlScript.GetAttribute(key, name, pathFirstFile);
+            item._attributes[name] = new LanguageFileAttribute(item, attributeConfiguration, value);
+        }
 
-	public string[] GetFilePaths() => _valuePerFile.Keys.ToArray();
+        foreach (var filePath in LangaugeFileHelper.GetLanguageFilePaths())
+        {
+            item._valuePerFile[filePath] = new LanguageFileValue(item, filePath, XmlScript.GetValue(key, filePath));
+        }
 
-	public string GetLanguage(string fileName)
-	{
-		var languageTag = Regex.Match(fileName, Configuration.LanguageTagRegexPattern).Groups[1].Value;
+        return item;
+    }
 
-		if (string.IsNullOrEmpty(languageTag))
-		{
-			return fileName;
-		}
+    public void SetAttributeValue(string key, string value) => _attributes[key].Value = value;
 
-		try
-		{
-			return $"{new CultureInfo(languageTag).EnglishName} ({languageTag})";
-		}
-		catch (CultureNotFoundException ex)
-		{
-			return fileName;
-		}
-	}
-	public string GetValueFromFile(string filePath)
-	{
-		return _valuePerFile[filePath].Value;
-	}
-	
-	public bool HasTheSameAttributeConfiguration(LanguageFileConfiguration otherConfiguration)
-	{
-		if (Configuration.Attributes.Length != otherConfiguration.Attributes.Length)
-		{
-			return false;
-		}
+    public LanguageFileAttribute GetAttribute(string key) => _attributes[key];
 
-		for (var index = 0; index < Configuration.Attributes.Length; index++)
-		{
-			var attribute1 = Configuration.Attributes[index];
-			var attribute2 = otherConfiguration.Attributes[index];
-			if (attribute1.Name == attribute2.Name
-			    && attribute1.IsBool == attribute2.IsBool
-			    && attribute1.IsFloat == attribute2.IsFloat
-			    && attribute1.IsInt == attribute2.IsInt
-			    && attribute1.IsString == attribute2.IsString
-			    && attribute1.EnumValues.All(x => attribute2.EnumValues.Contains(x)))
-			{
-				continue;
-			}
+    public void SetValueToFile(string filePath, string value) => _valuePerFile[filePath].Value = value;
 
-			return false;
-		}
+    public string[] GetFilePaths() => _valuePerFile.Keys.ToArray();
+    public string GetFolderPath() => Configuration.LanguageFileFolderPath;
 
-		return true;
-	}
+    public string GetLanguage(string fileName)
+    {
+        var languageTag = Regex.Match(fileName, Configuration.LanguageTagRegexPattern).Groups[1].Value;
 
-	
-	public bool Validate(string[] existingKeys)
-	{
-		var t = !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
-		return t;
-		bool KeyAreEmpty() => string.IsNullOrEmpty(Key);
-		bool KeyAlreadyExist() => existingKeys.Contains(Key);
+        if (string.IsNullOrEmpty(languageTag))
+        {
+            return fileName;
+        }
 
-		bool ItemHasAllAttributes() => Configuration
-			.Attributes
-			.Select(attributeConfig => attributeConfig.Name)
-			.All(nameOfAttribute => _attributes.ContainsKey(nameOfAttribute));
+        try
+        {
+            return $"{new CultureInfo(languageTag).EnglishName} ({languageTag})";
+        }
+        catch (CultureNotFoundException)
+        {
+            return fileName;
+        }
+    }
 
-		bool AllAttributesAreValid() => _attributes.All(x => x.Value.IsValid);
-	}
+    public string GetValueFromFile(string filePath) => _valuePerFile.TryGetValue(filePath, out var value) ? value.Value : string.Empty;
+
+    public string GetValueFromEnglishFile() =>
+        GetValueFromFile(LangaugeFileHelper.GetEnglishLanguageFilePath() ?? LangaugeFileHelper.GetLanguageFilePaths().First());
+
+    public bool HasTheSameAttributeConfiguration(LanguageFileItem otherItem)
+    {
+        if (Configuration.Attributes.Length != otherItem.Configuration.Attributes.Length)
+        {
+            return false;
+        }
+
+        for (var index = 0; index < Configuration.Attributes.Length; index++)
+        {
+            var attribute1 = Configuration.Attributes[index];
+            var attribute2 = otherItem.Configuration.Attributes[index];
+            if (attribute1.Name == attribute2.Name
+                && attribute1.IsBool == attribute2.IsBool
+                && attribute1.IsFloat == attribute2.IsFloat
+                && attribute1.IsInt == attribute2.IsInt
+                && attribute1.IsString == attribute2.IsString
+                && attribute1.EnumValues.All(x => attribute2.EnumValues.Contains(x)))
+            {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool Validate(string[] existingKeys)
+    {
+        var t = !KeyAreEmpty() && !KeyAlreadyExist() && ItemHasAllAttributes() && AllAttributesAreValid();
+        return t;
+        bool KeyAreEmpty() => string.IsNullOrEmpty(Key);
+        bool KeyAlreadyExist() => existingKeys.Contains(Key);
+
+        bool ItemHasAllAttributes() => Configuration
+            .Attributes
+            .Select(attributeConfig => attributeConfig.Name)
+            .All(nameOfAttribute => _attributes.ContainsKey(nameOfAttribute));
+
+        bool AllAttributesAreValid() => _attributes.All(x => x.Value.IsValid);
+    }
 }

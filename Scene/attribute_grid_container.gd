@@ -3,12 +3,12 @@ class_name AttributesGridContainer extends PanelContainer
 
 signal attribute_item_changed()
 
-const edit_group: String = "edit"
-
 var editable: bool:
 	set(value):
 		editable = value
-		Globals.set_editable_of_group(editable, edit_group, self)
+		for child in v_box_container.get_children():
+			if child is AttributeInputField:
+				(child as AttributeInputField).editable = value
 	get:
 		return editable
 
@@ -20,14 +20,15 @@ func _ready() -> void:
 func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem):
 	if caller == self or caller is AttributeInputField:
 		return
-	
-	if !old_item.HasTheSameAttributeConfiguration(new_item.Configuration):
+
+	if !old_item.HasTheSameAttributeConfiguration(new_item):
 		for node in v_box_container.get_children():
 			v_box_container.remove_child(node)
 		_add_attribute_fields()
 	elif old_item.Key != new_item.Key:
 		_set_value(new_item)
 	editable = Globals.language_file_item.Key != ""
+	print( Globals.language_file_item.Key )
 
 func _add_attribute_fields():
 	for attribute in Globals.language_file_item.Attributes:

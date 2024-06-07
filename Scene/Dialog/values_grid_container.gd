@@ -2,7 +2,7 @@ class_name ValuesGridContainer extends GridContainer
 
 @onready var clipboard_line_edit_scene := preload("res://Scene/InputField/clipboard_line_edit.tscn")
 
-func inti(edit_node_group: String):
+func init(edit_node_group: String):
 	for file in Globals.language_file_item.GetFilePaths():
 		_add_value_field(file, edit_node_group)
 

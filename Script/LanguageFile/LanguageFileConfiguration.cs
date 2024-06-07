@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
 
+namespace cfnLanguageFileChanger.Script.LanguageFile;
+
 public class LanguageFileConfiguration
 {
     [JsonProperty(nameof(Name))] public string Name { get; private set; }

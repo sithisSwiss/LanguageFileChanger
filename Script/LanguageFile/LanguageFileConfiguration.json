@@ -43,41 +43,20 @@
       {
         "Name": "layout",
         "DisplayName": "Layout",
-        "EnumValues": ["A", "A1", "B", "B1", "C", "C1", "D", "E", "F", "G", "UNKNOWN", "unknown"]
-      }
-    ]
-  },
-  {
-    "Name": "Test",
-    "LanguageFileFolderPath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
-    "LanguageTagRegexPattern": "TestFile_(.*).xml",
-    "ItemTagName": "ItemText",
-    "KeyAttributeIndex": 0,
-    "Attributes": [
-      {
-        "Name": "key2",
-        "DisplayName": "Key",
-        "IsString": true
-      },
-      {
-        "Name": "info2",
-        "DisplayName": "Info",
-        "IsString": true
-      },
-      {
-        "Name": "option",
-        "DisplayName": "Option",
-        "EnumValues": ["A", "B", "C", "D", "E", "F"]
-      },
-      {
-        "Name": "number",
-        "DisplayName": "Number",
-        "IsInt": true
-      },
-      {
-        "Name": "number2",
-        "DisplayName": "Number2",
-        "IsFloat": true
+        "EnumValues": [
+          "A",
+          "A1",
+          "B",
+          "B1",
+          "C",
+          "C1",
+          "D",
+          "E",
+          "F",
+          "G",
+          "UNKNOWN",
+          "unknown"
+        ]
       }
     ]
   }

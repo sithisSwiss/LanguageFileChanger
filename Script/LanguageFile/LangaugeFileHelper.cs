@@ -1,37 +1,37 @@
-﻿using System.Collections.Generic;
+#nullable enable
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using cfnLanguageFileChanger.Script;
 using Godot;
 using Newtonsoft.Json;
+using Array = Godot.Collections.Array;
+using FileAccess = Godot.FileAccess;
+
+namespace cfnLanguageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
-public partial class LangaugeFileHelper : GodotObject
+public sealed partial class LangaugeFileHelper : GodotObject
 {
-    public static LanguageFileConfiguration[] GetConfigurations() => Configurations;
-    private static readonly LanguageFileConfiguration[] Configurations = LoadConfiguration();
+    private static LanguageFileConfiguration[]? _configurations;
+    public static string[] GetConfigurationNames() => _configurations?.Select(x => x.Name).ToArray() ?? System.Array.Empty<string>();
 
     public static string[] GetLanguageFilePaths() =>
-        Directory.GetFiles(GetCurrentConfiguration().LanguageFileFolderPath).Where(path => Path.GetExtension(path) == ".xml").ToArray();
+        Directory.GetFiles(GetCurrentConfiguration()?.LanguageFileFolderPath ?? string.Empty).Where(path => Path.GetExtension(path) == ".xml").ToArray();
 
-    public static LanguageFileConfiguration GetCurrentConfiguration() => Configurations[Persistent.GetPersistent().SelectedConfigIndex];
+    public static string GetEnglishLanguageFilePath() => GetLanguageFilePaths().FirstOrDefault(x => x.Contains("en")) ?? GetLanguageFilePaths().First();
 
-    private static LanguageFileConfiguration[] LoadConfiguration()
+    public static LanguageFileConfiguration? GetCurrentConfiguration() => _configurations?[Math.Clamp(
+        Persistent.GetPersistent().SelectedConfigIndex,
+        0,
+        _configurations.Length - 1)];
+
+    public static void LoadConfiguration(string path)
     {
-        var newConfigurationPath = ProjectSettings.GlobalizePath("res://Script/LanguageFile/LanguageFileConfiguration.json");
-#if DEBUG
-        using StreamReader reader = new(newConfigurationPath);
-#else
-		string configurationPath = OS.GetExecutablePath().GetBaseDir() + "/LanguageFileConfiguration.json"; 
-		if (!File.Exists(configurationPath))
-		{
-			File.Copy(newConfigurationPath, configurationPath);
-		}
-		using StreamReader reader = new(configurationPath);
-#endif
-
+        var globalizePath = ProjectSettings.GlobalizePath(path);
+        using StreamReader reader = new(globalizePath);
         var json = reader.ReadToEnd();
         var itemConfiguration = JsonConvert.DeserializeObject<List<LanguageFileConfiguration>>(json);
-        return itemConfiguration.ToArray();
+        _configurations = itemConfiguration!.ToArray();
     }
 }

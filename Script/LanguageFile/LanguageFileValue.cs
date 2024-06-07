@@ -1,6 +1,6 @@
 ﻿namespace cfnLanguageFileChanger.Script.LanguageFile;
 
-public class LanguageFileValue
+public sealed class LanguageFileValue
 {
     private readonly LanguageFileItem _parent;
     private string _value;
