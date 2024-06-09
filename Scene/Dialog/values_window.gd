@@ -6,10 +6,10 @@ class_name ValuesWindow extends Window
 @onready var create_item_container: CenterContainer = %CreateItemContainer
 @onready var create_item_button: Button = %CreateItemButton
 
-signal item_created(item: LanguageFileItem)
+signal item_created(item: LanguageString)
 
 var _keys: Array
-var _attribute_item: LanguageFileItem
+var _attribute_item: LanguageString
 
 const edit_node_group: String = "value_dialog_value_edit"
 
@@ -19,7 +19,7 @@ func _ready():
 	min_size = Vector2(800,400)
 
 func init_change():
-	title = "Change Item (" + Globals.language_file_item.Key +")"
+	title = "Change Item (" + Globals.language_string.Key +")"
 	attribute_grid_container.editable = false
 	values_grid_container.init(edit_node_group)
 	values_panel_container.show()
@@ -37,11 +37,11 @@ func init_add():
 	return self
 
 func init():
-	var file_paths = Array(Globals.language_file_item.GetFilePaths())
-	_keys = XmlScript.GetKeys(file_paths.front())
+	var file_paths = Array(Globals.language_string.GetFilePaths())
+	_keys = LanguageFileHelper.GetAllKeysFromFirstFile()
 	show()
 
-func _on_attribute_changed(item: LanguageFileItem):
+func _on_attribute_changed(item: LanguageString):
 	_attribute_item = item
 	create_item_button.disabled = !item.Validate(_keys)
 

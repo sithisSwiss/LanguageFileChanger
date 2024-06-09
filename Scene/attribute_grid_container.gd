@@ -15,9 +15,9 @@ var editable: bool:
 func _ready() -> void:
 	_add_attribute_fields()
 	editable = false
-	Globals.language_file_item_changed.connect(_on_language_file_item_changed)
+	Globals.language_string_changed.connect(_on_language_string_changed)
 
-func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem):
+func _on_language_string_changed(caller: Object, old_item: LanguageString, new_item: LanguageString):
 	if caller == self or caller is AttributeInputField:
 		return
 
@@ -27,16 +27,16 @@ func _on_language_file_item_changed(caller: Object, old_item: LanguageFileItem, 
 		_add_attribute_fields()
 	elif old_item.Key != new_item.Key:
 		_set_value(new_item)
-	editable = Globals.language_file_item.Key != ""
-	print( Globals.language_file_item.Key )
+	editable = Globals.language_string.Key != ""
+	print( Globals.language_string.Key )
 
 func _add_attribute_fields():
-	for attribute in Globals.language_file_item.Attributes:
+	for attribute in Globals.language_string.Attributes:
 		var input_field = preload("res://Scene/InputField/attribute_input_field.tscn").instantiate()
 		v_box_container.add_child(input_field)
 		input_field.init(attribute.Name)
 
-func _set_value(item: LanguageFileItem):
+func _set_value(item: LanguageString):
 	for field in v_box_container.get_children():
 		if field is AttributeInputField:
 			field.value = item.GetAttribute(field.attribute_name).Value

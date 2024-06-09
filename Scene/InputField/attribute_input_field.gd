@@ -20,9 +20,9 @@ var valid: bool:
 		return _get_valid()
 
 var attribute_name: String
-var _attribute: LanguageFileAttribute:
+var _attribute: LanguageStringAttribute:
 	get:
-		return Globals.language_file_item.GetAttribute(attribute_name)
+		return Globals.language_string.GetAttribute(attribute_name)
 
 var editable: bool:
 	get:
@@ -41,51 +41,51 @@ func _ready() -> void:
 
 func init(attribute_name_: String) -> void:
 	attribute_name = attribute_name_
-	_set_value_to_field(Globals.language_file_item.GetAttribute(attribute_name).Value)
+	_set_value_to_field(Globals.language_string.GetAttribute(attribute_name).Value)
 	_init_fields()
 	label.text = _attribute.DisplayName + ":"
 
 func _init_fields():
-	if _attribute.Type == _attribute.Types["Int"]:
+	if _is_type_of_int():
 		number_input_field.show()
 		number_input_field.rounded = true
 		number_input_field.value_changed.connect(func(x): _on_field_value_changed(str(x)))
-	elif  _attribute.Type == _attribute.Types["Float"]:
+	elif _is_type_of_float():
 		number_input_field.show()
 		number_input_field.rounded = false
 		number_input_field.value_changed.connect(func(x):  _on_field_value_changed(str(x)))
-	elif  _attribute.Type == _attribute.Types["String"]:
+	elif _is_type_of_string():
 		string_input_field.show()
 		string_input_field.text_changed.connect(func(x): _on_field_value_changed(x))
-	elif  _attribute.Type == _attribute.Types["List"]:
+	elif _is_type_of_list():
 		enum_input_field.show()
 		for enum_value in _attribute.EnumValues:
 			enum_input_field.add_item(enum_value)
 		enum_input_field.item_selected.connect(func(index):  _on_field_value_changed(enum_input_field.get_item_text(index)))
 
 func _on_field_value_changed(new_value: String):
-	Globals.language_file_item.SetAttributeValue(_attribute.Name, new_value)
+	Globals.language_string.SetAttributeValue(_attribute.Name, new_value)
 
 func _get_value_from_field() -> String:
-	if _attribute.Type == _attribute.Types["Int"]:
+	if _is_type_of_int():
 		return str(number_input_field.value)
-	elif  _attribute.Type == _attribute.Types["Float"]:
+	elif _is_type_of_float():
 		return str(number_input_field.value)
-	elif  _attribute.Type == _attribute.Types["String"]:
+	elif _is_type_of_string():
 		return string_input_field.text
-	elif  _attribute.Type == _attribute.Types["List"]:
+	elif _is_type_of_list():
 		var index = enum_input_field.selected
 		return enum_input_field.get_item_text(index)
 	return ""
 
 func _set_value_to_field(value_: String):
-	if _attribute.Type == _attribute.Types["Int"]:
+	if _is_type_of_int():
 		number_input_field.value = int(value_)
-	elif  _attribute.Type == _attribute.Types["Float"]:
+	elif _is_type_of_float():
 		number_input_field.value = float(value_)
-	elif  _attribute.Type == _attribute.Types["String"]:
+	elif _is_type_of_string():
 		string_input_field.text = value_
-	elif  _attribute.Type == _attribute.Types["List"]:
+	elif _is_type_of_list():
 		_select_list_input_by_value(value_)
 
 func _select_list_input_by_value(value_: String):
@@ -96,23 +96,23 @@ func _select_list_input_by_value(value_: String):
 			return
 
 func _set_valid(is_valid: bool):
-	if _attribute.Type == _attribute.Types["Int"]:
+	if _is_type_of_int():
 		number_input_field.valid = is_valid
-	elif  _attribute.Type == _attribute.Types["Float"]:
+	elif _is_type_of_float():
 		number_input_field.valid = is_valid
-	elif  _attribute.Type == _attribute.Types["String"]:
+	elif _is_type_of_string():
 		string_input_field.valid = is_valid
-	elif  _attribute.Type == _attribute.Types["List"]:
+	elif _is_type_of_list():
 		pass
 
 func _get_valid():
-	if _attribute.Type == _attribute.Types["Int"]:
+	if _is_type_of_int():
 		return number_input_field.valid
-	elif  _attribute.Type == _attribute.Types["Float"]:
+	elif _is_type_of_float():
 		return number_input_field.valid
-	elif  _attribute.Type == _attribute.Types["String"]:
+	elif _is_type_of_string():
 		return string_input_field.valid
-	elif  _attribute.Type == _attribute.Types["List"]:
+	elif _is_type_of_list():
 		pass
 	return true
 
@@ -121,3 +121,12 @@ func _set_editable(node: Node, editable_: bool):
 		node.editable = editable_
 	elif node is Button:
 		node.disabled = !editable_
+
+func _is_type_of_int() -> bool:
+	return _attribute.IsTypeOf("Int")
+func _is_type_of_float() -> bool:
+	return _attribute.IsTypeOf("Float")
+func _is_type_of_string() -> bool:
+	return _attribute.IsTypeOf("String")
+func _is_type_of_list() -> bool:
+	return _attribute.IsTypeOf("List")

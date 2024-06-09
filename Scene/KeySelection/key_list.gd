@@ -10,26 +10,27 @@ var _init_keys: Array = []
 
 func _ready():
 	search_label.custom_minimum_size = Vector2(Globals.Label_Width, 0)
-	Globals.language_file_item_changed.connect(_on_language_file_item_changed)
+	Globals.language_string_changed.connect(_on_language_string_changed)
 	init()
 
-func _on_language_file_item_changed(caller: Object, _old_item: LanguageFileItem, _new_item: LanguageFileItem):
+func _on_language_string_changed(caller: Object, _old_item: LanguageString, _new_item: LanguageString):
 	if caller != self:
 		init()
 	else:
-		if !(Globals.language_file_item.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
-			Globals.language_file_item.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
+		if !(Globals.language_string.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
+			Globals.language_string.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
 
 func _on_key_attribute_changed(_attribute, _old_value, _new_value) -> void:
 	init()
 
 func init():
-	if !(Globals.language_file_item.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
-		Globals.language_file_item.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
+	search_clipboard_line_edit.text = ""
+	if !(Globals.language_string.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
+		Globals.language_string.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
 	_init_keys = _get_keys()
 	_load_keys(_init_keys)
 	search_clipboard_line_edit.text = ""
-	_try_to_select(Globals.language_file_item.Key)
+	_try_to_select(Globals.language_string.Key)
 
 func _try_to_select(key:String):
 	for index in range(item_list.item_count):
@@ -65,6 +66,5 @@ func _select_key_if_only_one():
 	selected_key = item_list.get_item_text(0)
 	key_selection_changed.emit()
 
-func _get_keys(item: LanguageFileItem = Globals.language_file_item) -> Array:
-	var first_file_path = Array(item.GetFilePaths()).front()
-	return Array(XmlScript.GetKeys(first_file_path)) if first_file_path != "" else []
+func _get_keys(item: LanguageString = Globals.language_string) -> Array:
+	return LanguageFileHelper.GetAllKeysFromFirstFile()

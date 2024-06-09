@@ -22,24 +22,25 @@ func _ready():
 	$VBoxContainer/PanelContainer/GridContainer/TypeLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	$VBoxContainer/PanelContainer3/HBoxContainer3/ValueLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	$VBoxContainer/ButtonHBoxContainer/Spacer.custom_minimum_size = Vector2(Globals.Label_Width,0)
-	for config_name in LangaugeFileHelper.GetConfigurationNames():
+	for config_name in LanguageFileHelper.GetConfigurationNames():
 		type_option_button.add_item(config_name)
 	type_option_button.select(clamp(Globals.persistent.SelectedConfigIndex, 0, type_option_button.item_count-1))
 
-	specific_path.text = Globals.language_file_item.GetFolderPath()
+	specific_path.text = Globals.language_string.GetFolderPath()
 	_reload_language_file()
 	_refresh_buttons()
 	Globals.set_new_item(self)
 
 func _refresh_buttons():
+	add_button.disabled = LanguageFileHelper.GetAllKeysFromFirstFile().size() == 0
 	change_button.disabled = get_selected_key() == ""
 	remove_button.disabled = get_selected_key() == ""
 
 func _reload_language_file():
-	language_file_found.text = str(Array(Globals.language_file_item.GetFilePaths()).size())
+	language_file_found.text = str(Array(LanguageFileHelper.GetLanguageFilePaths()).size())
 
 func _reload_value_field():
-	value_label_value.text = Globals.language_file_item.GetValueFromEnglishFile()
+	value_label_value.text = Globals.language_string.GetValueFromEnglishFile()
 
 func _on_key_list_item_selection_changed():
 	_reload_value_field()
@@ -59,12 +60,12 @@ func _on_values_window_closed():
 	_refresh_buttons()
 
 func _on_remove_button_pressed():
-	XmlScript.RemoveItem(get_selected_key())
+	Globals.language_string.RemoveItem()
 	_refresh_buttons()
 
 func _on_type_option_button_item_selected(index: int) -> void:
 	Globals.persistent.SelectedConfigIndex = index
-	specific_path.text = Globals.language_file_item.GetFolderPath()
+	specific_path.text = Globals.language_string.GetFolderPath()
 	_reload_language_file()
 	Globals.set_new_item(self)
 	_reload_value_field()

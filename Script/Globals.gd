@@ -6,28 +6,28 @@ const Title: String = "Language File Changer"
 
 static var persistent := preload("res://Script/Persistent.cs").GetPersistent()
 
-signal language_file_item_changed(caller: Object, old_item: LanguageFileItem, new_item: LanguageFileItem)
+signal language_string_changed(caller: Object, old_item: LanguageString, new_item: LanguageString)
 
-var language_file_item : LanguageFileItem
+var language_string : LanguageString
 
 func set_existing_item(caller: Object, key: String) -> void:
-	var old_value := language_file_item
-	language_file_item = LanguageFileItem.CreateExistingItem(key)
-	language_file_item_changed.emit(caller, old_value, language_file_item)
+	var old_value := language_string
+	language_string = LanguageString.CreateExistingItem(key)
+	language_string_changed.emit(caller, old_value, language_string)
 
 func set_new_item(caller: Object) -> void:
-	var old_value := language_file_item
-	language_file_item = LanguageFileItem.CreateNewItem()
-	language_file_item_changed.emit(caller, old_value, language_file_item)
+	var old_value := language_string
+	language_string = LanguageString.CreateNewItem()
+	language_string_changed.emit(caller, old_value, language_string)
 
 func _ready():
 	const config_path_res := "res://Script/LanguageFile/LanguageFileConfiguration.json"
 	if !OS.has_feature("editor"):
 		var config_path_system := OS.get_executable_path().get_base_dir() + "/LanguageFileConfiguration.json"
 		GlobalsClass._copy_configuration_file_if_not_exist(config_path_system, config_path_res)
-		LangaugeFileHelper.LoadConfiguration(config_path_system)
+		LanguageFileHelper.LoadConfiguration(config_path_system)
 	else:
-		LangaugeFileHelper.LoadConfiguration(config_path_res)
+		LanguageFileHelper.LoadConfiguration(config_path_res)
 	set_new_item(self)
 
 static func _copy_configuration_file_if_not_exist(check_path: String, copy_from: String):
