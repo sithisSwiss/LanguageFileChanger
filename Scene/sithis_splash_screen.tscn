@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scene/sithis_splash_screen.gd" id="1_w1i53"]
 [ext_resource type="Texture2D" uid="uid://i1ydjr7t0wc4" path="res://Asset/logo_large_color_dark.png" id="2_2mtfu"]
-[ext_resource type="Texture2D" uid="uid://baxrq4w7j5utt" path="res://Asset/SithisDevelopment0.0.1.png" id="2_tklyu"]
+[ext_resource type="Texture2D" uid="uid://ckr7q4hnxx1rk" path="res://Asset/SpringDevelopmentLogo_2x_White.png" id="3_d0rim"]
 
 [sub_resource type="Animation" id="Animation_2yukp"]
 length = 0.001
@@ -133,7 +133,7 @@ custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("2_tklyu")
+texture = ExtResource("3_d0rim")
 expand_mode = 3
 stretch_mode = 5
 

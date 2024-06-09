@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baxrq4w7j5utt"
-path="res://.godot/imported/SithisDevelopment0.0.1.png-5422cd5137296c89f7f10ca30be99799.ctex"
+uid="uid://ckr7q4hnxx1rk"
+path="res://.godot/imported/SpringDevelopmentLogo_2x_White.png-6e24944e0a1cd965ad96b92c8159ef35.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Asset/SithisDevelopment0.0.1.png"
-dest_files=["res://.godot/imported/SithisDevelopment0.0.1.png-5422cd5137296c89f7f10ca30be99799.ctex"]
+source_file="res://Asset/SpringDevelopmentLogo_2x_White.png"
+dest_files=["res://.godot/imported/SpringDevelopmentLogo_2x_White.png-6e24944e0a1cd965ad96b92c8159ef35.ctex"]
 
 [params]
 
