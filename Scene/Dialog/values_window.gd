@@ -37,7 +37,6 @@ func init_add():
 	return self
 
 func init():
-	var file_paths = Array(Globals.language_string.GetFilePaths())
 	_keys = LanguageFileHelper.GetAllKeysFromFirstFile()
 	show()
 

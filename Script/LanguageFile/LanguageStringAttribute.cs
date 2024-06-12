@@ -48,7 +48,7 @@ public sealed partial class LanguageStringAttribute : GodotObject
             _value = value;
             if (IsValid)
             {
-                EmitSignal(SignalName.AttributeValueChanged, this, value, oldValue);
+                EmitSignal(SignalName.AttributeValueChanged, this, oldValue, value);
             }
 
         }
