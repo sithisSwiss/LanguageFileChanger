@@ -11,8 +11,6 @@ signal item_created(item: LanguageString)
 var _keys: Array
 var _attribute_item: LanguageString
 
-const edit_node_group: String = "value_dialog_value_edit"
-
 func _ready():
 	hide()
 	values_panel_container.hide()
@@ -21,7 +19,7 @@ func _ready():
 func init_change():
 	title = "Change Item (" + Globals.language_string.Key +")"
 	attribute_grid_container.editable = false
-	values_grid_container.init(edit_node_group)
+	values_grid_container.init()
 	values_panel_container.show()
 	create_item_container.hide()
 	init()
