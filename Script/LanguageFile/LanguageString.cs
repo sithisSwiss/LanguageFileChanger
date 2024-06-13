@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,17 +30,18 @@ public sealed partial class LanguageString : GodotObject
             var value = string.Empty;
             if (name != keyAttributeName)
             {
-                value = attributeConfiguration switch
+                value = attributeConfiguration.Type.ToLower() switch
                 {
-                    { IsInt: true } => "0",
-                    { IsFloat: true } => "0.0",
-                    { IsString: true } => string.Empty,
-                    var _ => attributeConfiguration.EnumValues.First()
+                    "int" => "0",
+                    "float" => "0.0",
+                    "string" => string.Empty,
+                    "enum" => attributeConfiguration.EnumValues!.First(),
+                    var _ => throw new ArgumentOutOfRangeException()
                 };
             }
 
             item._attributes[name] = new LanguageStringAttribute(CreateAttributeType(attributeConfiguration), attributeConfiguration, value);
-            item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName==name);
+            item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName == name);
         }
 
         foreach (var filePath in LanguageFileHelper.GetLanguageFilePaths())
@@ -62,7 +64,7 @@ public sealed partial class LanguageString : GodotObject
             var name = attributeConfiguration.Name;
             var value = LanguageFileHelper.Script.GetAttribute(key, name, LanguageFileHelper.GetLanguageFilePaths().First());
             item._attributes[name] = new LanguageStringAttribute(CreateAttributeType(attributeConfiguration), attributeConfiguration, value);
-            item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName==name);
+            item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName == name);
         }
 
         foreach (var filePath in LanguageFileHelper.GetLanguageFilePaths())
@@ -124,11 +126,8 @@ public sealed partial class LanguageString : GodotObject
             var attribute1 = Configuration.Attributes[index];
             var attribute2 = otherItem.Configuration.Attributes[index];
             if (attribute1.Name == attribute2.Name
-                && attribute1.IsBool == attribute2.IsBool
-                && attribute1.IsFloat == attribute2.IsFloat
-                && attribute1.IsInt == attribute2.IsInt
-                && attribute1.IsString == attribute2.IsString
-                && attribute1.EnumValues.All(x => attribute2.EnumValues.Contains(x)))
+                && attribute1.Type.ToLower() == attribute2.Type.ToLower()
+                && CompareLists(attribute1.EnumValues, attribute2.EnumValues))
             {
                 continue;
             }
@@ -153,17 +152,34 @@ public sealed partial class LanguageString : GodotObject
 
         bool AllAttributesAreValid() => _attributes.All(x => x.Value.IsValid);
     }
-    
-    
-    
+
+    private static bool CompareLists<T>(IEnumerable<T>? collection1, IEnumerable<T>? collection2)
+    {
+        if (collection1 == null)
+        {
+            return collection2 == null;
+        }
+        else if (collection2 == null)
+        {
+            return false;
+        }
+
+        List<T> list1 = collection1.ToList();
+        List<T> list2 = collection2.ToList();
+        List<T> firstNotSecond = list1.Except(list2).ToList();
+        List<T> secondNotFirst = list2.Except(list1).ToList();
+        return !firstNotSecond.Any() && !secondNotFirst.Any();
+    }
+
     private static ILanguageStringAttributeType CreateAttributeType(LanguageFileConfigurationAttribute attributeConfiguration)
     {
-        return attributeConfiguration switch
+        return attributeConfiguration.Type.ToLower() switch
         {
-            { IsInt: true } => new IntAttributeType(),
-            { IsFloat: true } => new FloatAttributeType(),
-            { IsString: true } => new StringAttributeType(),
-            var _ => new ListAttributeType(attributeConfiguration)
+            "int" => new IntAttributeType(),
+            "float" => new FloatAttributeType(),
+            "string" => new StringAttributeType(),
+            "enum" => new ListAttributeType(attributeConfiguration),
+            var _ => throw new ArgumentOutOfRangeException()
         };
     }
 
@@ -189,11 +205,10 @@ public sealed partial class LanguageString : GodotObject
     {
         value.ValueChanged += OnValueChanged;
         return;
-        
+
         void OnValueChanged(LanguageStringValue val, string oldValue, string newValue)
         {
             LanguageFileHelper.Script.SaveValue(this, val, path);
         }
     }
-    
 }

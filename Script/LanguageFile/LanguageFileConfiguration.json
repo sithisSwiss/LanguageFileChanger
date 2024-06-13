@@ -11,12 +11,12 @@
       {
         "Name": "key",
         "DisplayName": "Key",
-        "IsString": true
+        "Type": "string"
       },
       {
         "Name": "info",
         "DisplayName": "Info",
-        "IsString": true
+        "Type": "string"
       }
     ]
   },
@@ -32,21 +32,22 @@
       {
         "Name": "key",
         "DisplayName": "Key",
-        "IsInt": true
+        "Type": "int"
       },
       {
         "Name": "info",
         "DisplayName": "Info",
-        "IsString": true
+        "Type": "string"
       },
       {
         "Name": "field",
         "DisplayName": "Field",
-        "IsInt": true
+        "Type": "int"
       },
       {
         "Name": "layout",
         "DisplayName": "Layout",
+        "Type": "enum",
         "EnumValues": [
           "A",
           "A1",
@@ -76,16 +77,17 @@
       {
         "Name": "key2",
         "DisplayName": "Key",
-        "IsString": true
+        "Type": "string"
       },
       {
         "Name": "info2",
         "DisplayName": "Info",
-        "IsString": true
+        "Type": "string"
       },
       {
         "Name": "option",
         "DisplayName": "Option",
+        "Type": "enum",
         "EnumValues": [
           "A",
           "B",
@@ -98,12 +100,12 @@
       {
         "Name": "number",
         "DisplayName": "Number",
-        "IsInt": true
+        "Type": "int"
       },
       {
         "Name": "number2",
         "DisplayName": "Number2",
-        "IsFloat": true
+        "Type": "float"
       }
     ]
   }
