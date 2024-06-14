@@ -30,7 +30,7 @@ window/stretch/aspect="expand"
 
 [dotnet]
 
-project/assembly_name="cfn-languageFileChanger"
+project/assembly_name="languageFileChanger"
 
 [input]
 

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using cfnLanguageFileChanger.Script.LanguageFile.Validator;
 using Godot;
+using languageFileChanger.Script.LanguageFile.Validator;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
 public sealed partial class LanguageString : GodotObject

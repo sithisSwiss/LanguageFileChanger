@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Godot;
 
-namespace cfnLanguageFileChanger.Script;
+namespace languageFileChanger.Script;
 
 [GlobalClass]
 public partial class Persistent : Resource

@@ -1,4 +1,4 @@
-﻿namespace cfnLanguageFileChanger.Script.LanguageFile.Validator;
+﻿namespace languageFileChanger.Script.LanguageFile.Validator;
 
 public class StringAttributeType : ILanguageStringAttributeType
 {

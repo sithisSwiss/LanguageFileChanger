@@ -2,7 +2,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 public sealed class LanguageFileConfigurationAttribute
 {

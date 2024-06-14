@@ -26,7 +26,6 @@ func _on_language_string_changed(caller: Object, old_item: LanguageString, new_i
 	elif old_item.Key != new_item.Key:
 		_set_value(new_item)
 	editable = Globals.language_string.Key != ""
-	print( Globals.language_string.Key )
 
 func _add_attribute_fields():
 	for attribute in Globals.language_string.Attributes:

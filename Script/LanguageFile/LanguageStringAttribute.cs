@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using cfnLanguageFileChanger.Script.LanguageFile.Validator;
 using Godot;
 using Godot.Collections;
+using languageFileChanger.Script.LanguageFile.Validator;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
 public sealed partial class LanguageStringAttribute : GodotObject

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 public sealed class XmlParseScript: BaseParseScript
 {

@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cfn-languageFileChanger", "cfn-languageFileChanger.csproj", "{60FE8D6F-BB8F-4A1E-AAC1-26556FF3A23D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "languageFileChanger", "languageFileChanger.csproj", "{60FE8D6F-BB8F-4A1E-AAC1-26556FF3A23D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

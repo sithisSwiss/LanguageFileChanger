@@ -7,7 +7,7 @@ using System.Xml;
 using Godot;
 using Newtonsoft.Json;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
 public sealed partial class LanguageFileHelper : GodotObject

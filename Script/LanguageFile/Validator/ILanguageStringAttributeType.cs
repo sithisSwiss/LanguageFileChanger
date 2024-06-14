@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile.Validator;
+namespace languageFileChanger.Script.LanguageFile.Validator;
 
 public interface ILanguageStringAttributeType
 {

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 public class BaseParseScript
 {

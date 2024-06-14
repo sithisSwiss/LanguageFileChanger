@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile.Validator;
+namespace languageFileChanger.Script.LanguageFile.Validator;
 
 public class ListAttributeType : ILanguageStringAttributeType
 {

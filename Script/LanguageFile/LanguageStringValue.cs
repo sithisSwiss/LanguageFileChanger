@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace cfnLanguageFileChanger.Script.LanguageFile;
+namespace languageFileChanger.Script.LanguageFile;
 
 [GlobalClass]
 public sealed partial class LanguageStringValue : GodotObject
