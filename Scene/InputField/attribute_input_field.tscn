@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1puap1p2fyfg"]
+[gd_scene load_steps=5 format=3 uid="uid://c1puap1p2fyfg"]
 
 [ext_resource type="PackedScene" uid="uid://bfqwnwkj2tn3" path="res://Scene/InputField/clipboard_line_edit.tscn" id="1_mpnxk"]
 [ext_resource type="Script" path="res://Scene/InputField/attribute_input_field.gd" id="1_rb1h2"]
 [ext_resource type="PackedScene" uid="uid://bx2b4oh6or1r1" path="res://Scene/InputField/clipboard_spin_box.tscn" id="2_0gn7a"]
+[ext_resource type="PackedScene" uid="uid://bh8uqdejpf5j4" path="res://Scene/InputField/value_from_list_selector.tscn" id="4_dvpkr"]
 
 [node name="AttributeInputField" type="HBoxContainer"]
 anchors_preset = 15
@@ -22,11 +23,6 @@ size_flags_vertical = 1
 text = "Label:"
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="ClipboardLineEdit" parent="." instance=ExtResource("1_mpnxk")]
 unique_name_in_owner = true
 visible = false
@@ -36,3 +32,8 @@ layout_mode = 2
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+
+[node name="ValueFromListSelector" parent="." instance=ExtResource("4_dvpkr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

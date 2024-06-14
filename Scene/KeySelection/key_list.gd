@@ -3,9 +3,7 @@ class_name KeyList extends GridContainer
 @onready var search_clipboard_line_edit = %SearchClipboardLineEdit
 @onready var item_list = %ItemList
 
-signal key_selection_changed()
 var selected_key: String = ""
-
 var _init_keys: Array = []
 
 func _ready():
@@ -52,7 +50,6 @@ func _on_item_list_item_selected(index):
 	if index != null:
 		selected_key = item_list.get_item_text(index)
 		Globals.set_existing_item(self, selected_key)
-		key_selection_changed.emit()
 
 func _on_search_clipboard_line_edit_text_changed(new_text):
 	var filtered_keys = _init_keys.filter(func(key:String): return new_text == "" or new_text in key)
@@ -64,7 +61,6 @@ func _select_key_if_only_one():
 		return
 	item_list.select(0)
 	selected_key = item_list.get_item_text(0)
-	key_selection_changed.emit()
 
 func _get_keys(_item: LanguageString = Globals.language_string) -> Array:
 	return LanguageFileHelper.GetAllKeysFromFirstFile()

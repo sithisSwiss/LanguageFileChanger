@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using cfnLanguageFileChanger.Script.LanguageFile.Validator;
 using Godot;
 using Godot.Collections;
@@ -33,7 +34,7 @@ public sealed partial class LanguageStringAttribute : GodotObject
 
     public bool IsValid => AttributeType.Validate(_value);
 
-    public bool IsTypeOf(string type) => type == AttributeType.Name;
+    public bool IsTypeOf(string type) => string.Equals(type, AttributeType.Name, StringComparison.CurrentCultureIgnoreCase);
     public string Value
     {
         get => _value;

@@ -10,6 +10,9 @@ signal language_string_changed(caller: Object, old_item: LanguageString, new_ite
 
 var language_string : LanguageString
 
+func fire_language_string_changed():
+	language_string_changed.emit(self, language_string, language_string)
+
 func set_existing_item(caller: Object, key: String) -> void:
 	var old_value := language_string
 	language_string = LanguageString.CreateExistingItem(key)

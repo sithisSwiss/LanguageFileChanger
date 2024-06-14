@@ -1,8 +1,6 @@
 class_name AttributesGridContainer extends PanelContainer
 @onready var v_box_container: VBoxContainer = %VBoxContainer
 
-signal attribute_item_changed()
-
 var editable: bool:
 	set(value):
 		editable = value
@@ -36,7 +34,7 @@ func _add_attribute_fields():
 		v_box_container.add_child(input_field)
 		input_field.init(attribute.Name)
 
-func _set_value(item: LanguageString):
+func _set_value(item_: LanguageString):
 	for field in v_box_container.get_children():
 		if field is AttributeInputField:
-			field.value = item.GetAttribute(field.attribute_name).Value
+			field.value = item_.GetAttribute(field.attribute_name).Value

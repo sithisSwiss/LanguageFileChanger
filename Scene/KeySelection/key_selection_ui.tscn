@@ -145,7 +145,6 @@ text = "Remove"
 
 [connection signal="item_selected" from="VBoxContainer/PanelContainer/GridContainer/TypeOptionButton" to="." method="_on_type_option_button_item_selected"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/GridContainer/TypeOptionButton" to="." method="_on_category_switch_pressed"]
-[connection signal="key_selection_changed" from="VBoxContainer/PanelContainer2/KeyList" to="." method="_on_key_list_item_selection_changed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

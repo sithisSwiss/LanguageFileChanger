@@ -22,6 +22,7 @@ public class BaseParseScript
     }
 
     public virtual string[] GetKeys(string path) => Array.Empty<string>();
+    public virtual void CreateEntry(LanguageString item) {}
     public virtual void ChangeKey(string oldKey, string newKey) { }
     public virtual string GetAttribute(string key, string attributeName, string path) => string.Empty;
     public virtual void SaveAttribute(LanguageString item, LanguageStringAttribute attr) { }

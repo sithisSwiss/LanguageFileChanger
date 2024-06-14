@@ -36,6 +36,27 @@ public sealed class XmlParseScript: BaseParseScript
         }
     }
 
+    public override void CreateEntry(LanguageString item)
+    {
+        try
+        {
+            foreach (var path in LanguageFileHelper.GetLanguageFilePaths())
+            {
+                using var handler = new XDocumentHandler(path);
+                var element = new XElement(_itemTagName, item.GetValueFromFile(path));
+                foreach (var attribute in item.Attributes)
+                {
+                    element.SetAttributeValue(attribute.Name, attribute.Value);
+                }
+                GetRootFromXDocument(handler.Doc).Add(element);
+            }
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+    }
+
     public override string GetAttribute(string key, string attributeName, string path)
     {
         try

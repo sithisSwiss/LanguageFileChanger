@@ -1,11 +1,12 @@
 class_name AttributeInputField extends Control
 
 @onready var label: Label = %Label
-@onready var list_input_field: OptionButton = %OptionButton
 @onready var string_input_field: ClipboardLineEdit = %ClipboardLineEdit
 @onready var number_input_field: ClipboardSpinBox = %ClipboardSpinBox
+@onready var value_from_list_selector: ValueFromListSelector = %ValueFromListSelector
 
 @export var label_width: int = Globals.Label_Width
+
 
 var value: String:
 	get:
@@ -32,15 +33,15 @@ var editable: bool:
 		_set_editable(editable)
 
 func _ready() -> void:
-	list_input_field.hide()
 	string_input_field.hide()
 	number_input_field.hide()
+	value_from_list_selector.hide()
 	label.custom_minimum_size = Vector2(label_width,0)
 
 func init(attribute_name_: String) -> void:
 	attribute_name = attribute_name_
-	_set_value_to_field(Globals.language_string.GetAttribute(attribute_name).Value)
 	_init_fields()
+	_set_value_to_field(Globals.language_string.GetAttribute(attribute_name).Value)
 	_queue_free_all_hidden_fields()
 	label.text = _attribute.DisplayName + ":"
 
@@ -57,18 +58,17 @@ func _init_fields():
 		string_input_field.show()
 		string_input_field.text_changed.connect(func(x): _on_field_value_changed(x))
 	elif _is_type_of_list():
-		list_input_field.show()
-		for enum_value in _attribute.EnumValues:
-			list_input_field.add_item(enum_value)
-		list_input_field.item_selected.connect(func(index):  _on_field_value_changed(list_input_field.get_item_text(index)))
+		value_from_list_selector.show()
+		value_from_list_selector.init(_attribute.EnumValues)
+		value_from_list_selector.value_changed.connect(func(index):  _on_field_value_changed(value_from_list_selector.get_value(index)))
 
 func _queue_free_all_hidden_fields():
 	if !number_input_field.visible:
 		number_input_field.queue_free()
 	if !string_input_field.visible:
 		string_input_field.queue_free()
-	if !list_input_field.visible:
-		list_input_field.queue_free()
+	if !value_from_list_selector.visible:
+		value_from_list_selector.queue_free()
 
 func _on_field_value_changed(new_value: String):
 	Globals.language_string.SetAttributeValue(_attribute.Name, new_value)
@@ -81,8 +81,7 @@ func _get_value_from_field() -> String:
 	elif _is_type_of_string():
 		return string_input_field.text
 	elif _is_type_of_list():
-		var index = list_input_field.selected
-		return list_input_field.get_item_text(index)
+		return value_from_list_selector.get_value(value_from_list_selector.index)
 	return ""
 
 func _set_value_to_field(value_: String):
@@ -93,14 +92,7 @@ func _set_value_to_field(value_: String):
 	elif _is_type_of_string():
 		string_input_field.text = value_
 	elif _is_type_of_list():
-		_select_list_input_by_value(value_)
-
-func _select_list_input_by_value(value_: String):
-	for index in range(list_input_field.item_count):
-		var value_at_index = list_input_field.get_item_text(index)
-		if value_at_index == value_:
-			list_input_field.select(index)
-			return
+		value_from_list_selector.set_index_based_on_value(value_)
 
 func _set_valid(is_valid: bool):
 	if _is_type_of_int():
@@ -131,7 +123,7 @@ func _set_editable(editable_: bool):
 	elif _is_type_of_string():
 		string_input_field.editable = editable_
 	elif _is_type_of_list():
-		list_input_field.disabled = !editable_
+		value_from_list_selector.editable = editable_
 
 func _is_type_of_int() -> bool:
 	return _attribute.IsTypeOf("Int")

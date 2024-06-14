@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://bh8uqdejpf5j4"]
+
+[ext_resource type="Script" path="res://Scene/InputField/value_from_list_selector.gd" id="1_u4aw7"]
+[ext_resource type="Texture2D" uid="uid://ckpnkd7f4vu1y" path="res://Asset/left-arrow.svg" id="2_8ms0o"]
+[ext_resource type="Texture2D" uid="uid://byibicmvsobs8" path="res://Asset/right-arrow.svg" id="3_gh41g"]
+
+[node name="ValueFromListSelector" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+script = ExtResource("1_u4aw7")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="decrease" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("2_8ms0o")
+icon_alignment = 1
+
+[node name="ValueLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="increase" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("3_gh41g")
+icon_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+rounded = true
+
+[connection signal="pressed" from="HBoxContainer/decrease" to="." method="_on_decrease_pressed"]
+[connection signal="pressed" from="HBoxContainer/increase" to="." method="_on_increase_pressed"]
+[connection signal="value_changed" from="HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]

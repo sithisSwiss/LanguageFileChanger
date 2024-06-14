@@ -6,10 +6,9 @@ class_name ValuesWindow extends Window
 @onready var create_item_container: CenterContainer = %CreateItemContainer
 @onready var create_item_button: Button = %CreateItemButton
 
-signal item_created(item: LanguageString)
+signal item_created()
 
 var _keys: Array
-var _attribute_item: LanguageString
 
 func _ready():
 	hide()
@@ -27,11 +26,11 @@ func init_change():
 
 func init_add():
 	title = "Add Item"
-	Globals.set_new_item(self)
 	attribute_grid_container.editable = true
 	create_item_container.show()
 	create_item_button.disabled = true
 	init()
+	Globals.language_string.ItemChanged.connect(func(x): _on_attribute_changed(x))
 	return self
 
 func init():
@@ -39,9 +38,11 @@ func init():
 	show()
 
 func _on_attribute_changed(item: LanguageString):
-	_attribute_item = item
 	create_item_button.disabled = !item.Validate(_keys)
 
 func _on_create_item_pressed():
-	item_created.emit(_attribute_item)
+	Globals.language_string.CanBeSaved = true
+	Globals.language_string.AddItemToFiles()
+	Globals.fire_language_string_changed()
+	item_created.emit()
 	init_change()

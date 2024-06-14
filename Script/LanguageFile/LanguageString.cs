@@ -12,8 +12,13 @@ namespace cfnLanguageFileChanger.Script.LanguageFile;
 [GlobalClass]
 public sealed partial class LanguageString : GodotObject
 {
+    public bool CanBeSaved;
     private readonly Dictionary<string, LanguageStringAttribute> _attributes = new();
     private readonly Dictionary<string, LanguageStringValue> _valuePerFile = new();
+
+    [Signal]
+    public delegate void ItemChangedEventHandler(LanguageString item);
+
     public string Key => KeyAttribute.Value;
     public LanguageStringAttribute KeyAttribute => GetAttribute(Configuration.Attributes[Configuration.KeyAttributeIndex].Name);
     public LanguageStringAttribute[] Attributes => _attributes.Values.ToArray();
@@ -23,7 +28,11 @@ public sealed partial class LanguageString : GodotObject
     {
         var configuration = LanguageFileHelper.GetCurrentConfiguration();
         var keyAttributeName = configuration.Attributes[configuration.KeyAttributeIndex].Name;
-        var item = new LanguageString { Configuration = configuration };
+        var item = new LanguageString
+        {
+            Configuration = configuration,
+            CanBeSaved = false
+        };
         foreach (var attributeConfiguration in configuration.Attributes)
         {
             var name = attributeConfiguration.Name;
@@ -35,7 +44,7 @@ public sealed partial class LanguageString : GodotObject
                     "int" => "0",
                     "float" => "0.0",
                     "string" => string.Empty,
-                    "enum" => attributeConfiguration.EnumValues!.First(),
+                    "enum" or "list" => attributeConfiguration.EnumValues!.First(),
                     var _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -58,7 +67,11 @@ public sealed partial class LanguageString : GodotObject
     {
         var configuration = LanguageFileHelper.GetCurrentConfiguration();
         var keyAttributeName = configuration.Attributes[configuration.KeyAttributeIndex].Name;
-        var item = new LanguageString { Configuration = configuration };
+        var item = new LanguageString
+        {
+            Configuration = configuration,
+            CanBeSaved = true
+        };
         foreach (var attributeConfiguration in configuration.Attributes)
         {
             var name = attributeConfiguration.Name;
@@ -75,6 +88,11 @@ public sealed partial class LanguageString : GodotObject
         }
 
         return item;
+    }
+
+    public void AddItemToFiles()
+    {
+        LanguageFileHelper.Script.CreateEntry(this);
     }
 
     public void SetAttributeValue(string key, string value) => _attributes[key].Value = value;
@@ -178,7 +196,7 @@ public sealed partial class LanguageString : GodotObject
             "int" => new IntAttributeType(),
             "float" => new FloatAttributeType(),
             "string" => new StringAttributeType(),
-            "enum" => new ListAttributeType(attributeConfiguration),
+            "enum" or "list" => new ListAttributeType(attributeConfiguration),
             var _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -190,6 +208,12 @@ public sealed partial class LanguageString : GodotObject
 
         void OnAttributeValueChanged(LanguageStringAttribute attr, string oldValue, string newValue)
         {
+            EmitSignal(SignalName.ItemChanged, this);
+            if (!CanBeSaved)
+            {
+                return;
+            }
+
             if (isKey)
             {
                 LanguageFileHelper.Script.ChangeKey(oldValue, newValue);
@@ -208,6 +232,12 @@ public sealed partial class LanguageString : GodotObject
 
         void OnValueChanged(LanguageStringValue val, string oldValue, string newValue)
         {
+            EmitSignal(SignalName.ItemChanged, this);
+            if (!CanBeSaved)
+            {
+                return;
+            }
+
             LanguageFileHelper.Script.SaveValue(this, val, path);
         }
     }

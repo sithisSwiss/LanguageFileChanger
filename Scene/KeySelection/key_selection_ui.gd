@@ -30,7 +30,12 @@ func _ready():
 	_reload_language_file()
 	_refresh_buttons()
 	Globals.set_new_item(self)
+	Globals.language_string_changed.connect(_on_language_string_changed)
 
+func _on_language_string_changed(caller: Object, _old_item: LanguageString, _new_item: LanguageString):
+	_reload_value_field()
+	_refresh_buttons()
+	
 func _refresh_buttons():
 	add_button.disabled = LanguageFileHelper.GetAllKeysFromFirstFile().size() == 0
 	change_button.disabled = get_selected_key() == ""
@@ -41,10 +46,6 @@ func _reload_language_file():
 
 func _reload_value_field():
 	value_label_value.text = Globals.language_string.GetValueFromEnglishFile()
-
-func _on_key_list_item_selection_changed():
-	_reload_value_field()
-	_refresh_buttons()
 
 func _on_add_button_pressed():
 	var win := Ui.instance.open_window(_value_window_scene) as ValuesWindow
@@ -60,8 +61,8 @@ func _on_values_window_closed():
 	_refresh_buttons()
 
 func _on_remove_button_pressed():
-	Globals.language_string.RemoveItem()
-	_refresh_buttons()
+	Globals.language_string.RemoveItemFromFile()
+	Globals.set_new_item(self)
 
 func _on_type_option_button_item_selected(index: int) -> void:
 	Globals.persistent.SelectedConfigIndex = index
