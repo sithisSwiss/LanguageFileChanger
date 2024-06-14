@@ -22,12 +22,12 @@ func _on_key_attribute_changed(_attribute, _old_value, _new_value) -> void:
 	init()
 
 func init():
-	search_clipboard_line_edit.text = ""
+	search_clipboard_line_edit.value = ""
 	if !(Globals.language_string.KeyAttribute.AttributeValueChanged as Signal).is_connected(_on_key_attribute_changed):
 		Globals.language_string.KeyAttribute.AttributeValueChanged.connect(_on_key_attribute_changed)
 	_init_keys = _get_keys()
 	_load_keys(_init_keys)
-	search_clipboard_line_edit.text = ""
+	search_clipboard_line_edit.value = ""
 	_try_to_select(Globals.language_string.Key)
 
 func _try_to_select(key:String):
@@ -51,8 +51,8 @@ func _on_item_list_item_selected(index):
 		selected_key = item_list.get_item_text(index)
 		Globals.set_existing_item(self, selected_key)
 
-func _on_search_clipboard_line_edit_text_changed(new_text):
-	var filtered_keys = _init_keys.filter(func(key:String): return new_text == "" or new_text in key)
+func _on_search_clipboard_line_edit_value_changed(new_value: String):
+	var filtered_keys = _init_keys.filter(func(key:String): return new_value == "" or new_value in key)
 	_load_keys(filtered_keys)
 
 func _select_key_if_only_one():

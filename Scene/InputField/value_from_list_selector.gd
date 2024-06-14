@@ -1,20 +1,29 @@
-class_name ValueFromListSelector extends VBoxContainer
+class_name ValueFromListSelector extends HBoxContainer
 
+@onready var valid_border_panel_container: ValidBorderPanelContainer = %ValidBorderPanelContainer
 @onready var decrease: Button = %decrease
 @onready var value_label: Label = %ValueLabel
 @onready var increase: Button = %increase
 @onready var h_slider: HSlider = %HSlider
 
-signal value_changed(index: int)
+signal value_changed(new_value: String)
 
-var index: int = 0:
+var value: String:
 	get:
-		return index
+		return _values[clamp(_index, 0, _max_index())]
+	set(value_):
+		var index_ = _values.find(value_)
+		if index_ != -1:
+			_index = index_
+
+var _index: int = 0:
+	get:
+		return _index
 	set(value):
-		index = clamp(value, 0, _max_index())
-		value_label.text = _values[index]
-		h_slider.value = index
-		value_changed.emit(index)
+		_index = clamp(value, 0, _max_index())
+		value_label.text = _values[_index]
+		h_slider.value = _index
+		value_changed.emit(_values[clamp(_index, 0, _max_index())])
 		
 var _values: Array
 
@@ -26,35 +35,32 @@ var editable: bool = true:
 	get:
 		return h_slider.editable
 
+var valid: bool:
+	get:
+		return valid_border_panel_container.valid
+	set(value):
+		valid_border_panel_container.valid = value
 
 func init(values: Array):
 	_values = values
 	h_slider.max_value = _max_index()
 	h_slider.tick_count = _values.size()
 
-func get_value(index_: int):
-	return _values[clamp(index_, 0, _max_index())]
-
-func set_index_based_on_value(value_: String):
-	var index_ = _values.find(value_)
-	if index_ != -1:
-		index = index_
-
 func _max_index():
 	return _values.size()-1
 
 func _on_decrease_pressed() -> void:
-	if index <= 0:
-		index = _max_index()
+	if _index <= 0:
+		_index = _max_index()
 	else:
-		index -= 1
+		_index -= 1
 
 
 func _on_increase_pressed() -> void:
-	if index >= _max_index():
-		index = 0
+	if _index >= _max_index():
+		_index = 0
 	else:
-		index += 1
+		_index += 1
 
-func _on_h_slider_value_changed(value: float) -> void:
-	index = int(value)
+func _on_h_slider_value_changed(value_: float) -> void:
+	_index = int(value_)

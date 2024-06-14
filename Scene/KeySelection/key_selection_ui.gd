@@ -32,7 +32,7 @@ func _ready():
 	Globals.set_new_item(self)
 	Globals.language_string_changed.connect(_on_language_string_changed)
 
-func _on_language_string_changed(caller: Object, _old_item: LanguageString, _new_item: LanguageString):
+func _on_language_string_changed(_caller: Object, _old_item: LanguageString, _new_item: LanguageString):
 	_reload_value_field()
 	_refresh_buttons()
 	

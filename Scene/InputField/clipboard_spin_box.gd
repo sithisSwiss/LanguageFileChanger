@@ -4,13 +4,13 @@ class_name ClipboardSpinBox extends HBoxContainer
 @onready var spin_box := %SpinBox
 @onready var valid_border_panel_container: ValidBorderPanelContainer = %ValidBorderPanelContainer
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: String)
 
-var value: float = 0:
+var value: String:
 	set(value):
-		spin_box.value = value
+		spin_box.value = float(value)
 	get:
-		return spin_box.value
+		return str(spin_box.value)
 		
 var rounded: bool = false:
 	set(value):
@@ -36,9 +36,9 @@ func _ready() -> void:
 	spin_box.allow_lesser = true
 
 func on_pressed():
-	var clipboard_text = DisplayServer.clipboard_get()
+	var clipboard_text := DisplayServer.clipboard_get()
 	spin_box.value = float(clipboard_text)
-	value_changed.emit(float(clipboard_text))
+	value_changed.emit(clipboard_text)
 
 func _on_spin_box_value_changed(new_value: float):
-	value_changed.emit(new_value)
+	value_changed.emit(str(new_value))
