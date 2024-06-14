@@ -15,6 +15,6 @@ func _unhandled_input(event):
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "splash_screen":
-		hide()
+		queue_free()
 
 
