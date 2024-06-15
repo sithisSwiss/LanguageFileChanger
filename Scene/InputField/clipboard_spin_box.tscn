@@ -34,5 +34,21 @@ step = 0.01
 allow_greater = true
 allow_lesser = true
 
+[node name="StepSizeContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="StepSizeContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "LABEL_STEP_SIZE"
+horizontal_alignment = 2
+
+[node name="StepSize" type="SpinBox" parent="StepSizeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [connection signal="pressed" from="ClipboardButton" to="." method="on_pressed"]
 [connection signal="value_changed" from="ValidBorderPanelContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="StepSizeContainer/StepSize" to="." method="_on_step_size_value_changed"]

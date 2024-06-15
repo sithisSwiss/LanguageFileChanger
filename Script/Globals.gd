@@ -24,9 +24,9 @@ func set_new_item(caller: Object) -> void:
 	language_string_changed.emit(caller, old_value, language_string)
 
 func _ready():
-	const config_path_res := "res://Script/LanguageFile/LanguageFileConfiguration.json"
+	const config_path_res := "res://Script/LanguageFile/LanguageFileChanger_Configuration.json"
 	if !OS.has_feature("editor"):
-		var config_path_system := OS.get_executable_path().get_base_dir() + "/LanguageFileConfiguration.json"
+		var config_path_system := OS.get_executable_path().get_base_dir() + "/LanguageFileChanger_Configuration.json"
 		GlobalsClass._copy_configuration_file_if_not_exist(config_path_system, config_path_res)
 		LanguageFileHelper.LoadConfiguration(config_path_system)
 	else:

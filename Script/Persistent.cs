@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Godot;
+using Newtonsoft.Json;
 
 namespace languageFileChanger.Script;
 
@@ -8,6 +12,8 @@ public partial class Persistent : Resource
 {
     private static readonly Persistent Instance = LoadPersistent();
     private int _selectedConfigIndex;
+
+    private string _stepSizeAsJson;
 
     [Export]
     public int SelectedConfigIndex
@@ -20,15 +26,41 @@ public partial class Persistent : Resource
         }
     }
 
-#if DEBUG
-    private static string FilePath => ProjectSettings.GlobalizePath("res://Script/cfn-languageFileChanger.tres");
-#else
-    private static string FilePath => OS.GetExecutablePath().GetBaseDir() + "/cfn-languageFileChanger.tres";
-#endif
+    [Export]
+    public string StepSizeAsJson
+    {
+        get => _stepSizeAsJson;
+        set
+        {
+            _stepSizeAsJson = value;
+            SaveData();
+        }
+    }
+
+    private static string FilePath => OS.HasFeature("editor")
+        ? ProjectSettings.GlobalizePath("res://Script/LanguageFileChanger_Setting.tres")
+        : OS.GetExecutablePath().GetBaseDir() + "/LanguageFileChanger_Setting.tres";
+
+    private IReadOnlyDictionary<string, float> StepSizes
+    {
+        get => string.IsNullOrEmpty(StepSizeAsJson)
+            ? new Dictionary<string, float>()
+            : JsonConvert.DeserializeObject<Dictionary<string, float>>(StepSizeAsJson);
+        set => StepSizeAsJson = JsonConvert.SerializeObject(value);
+    }
 
     public static Persistent GetPersistent() => Instance;
 
-    public static Persistent LoadPersistent()
+    public float GetStepSize(string fieldName, float defaultValue) => StepSizes.GetValueOrDefault(fieldName, defaultValue);
+
+    public void SetStepSize(string fieldName, float stepSize)
+    {
+        Dictionary<string, float> dict = StepSizes.ToDictionary(x => x.Key, x => x.Value);
+        dict[fieldName] = stepSize;
+        StepSizes = dict;
+    }
+
+    private static Persistent LoadPersistent()
     {
         if (!File.Exists(FilePath))
         {
@@ -39,8 +71,5 @@ public partial class Persistent : Resource
         return loaded as Persistent ?? new Persistent();
     }
 
-    private void SaveData()
-    {
-        ResourceSaver.Save(this, FilePath);
-    }
+    private void SaveData() => ResourceSaver.Save(this, FilePath);
 }

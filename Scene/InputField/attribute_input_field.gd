@@ -52,11 +52,9 @@ func init(attribute_name_: String) -> void:
 
 func _get_initiated_current_field() -> Node:
 	if _attribute.IsTypeOf("Int"):
-		number_input_field.rounded = true
-		return number_input_field
+		return number_input_field.init(true, attribute_name)
 	elif _attribute.IsTypeOf("Float"):
-		number_input_field.rounded = false
-		return number_input_field
+		return number_input_field.init(false,attribute_name)
 	elif _attribute.IsTypeOf("String"):
 		return string_input_field
 	elif _attribute.IsTypeOf("List"):
