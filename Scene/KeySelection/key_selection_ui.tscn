@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dj0eyhixk6gf6"]
+[gd_scene load_steps=7 format=3 uid="uid://dj0eyhixk6gf6"]
 
 [ext_resource type="Script" path="res://Scene/KeySelection/key_selection_ui.gd" id="1_6hvy4"]
 [ext_resource type="Theme" uid="uid://dl01gxgiis5ea" path="res://Asset/ui_theme.tres" id="1_acoei"]
 [ext_resource type="PackedScene" uid="uid://brrue2l3hnsuk" path="res://Scene/KeySelection/key_list.tscn" id="2_tddgt"]
 [ext_resource type="StyleBox" uid="uid://cai2c2pixtda4" path="res://Asset/background_highlighter.tres" id="3_kuski"]
 [ext_resource type="PackedScene" uid="uid://c3a7n8undfoen" path="res://Scene/attribute_grid_container.tscn" id="3_w6dn5"]
+[ext_resource type="Script" path="res://Scene/KeySelection/language_change.gd" id="4_h7npn"]
 
 [node name="KeySelectionUi" type="Control"]
 layout_mode = 3
@@ -37,15 +38,19 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_kuski")
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 columns = 2
 
-[node name="TypeLabel" type="Label" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="TypeLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Selected Language Type:"
+text = "LABEL_SELECTION_LANGUAGE_CONFIGURATION"
 
-[node name="TypeOptionButton" type="OptionButton" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="TypeOptionButton" type="OptionButton" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -53,25 +58,38 @@ mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 10
 button_pressed = true
 
-[node name="SpecificPathLabel" type="Label" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="SpecificPathLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Path to language files:"
+text = "LABEL_LANGUAGE_FILES_PATH"
 
-[node name="SpecificPath" type="Label" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="SpecificPath" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533037, 1)
 
-[node name="LanguageFileFoundLabel" type="Label" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="LanguageFileFoundLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Found files:"
+text = "LABEL_FOUND_FILES"
 
-[node name="LanguageFileFound" type="Label" parent="VBoxContainer/PanelContainer/GridContainer"]
+[node name="LanguageFileFound" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="LanguageChangeContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+script = ExtResource("4_h7npn")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/LanguageChangeContainer"]
+layout_mode = 2
+text = "LABEL_LANGUAGE_CHANGE"
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/PanelContainer/HBoxContainer/LanguageChangeContainer"]
+layout_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -93,7 +111,7 @@ layout_mode = 2
 [node name="ValueLabel" type="Label" parent="VBoxContainer/PanelContainer3/HBoxContainer3"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Value (en):"
+text = "LABEL_VALUE_EN"
 
 [node name="ValueLabelValue" type="Label" parent="VBoxContainer/PanelContainer3/HBoxContainer3"]
 unique_name_in_owner = true
@@ -125,7 +143,7 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Add"
+text = "BUTTON_ADD"
 
 [node name="ChangeButton" type="Button" parent="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer"]
 unique_name_in_owner = true
@@ -133,7 +151,7 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Change"
+text = "BUTTON_CHANGE"
 
 [node name="RemoveButton" type="Button" parent="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer"]
 unique_name_in_owner = true
@@ -141,10 +159,11 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Remove"
+text = "BUTTON_REMOVE"
 
-[connection signal="item_selected" from="VBoxContainer/PanelContainer/GridContainer/TypeOptionButton" to="." method="_on_type_option_button_item_selected"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/GridContainer/TypeOptionButton" to="." method="_on_category_switch_pressed"]
+[connection signal="item_selected" from="VBoxContainer/PanelContainer/HBoxContainer/GridContainer/TypeOptionButton" to="." method="_on_type_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/HBoxContainer/GridContainer/TypeOptionButton" to="." method="_on_category_switch_pressed"]
+[connection signal="item_selected" from="VBoxContainer/PanelContainer/HBoxContainer/LanguageChangeContainer/OptionButton" to="VBoxContainer/PanelContainer/HBoxContainer/LanguageChangeContainer" method="_on_option_button_item_selected"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/ChangeButton" to="." method="_on_change_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonHBoxContainer/PanelContainer4/HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

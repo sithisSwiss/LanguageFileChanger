@@ -19,7 +19,7 @@ func get_selected_key() -> String:
 	return key_list.selected_key
 
 func _ready():
-	$VBoxContainer/PanelContainer/GridContainer/TypeLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
+	$VBoxContainer/PanelContainer/HBoxContainer/GridContainer/TypeLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	$VBoxContainer/PanelContainer3/HBoxContainer3/ValueLabel.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	$VBoxContainer/ButtonHBoxContainer/Spacer.custom_minimum_size = Vector2(Globals.Label_Width,0)
 	for config_name in LanguageFileHelper.GetConfigurationNames():

@@ -16,7 +16,7 @@ func _ready():
 	min_size = Vector2(800,400)
 
 func init_change():
-	title = "Change Item (" + Globals.language_string.Key +")"
+	title = tr("TITLE_CHANGE_ITEM") % Globals.language_string.Key
 	attribute_grid_container.editable = false
 	values_grid_container.init()
 	values_panel_container.show()
@@ -25,7 +25,7 @@ func init_change():
 	return self
 
 func init_add():
-	title = "Add Item"
+	title = tr("TITLE_ADD_ITEM")
 	attribute_grid_container.editable = true
 	create_item_container.show()
 	create_item_button.disabled = true

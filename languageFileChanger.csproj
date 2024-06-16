@@ -6,9 +6,6 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="Script\LanguageFile\LanguageFileConfiguration.json"/>
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Godot;
@@ -14,6 +13,7 @@ public partial class Persistent : Resource
     private int _selectedConfigIndex;
 
     private string _stepSizeAsJson;
+    private int _selectedLanguageIndex;
 
     [Export]
     public int SelectedConfigIndex
@@ -33,6 +33,17 @@ public partial class Persistent : Resource
         set
         {
             _stepSizeAsJson = value;
+            SaveData();
+        }
+    }
+
+    [Export]
+    public int SelectedLanguageIndex
+    {
+        get => _selectedLanguageIndex;
+        set
+        {
+            _selectedLanguageIndex = value;
             SaveData();
         }
     }

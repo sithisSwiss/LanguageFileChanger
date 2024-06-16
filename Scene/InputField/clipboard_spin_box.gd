@@ -65,6 +65,6 @@ func _on_spin_box_value_changed(new_value: float):
 	value_changed.emit(str(new_value))
 
 
-func _on_step_size_value_changed(value: float) -> void:
-	spin_box.step = value
-	GlobalsClass.persistent.SetStepSize(_fieldName, value)
+func _on_step_size_value_changed(value_: float) -> void:
+	spin_box.step = value_
+	GlobalsClass.persistent.SetStepSize(_fieldName, value_)
