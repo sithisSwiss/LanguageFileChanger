@@ -23,8 +23,7 @@ func _on_language_string_changed(caller: Object, old_item: LanguageString, new_i
 		for node in v_box_container.get_children():
 			v_box_container.remove_child(node)
 		_add_attribute_fields()
-	elif old_item.Key != new_item.Key:
-		_set_value(new_item)
+	_set_value(new_item)
 	editable = Globals.language_string.Key != ""
 
 func _add_attribute_fields():
