@@ -60,7 +60,7 @@ func _select_key_if_only_one():
 		selected_key = ""
 		return
 	item_list.select(0)
-	selected_key = item_list.get_item_text(0)
+	_on_item_list_item_selected(0)
 
 func _get_keys(_item: LanguageString = Globals.language_string) -> Array:
 	return LanguageFileHelper.GetAllKeysFromFirstFile()
