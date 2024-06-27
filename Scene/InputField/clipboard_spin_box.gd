@@ -44,13 +44,13 @@ func init(is_int: bool, fieldName: String) -> ClipboardSpinBox:
 		step_size_box.step = 1
 		step_size_box.min_value = 1
 		step_size_box.rounded = true
-		step_size = GlobalsClass.persistent.GetStepSize(fieldName, 1)
+		step_size = GlobalsClass.persistent.GetStepSize(Globals.language_string.Name, fieldName, 1)
 	else:
 		spin_box.rounded = false
 		step_size_box.step = 0.001
 		step_size_box.min_value = 0.001
 		step_size_box.rounded = false
-		step_size = GlobalsClass.persistent.GetStepSize(fieldName, 0.001)
+		step_size = GlobalsClass.persistent.GetStepSize(Globals.language_string.Name, fieldName, 0.001)
 	spin_box.step = step_size
 	step_size_box.value = step_size
 	
@@ -67,4 +67,4 @@ func _on_spin_box_value_changed(new_value: float):
 
 func _on_step_size_value_changed(value_: float) -> void:
 	spin_box.step = value_
-	GlobalsClass.persistent.SetStepSize(_fieldName, value_)
+	GlobalsClass.persistent.SetStepSize(Globals.language_string.Name, _fieldName, value_)

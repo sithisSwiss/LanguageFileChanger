@@ -12,9 +12,17 @@ namespace languageFileChanger.Script.LanguageFile;
 [GlobalClass]
 public sealed partial class LanguageString : GodotObject
 {
+    public readonly string Name;
     public bool CanBeSaved;
     private readonly Dictionary<string, LanguageStringAttribute> _attributes = new();
     private readonly Dictionary<string, LanguageStringValue> _valuePerFile = new();
+
+    public LanguageString(LanguageFileConfiguration configuration, bool canBeSaved)
+    {
+        Name = configuration.Name;
+        Configuration = configuration;
+        CanBeSaved = canBeSaved;
+    }
 
     [Signal]
     public delegate void ItemChangedEventHandler(LanguageString item);
@@ -28,11 +36,7 @@ public sealed partial class LanguageString : GodotObject
     {
         var configuration = LanguageFileHelper.GetCurrentConfiguration();
         var keyAttributeName = configuration.Attributes[configuration.KeyAttributeIndex].Name;
-        var item = new LanguageString
-        {
-            Configuration = configuration,
-            CanBeSaved = false
-        };
+        var item = new LanguageString(configuration, false);
         foreach (var attributeConfiguration in configuration.Attributes)
         {
             var name = attributeConfiguration.Name;
@@ -67,11 +71,7 @@ public sealed partial class LanguageString : GodotObject
     {
         var configuration = LanguageFileHelper.GetCurrentConfiguration();
         var keyAttributeName = configuration.Attributes[configuration.KeyAttributeIndex].Name;
-        var item = new LanguageString
-        {
-            Configuration = configuration,
-            CanBeSaved = true
-        };
+        var item = new LanguageString(configuration, true);
         foreach (var attributeConfiguration in configuration.Attributes)
         {
             var name = attributeConfiguration.Name;

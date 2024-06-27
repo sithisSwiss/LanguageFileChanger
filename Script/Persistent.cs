@@ -62,14 +62,16 @@ public partial class Persistent : Resource
 
     public static Persistent GetPersistent() => Instance;
 
-    public float GetStepSize(string fieldName, float defaultValue) => StepSizes.GetValueOrDefault(fieldName, defaultValue);
+    public float GetStepSize(string configurationName, string fieldName, float defaultValue) => StepSizes.GetValueOrDefault(CreateStepSizeKey(configurationName, fieldName), defaultValue);
 
-    public void SetStepSize(string fieldName, float stepSize)
+    public void SetStepSize(string configurationName, string fieldName, float stepSize)
     {
         Dictionary<string, float> dict = StepSizes.ToDictionary(x => x.Key, x => x.Value);
-        dict[fieldName] = stepSize;
+        dict[CreateStepSizeKey(configurationName, fieldName)] = stepSize;
         StepSizes = dict;
     }
+    
+    private static string CreateStepSizeKey(string configurationName, string fieldName) => $"{configurationName}_{fieldName}";
 
     private static Persistent LoadPersistent()
     {
