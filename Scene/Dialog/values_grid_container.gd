@@ -3,7 +3,7 @@ class_name ValuesGridContainer extends GridContainer
 @onready var clipboard_line_edit_scene := preload("res://Scene/InputField/clipboard_line_edit.tscn")
 
 func init():
-	for file in LanguageFileHelper.GetLanguageFilePaths():
+	for file in LanguageFileHelper.GetCurrentLanguageFilePaths():
 		_add_value_field(file)
 
 func _add_value_field(file: String):

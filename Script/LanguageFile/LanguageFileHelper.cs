@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using Godot;
 using Newtonsoft.Json;
 
@@ -23,7 +22,8 @@ public sealed partial class LanguageFileHelper : GodotObject
 
     public static string[] GetConfigurationNames() => _configurations?.Select(x => x.Name).ToArray() ?? Array.Empty<string>();
 
-    public static string[] GetLanguageFilePaths()
+    public static string GetCurrentLanguageFolderPath() => GetCurrentConfiguration().LanguageFileFolderPath;
+    public static string[] GetCurrentLanguageFilePaths()
     {
         if (string.IsNullOrEmpty(GetCurrentConfiguration().LanguageFileFolderPath) || !Directory.Exists(GetCurrentConfiguration().LanguageFileFolderPath))
         {
@@ -34,7 +34,7 @@ public sealed partial class LanguageFileHelper : GodotObject
         return t;
     }
 
-    public static string[] GetAllKeysFromFirstFile() => GetLanguageFilePaths().IsEmpty() ? Array.Empty<string>() : Script.GetKeys(GetLanguageFilePaths().First());
+    public static string[] GetAllKeysFromFirstFile() => GetCurrentLanguageFilePaths().IsEmpty() ? Array.Empty<string>() : Script.GetKeys(GetCurrentLanguageFilePaths().First());
 
     public static void LoadConfiguration(string path)
     {

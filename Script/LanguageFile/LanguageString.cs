@@ -53,7 +53,7 @@ public sealed partial class LanguageString : GodotObject
             item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName == name);
         }
 
-        foreach (var filePath in LanguageFileHelper.GetLanguageFilePaths())
+        foreach (var filePath in LanguageFileHelper.GetCurrentLanguageFilePaths())
         {
             var value = new LanguageStringValue("");
             item.SubscribeValueChanged(value, filePath);
@@ -75,12 +75,12 @@ public sealed partial class LanguageString : GodotObject
         foreach (var attributeConfiguration in configuration.Attributes)
         {
             var name = attributeConfiguration.Name;
-            var value = LanguageFileHelper.Script.GetAttribute(key, name, LanguageFileHelper.GetLanguageFilePaths().First());
+            var value = LanguageFileHelper.Script.GetAttribute(key, name, LanguageFileHelper.GetCurrentLanguageFilePaths().First());
             item._attributes[name] = new LanguageStringAttribute(CreateAttributeType(attributeConfiguration), attributeConfiguration, value);
             item.SubscribeAttributeChangeEvent(item._attributes[name], keyAttributeName == name);
         }
 
-        foreach (var filePath in LanguageFileHelper.GetLanguageFilePaths())
+        foreach (var filePath in LanguageFileHelper.GetCurrentLanguageFilePaths())
         {
             var value = new LanguageStringValue(LanguageFileHelper.Script.GetValue(key, filePath));
             item.SubscribeValueChanged(value, filePath);

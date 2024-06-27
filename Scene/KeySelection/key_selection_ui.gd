@@ -25,9 +25,8 @@ func _ready():
 	for config_name in LanguageFileHelper.GetConfigurationNames():
 		type_option_button.add_item(config_name)
 	type_option_button.select(clamp(Globals.persistent.SelectedConfigIndex, 0, type_option_button.item_count-1))
-
-	specific_path.text = Globals.language_string.GetFolderPath()
-	_reload_language_file()
+	_reload_language_file_path()
+	_reload_language_file_found()
 	_refresh_buttons()
 	Globals.set_new_item(self)
 	Globals.language_string_changed.connect(_on_language_string_changed)
@@ -41,8 +40,11 @@ func _refresh_buttons():
 	change_button.disabled = get_selected_key() == ""
 	remove_button.disabled = get_selected_key() == ""
 
-func _reload_language_file():
-	language_file_found.text = str(Array(LanguageFileHelper.GetLanguageFilePaths()).size())
+func _reload_language_file_path():
+	specific_path.text = LanguageFileHelper.GetCurrentLanguageFolderPath()
+
+func _reload_language_file_found():
+	language_file_found.text = str(Array(LanguageFileHelper.GetCurrentLanguageFilePaths()).size())
 
 func _reload_value_field():
 	value_label_value.text = Globals.language_string.GetValueFromEnglishFile()
@@ -66,8 +68,8 @@ func _on_remove_button_pressed():
 
 func _on_type_option_button_item_selected(index: int) -> void:
 	Globals.persistent.SelectedConfigIndex = index
-	specific_path.text = Globals.language_string.GetFolderPath()
-	_reload_language_file()
 	Globals.set_new_item(self)
+	_reload_language_file_path()
+	_reload_language_file_found()
 	_reload_value_field()
 	_refresh_buttons()

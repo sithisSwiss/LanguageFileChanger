@@ -40,7 +40,7 @@ public sealed class XmlParseScript: BaseParseScript
     {
         try
         {
-            foreach (var path in LanguageFileHelper.GetLanguageFilePaths())
+            foreach (var path in LanguageFileHelper.GetCurrentLanguageFilePaths())
             {
                 using var handler = new XDocumentHandler(path);
                 var element = new XElement(_itemTagName, item.GetValueFromFile(path));
@@ -104,7 +104,7 @@ public sealed class XmlParseScript: BaseParseScript
     {
         try
         {
-            foreach (var path in LanguageFileHelper.GetLanguageFilePaths())
+            foreach (var path in LanguageFileHelper.GetCurrentLanguageFilePaths())
             {
                 using var handler = new XDocumentHandler(path);
                 var element = GetSpecificElement(item.Key, handler.Doc);
@@ -121,7 +121,7 @@ public sealed class XmlParseScript: BaseParseScript
     {
         try
         {
-            foreach (var path in LanguageFileHelper.GetLanguageFilePaths())
+            foreach (var path in LanguageFileHelper.GetCurrentLanguageFilePaths())
             {
                 using var handler = new XDocumentHandler(path);
                 var element = GetSpecificElement(oldKey, handler.Doc);
@@ -138,7 +138,7 @@ public sealed class XmlParseScript: BaseParseScript
     {
         try
         {
-            foreach (var path in LanguageFileHelper.GetLanguageFilePaths())
+            foreach (var path in LanguageFileHelper.GetCurrentLanguageFilePaths())
             {
                 using var handler = new XDocumentHandler(path);
                 GetSpecificElement(key, handler.Doc)?.Remove();

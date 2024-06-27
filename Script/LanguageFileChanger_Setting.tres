@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_mp1bq")
 SelectedConfigIndex = 2
-StepSizeAsJson = "{\"number\":1.0,\"number2\":0.001}"
+StepSizeAsJson = "{\"number\":1.0,\"number2\":0.001,\"key\":1.0,\"field\":1.0}"
 SelectedLanguageIndex = 1
