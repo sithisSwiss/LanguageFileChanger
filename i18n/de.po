@@ -68,3 +68,7 @@ msgstr "Item ändern (%s)"
 #: Scene/Dialog/values_window.gd
 msgid "TITLE_ADD_ITEM"
 msgstr "Item hinzufügen"
+
+#: Scene/Dialog/values_grid_container.gd
+msgid "BUTTON_APPLY_TO_ALL"
+msgstr "Auf alle Anwenden"

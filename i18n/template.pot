@@ -4,6 +4,7 @@
 # res://Scene/KeySelection/key_list.tscn
 # res://Scene/InputField/clipboard_spin_box.tscn
 # res://Scene/Dialog/values_window.gd
+# res://Scene/Dialog/values_grid_container.gd
 #
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -61,4 +62,8 @@ msgstr ""
 
 #: Scene/Dialog/values_window.gd
 msgid "TITLE_ADD_ITEM"
+msgstr ""
+
+#: Scene/Dialog/values_grid_container.gd
+msgid "BUTTON_APPLY_TO_ALL"
 msgstr ""

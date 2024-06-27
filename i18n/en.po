@@ -65,6 +65,10 @@ msgstr "Change Item (%s)"
 msgid "TITLE_ADD_ITEM"
 msgstr "Add Item"
 
+#: Scene/Dialog/values_grid_container.gd
+msgid "BUTTON_APPLY_TO_ALL"
+msgstr "Apply to all"
+
 #~ msgid "Selected Language Type:"
 #~ msgstr "Selected Language Type:"
 
