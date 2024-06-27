@@ -1,112 +1,112 @@
 [
   {
-    "Name": "EPC01 - Software",
-    "LanguageFileFolderPath": "C:/Git/cfn/cfn-code/150_Software/10_SW/i18n/",
-    "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
-    "FileType": "XML",
-    "RootTagName": "TextPool",
-    "ItemTagName": "Item",
-    "KeyAttributeIndex": 0,
-    "Attributes": [
-      {
-        "Name": "key",
-        "DisplayName": "Key",
-        "Type": "string"
-      },
-      {
-        "Name": "info",
-        "DisplayName": "Info",
-        "Type": "string"
-      }
-    ]
+	"Name": "EPC01 - Software",
+	"LanguageFileFolderPath": "C:/Oetiker/Git/cfn/cfn-code/150_Software/10_SW/i18n/",
+	"LanguageTagRegexPattern": "ApplicationText_(.*).xml",
+	"FileType": "XML",
+	"RootTagName": "TextPool",
+	"ItemTagName": "Item",
+	"KeyAttributeIndex": 0,
+	"Attributes": [
+	  {
+		"Name": "key",
+		"DisplayName": "Key",
+		"Type": "string"
+	  },
+	  {
+		"Name": "info",
+		"DisplayName": "Info",
+		"Type": "string"
+	  }
+	]
   },
   {
-    "Name": "EPC01 - Firmware",
-    "LanguageFileFolderPath": "C:/Git/cfn/cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/",
-    "LanguageTagRegexPattern": "ApplicationText_(.*).xml",
-    "FileType": "XML",
-    "RootTagName": "TextPool",
-    "ItemTagName": "Item",
-    "KeyAttributeIndex": 0,
-    "Attributes": [
-      {
-        "Name": "key",
-        "DisplayName": "Key",
-        "Type": "int"
-      },
-      {
-        "Name": "info",
-        "DisplayName": "Info",
-        "Type": "string"
-      },
-      {
-        "Name": "field",
-        "DisplayName": "Field",
-        "Type": "int"
-      },
-      {
-        "Name": "layout",
-        "DisplayName": "Layout",
-        "Type": "enum",
-        "EnumValues": [
-          "A",
-          "A1",
-          "B",
-          "B1",
-          "C",
-          "C1",
-          "D",
-          "E",
-          "F",
-          "G",
-          "UNKNOWN",
-          "unknown"
-        ]
-      }
-    ]
+	"Name": "EPC01 - Firmware",
+	"LanguageFileFolderPath": "C:/Oetiker/Git/cfn/cfn-code/140_Firmware/Oetiker_Control_Unit/i18n/",
+	"LanguageTagRegexPattern": "ApplicationText_(.*).xml",
+	"FileType": "XML",
+	"RootTagName": "TextPool",
+	"ItemTagName": "Item",
+	"KeyAttributeIndex": 0,
+	"Attributes": [
+	  {
+		"Name": "key",
+		"DisplayName": "Key",
+		"Type": "int"
+	  },
+	  {
+		"Name": "info",
+		"DisplayName": "Info",
+		"Type": "string"
+	  },
+	  {
+		"Name": "field",
+		"DisplayName": "Field",
+		"Type": "int"
+	  },
+	  {
+		"Name": "layout",
+		"DisplayName": "Layout",
+		"Type": "enum",
+		"EnumValues": [
+		  "A",
+		  "A1",
+		  "B",
+		  "B1",
+		  "C",
+		  "C1",
+		  "D",
+		  "E",
+		  "F",
+		  "G",
+		  "UNKNOWN",
+		  "unknown"
+		]
+	  }
+	]
   },
   {
-    "Name": "Test",
-    "LanguageFileFolderPath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
-    "LanguageTagRegexPattern": "TestFile_(.*).xml",
-    "FileType": "XML",
-    "RootTagName": "TextPool",
-    "ItemTagName": "ItemText",
-    "KeyAttributeIndex": 0,
-    "Attributes": [
-      {
-        "Name": "key2",
-        "DisplayName": "Key",
-        "Type": "string"
-      },
-      {
-        "Name": "info2",
-        "DisplayName": "Info",
-        "Type": "string"
-      },
-      {
-        "Name": "option",
-        "DisplayName": "Option",
-        "Type": "enum",
-        "EnumValues": [
-          "A",
-          "B",
-          "C",
-          "D",
-          "E",
-          "F"
-        ]
-      },
-      {
-        "Name": "number",
-        "DisplayName": "Number",
-        "Type": "int"
-      },
-      {
-        "Name": "number2",
-        "DisplayName": "Number2",
-        "Type": "float"
-      }
-    ]
+	"Name": "Test",
+	"LanguageFileFolderPath": "D:\\Godot-Projects\\epc01LanguageFileChanger\\TestLanguage\\",
+	"LanguageTagRegexPattern": "TestFile_(.*).xml",
+	"FileType": "XML",
+	"RootTagName": "TextPool",
+	"ItemTagName": "ItemText",
+	"KeyAttributeIndex": 0,
+	"Attributes": [
+	  {
+		"Name": "key2",
+		"DisplayName": "Key",
+		"Type": "string"
+	  },
+	  {
+		"Name": "info2",
+		"DisplayName": "Info",
+		"Type": "string"
+	  },
+	  {
+		"Name": "option",
+		"DisplayName": "Option",
+		"Type": "enum",
+		"EnumValues": [
+		  "A",
+		  "B",
+		  "C",
+		  "D",
+		  "E",
+		  "F"
+		]
+	  },
+	  {
+		"Name": "number",
+		"DisplayName": "Number",
+		"Type": "int"
+	  },
+	  {
+		"Name": "number2",
+		"DisplayName": "Number2",
+		"Type": "float"
+	  }
+	]
   }
 ]

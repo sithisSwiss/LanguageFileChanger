@@ -6,4 +6,4 @@
 script = ExtResource("1_mp1bq")
 SelectedConfigIndex = 1
 StepSizeAsJson = "{\"Test_number\":1.0,\"Test_number2\":0.001,\"EPC01 - Firmware_key\":1.0,\"EPC01 - Firmware_field\":1.0}"
-SelectedLanguageIndex = 1
+SelectedLanguageIndex = 0

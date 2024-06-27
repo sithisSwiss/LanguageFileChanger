@@ -29,6 +29,7 @@ func init_add():
 	attribute_grid_container.editable = true
 	create_item_container.show()
 	create_item_button.disabled = true
+	Globals.language_string.CanBeSaved = false
 	init()
 	Globals.language_string.ItemChanged.connect(func(x): _on_attribute_changed(x))
 	return self
